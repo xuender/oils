@@ -18,10 +18,10 @@ jobs:
         uses: golangci/golangci-lint-action@v3.1.0
         with:
           version: ${{ matrix.golangci_lint }}
-          args: --timeout=2m
+          args: --disable=typecheck --timeout=2m
           only-new-issues: false
           working-directory: .
-  build:
+  test:
     needs: golangci-lint
     runs-on: ubuntu-latest
     steps:
