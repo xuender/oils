@@ -3,7 +3,7 @@ package assert
 import (
 	"fmt"
 
-	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/constraints" // nolint
 )
 
 func Greater[T constraints.Ordered](errorf errorfer, big, small T, msgAndArgs ...any) bool {

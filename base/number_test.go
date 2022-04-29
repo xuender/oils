@@ -14,6 +14,7 @@ func TestJSNumber(t *testing.T) {
 	assert.Equal(t, 0x155dfb1875c8c7, base.JSNumber(0x5c955dfb1875c8c7))
 }
 
+// nolint
 func FuzzJSNumber(f *testing.F) {
 	f.Add(uint64(5))
 

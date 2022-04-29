@@ -3,7 +3,7 @@ package base
 import (
 	"encoding/binary"
 
-	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/constraints" // nolint
 )
 
 func Number2Bytes[T constraints.Integer | constraints.Float](num T) []byte {
