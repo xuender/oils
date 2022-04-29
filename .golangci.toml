@@ -22,5 +22,6 @@ disable = [
   "nolintlint",
   "wrapcheck",
   "exhaustivestruct",
+  "typecheck",
 ]
 enable-all = true
