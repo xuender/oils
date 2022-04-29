@@ -1,7 +1,7 @@
 # Oils
 
 [![GoCI](https://github.com/xuender/oils/workflows/Go/badge.svg)](https://github.com/xuender/oils/actions)
-[![codecov](https://codecov.io/gh/xuender/oils/branch/main/graph/badge.svg?token=QL31K7FRZ6)](https://codecov.io/gh/xuender/oils)
+[![codecov](https://codecov.io/gh/xuender/oils/branch/main/graph/badge.svg?token=8CTpNIHxYT)](https://codecov.io/gh/xuender/oils)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xuender/oils)](https://goreportcard.com/report/github.com/xuender/oils)
 [![GoDoc](https://godoc.org/github.com/xuender/oils?status.svg)](https://pkg.go.dev/github.com/xuender/oils)
 [![Gitter](https://badges.gitter.im/xuender-oils/community.svg)](https://gitter.im/xuender-oils/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
