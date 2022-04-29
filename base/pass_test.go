@@ -42,3 +42,9 @@ func TestPass3(t *testing.T) {
 	assert.Equal(t, "3", ret2)
 	assert.Equal(t, 3.14, ret3)
 }
+
+func TestPass(t *testing.T) {
+	t.Parallel()
+
+	base.Pass(os.ErrClosed)
+}
