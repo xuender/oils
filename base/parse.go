@@ -20,13 +20,13 @@ func ParseInteger[T constraints.Integer](str string) (T, error) {
 	}
 
 	u64, err := strconv.ParseUint(str, Ten, SixtyFour)
-
+	// nolint
 	return T(u64), err
 }
 
 func ParseFloat[T constraints.Float](str string) (T, error) {
 	f64, err := strconv.ParseFloat(str, SixtyFour)
-
+	// nolint
 	return T(f64), err
 }
 
@@ -41,6 +41,6 @@ func FormatFloat[T constraints.Float | constraints.Integer](num T, prec int) str
 // Round 四舍五入.
 func Round[I constraints.Integer, F constraints.Float](float F) I {
 	half := 0.5
-
+	// nolint
 	return I(math.Floor(float64(float) + half))
 }

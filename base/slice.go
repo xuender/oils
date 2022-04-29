@@ -9,9 +9,12 @@ import (
 
 type Slice[T constraints.Ordered] []T
 
-func (s Slice[T]) Len() int           { return len(s) }
-func (s Slice[T]) Less(i, j int) bool { return s[i] < s[j] }
-func (s Slice[T]) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s Slice[T]) Len() int { return len(s) }
+func (s Slice[T]) Less(i, j int) bool {
+	// nolint
+	return s[i] < s[j]
+}
+func (s Slice[T]) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
 func NewSlice[T constraints.Ordered](elems ...T) Slice[T] {
 	newSlice := Slice[T]{}
@@ -80,6 +83,7 @@ func (s Slice[T]) Indexs(elems []T) int {
 		has := true
 
 		for elemIndex, elem := range elems {
+			// nolint
 			if s[index+elemIndex] != elem {
 				has = false
 
@@ -102,6 +106,7 @@ func (s Slice[T]) Equal(target Slice[T]) bool {
 	}
 
 	for i, elem := range target {
+		// nolint
 		if s[i] != elem {
 			return false
 		}
@@ -113,6 +118,7 @@ func (s Slice[T]) Equal(target Slice[T]) bool {
 // Count 包含元素数量.
 func (s Slice[T]) Count(elem T) (count int) {
 	for _, value := range s {
+		// nolint
 		if value == elem {
 			count++
 		}
@@ -131,6 +137,7 @@ func (s Slice[T]) Counts(elems []T) (count int) {
 		has := true
 
 		for elemIndex, elem := range elems {
+			// nolint
 			if s[index+elemIndex] != elem {
 				has = false
 
@@ -175,6 +182,7 @@ func (s Slice[T]) ReplaceAll(oldSlice, newSlice []T) Slice[T] {
 // Has 包含.
 func (s Slice[T]) Has(elem T) bool {
 	for _, value := range s {
+		// nolint
 		if value == elem {
 			return true
 		}
@@ -186,6 +194,7 @@ func (s Slice[T]) Has(elem T) bool {
 // Index 位置.
 func (s Slice[T]) Index(elem T) int {
 	for index, value := range s {
+		// nolint
 		if value == elem {
 			return index
 		}

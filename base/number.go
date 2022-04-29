@@ -17,6 +17,6 @@ func JSNumber[Num constraints.Integer | constraints.Float](num Num) Num {
 
 	h := binary.BigEndian.Uint32(b8[0:Four])
 	l := binary.BigEndian.Uint32(b8[Four:])
-
+	// nolint
 	return Num(uint64(h&b16)*0x100000000 + uint64(l))
 }

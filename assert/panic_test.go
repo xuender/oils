@@ -4,33 +4,33 @@ import (
 	"errors"
 	"testing"
 
-	. "github.com/xuender/oils/assert"
+	"github.com/xuender/oils/assert"
 )
 
 func TestPanics(t *testing.T) {
 	t.Parallel()
 
-	True(t, Panics(&errorfer{}, func() {
+	assert.True(t, assert.Panics(&errorfer{}, func() {
 		panic("error")
 	}))
-	False(t, Panics(&errorfer{}, func() {}))
+	assert.False(t, assert.Panics(&errorfer{}, func() {}))
 }
 
 var errTest = errors.New("error")
 
 func TestPanicsWithError(t *testing.T) {
 	t.Parallel()
-	True(t, PanicsWithError(&errorfer{}, "error", func() {
+	assert.True(t, assert.PanicsWithError(&errorfer{}, "error", func() {
 		panic("error")
 	}))
-	True(t, PanicsWithError(&errorfer{}, "error", func() {
+	assert.True(t, assert.PanicsWithError(&errorfer{}, "error", func() {
 		panic(errTest)
 	}))
-	True(t, PanicsWithError(&errorfer{}, "1", func() {
+	assert.True(t, assert.PanicsWithError(&errorfer{}, "1", func() {
 		panic(1)
 	}))
-	False(t, PanicsWithError(&errorfer{}, "error", func() {}))
-	False(t, PanicsWithError(&errorfer{}, "error", func() {
+	assert.False(t, assert.PanicsWithError(&errorfer{}, "error", func() {}))
+	assert.False(t, assert.PanicsWithError(&errorfer{}, "error", func() {
 		panic("other")
 	}))
 }

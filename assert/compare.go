@@ -7,6 +7,7 @@ import (
 )
 
 func Greater[T constraints.Ordered](errorf errorfer, big, small T, msgAndArgs ...any) bool {
+	// nolint
 	if big > small {
 		return true
 	}
@@ -19,6 +20,7 @@ func Greater[T constraints.Ordered](errorf errorfer, big, small T, msgAndArgs ..
 }
 
 func GreaterOrEqual[T constraints.Ordered](errorf errorfer, big, small T, msgAndArgs ...any) bool {
+	// nolint
 	if big >= small {
 		return true
 	}
@@ -31,6 +33,7 @@ func GreaterOrEqual[T constraints.Ordered](errorf errorfer, big, small T, msgAnd
 }
 
 func Less[T constraints.Ordered](errorf errorfer, small, big T, msgAndArgs ...any) bool {
+	// nolint
 	if small < big {
 		return true
 	}
@@ -43,6 +46,7 @@ func Less[T constraints.Ordered](errorf errorfer, small, big T, msgAndArgs ...an
 }
 
 func LessOrEqual[T constraints.Ordered](errorf errorfer, small, big T, msgAndArgs ...any) bool {
+	// nolint
 	if small <= big {
 		return true
 	}

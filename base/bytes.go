@@ -22,6 +22,6 @@ func Number2Bytes[T constraints.Integer | constraints.Float](num T) []byte {
 func Bytes2Number[T constraints.Integer | constraints.Float](data []byte) T {
 	bytes := make([]byte, Eight)
 	copy(bytes, data)
-
+	// nolint
 	return T(binary.LittleEndian.Uint64(bytes))
 }
