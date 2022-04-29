@@ -14,6 +14,7 @@ func TestNumber2Bytes(t *testing.T) {
 	assert.Equals(t, []byte{0x40, 0x42, 0xf}, base.Number2Bytes(1000000))
 	assert.Equals(t, []byte{0x41, 0x42, 0xf}, base.Number2Bytes(1000001))
 	assert.Equals(t, []byte{}, base.Number2Bytes(0))
+	assert.Equals(t, []byte{0x1f, 0x85, 0xeb, 0x51, 0xb8, 0x1e, 0x9, 0x40}, base.Number2Bytes(3.14))
 }
 
 // nolint
@@ -34,4 +35,5 @@ func TestBytes2Number(t *testing.T) {
 
 	assert.Equal(t, 1, base.Bytes2Number[int]([]byte{0x1}))
 	assert.Equal(t, 0, base.Bytes2Number[int]([]byte{}))
+	assert.Equal(t, 3.14, base.Bytes2Number[float64]([]byte{0x1f, 0x85, 0xeb, 0x51, 0xb8, 0x1e, 0x9, 0x40}))
 }
