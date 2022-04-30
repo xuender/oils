@@ -176,3 +176,13 @@ func TestSlice_Counts(t *testing.T) {
 	assert.Equal(t, 0, slice.Counts([]int{1, 1}))
 	assert.Equal(t, 0, slice.Counts([]int{1, 1, 1, 1, 1}))
 }
+
+func TestSlice_Unique(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 2, 2)
+	assert.Equal(t, 3, slice.Count(2))
+
+	slice.Unique()
+	assert.Equal(t, 1, slice.Count(2))
+}
