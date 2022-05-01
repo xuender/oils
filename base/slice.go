@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/slices"
 )
 
 // Slice 切片.
@@ -19,11 +20,10 @@ func NewSlice[T constraints.Ordered](elems ...T) Slice[T] {
 }
 
 // Add 增加.
-func (p *Slice[T]) Add(elems ...T) Slice[T] {
-	*p = append(*p, elems...)
+func (p *Slice[T]) Add(elems ...T) { *p = append(*p, elems...) }
 
-	return *p
-}
+// Clip 删除未使用空间.
+func (p *Slice[T]) Clip() { *p = slices.Clip(*p) }
 
 // Del 删除.
 func (p *Slice[T]) Del(elems ...T) Slice[T] {
@@ -46,6 +46,18 @@ func (p *Slice[T]) DelAll(elems ...T) Slice[T] {
 
 	return *p
 }
+
+// Delete 删除.
+func (p *Slice[T]) Delete(start, end int) { *p = slices.Delete(*p, start, end) }
+
+// Grow 扩展.
+func (p *Slice[T]) Grow(size int) { *p = slices.Grow(*p, size) }
+
+// Insert 插入.
+func (p *Slice[T]) Insert(index int, elems ...T) { *p = slices.Insert(*p, index, elems...) }
+
+// Push 顶部压入元素.
+func (p *Slice[T]) Push(elems ...T) { *p = append(elems, *p...) }
 
 // Replace 替换.
 func (p *Slice[T]) Replace(oldSlice, newSlice []T, num int) Slice[T] {
@@ -73,7 +85,7 @@ func (p *Slice[T]) Unique() Slice[T] {
 	unique := NewSlice[T]()
 
 	for _, elem := range *p {
-		if unique.Has(elem) {
+		if slices.Index(unique, elem) > -1 {
 			continue
 		}
 
@@ -87,8 +99,8 @@ func (p *Slice[T]) Unique() Slice[T] {
 
 // All 全部包含.
 func (p Slice[T]) All(elems ...T) bool {
-	for _, e := range elems {
-		if !p.Has(e) {
+	for _, elem := range elems {
+		if slices.Index(p, elem) < 0 {
 			return false
 		}
 	}
@@ -98,8 +110,8 @@ func (p Slice[T]) All(elems ...T) bool {
 
 // Any 任意包含.
 func (p Slice[T]) Any(elems ...T) bool {
-	for _, e := range elems {
-		if p.Has(e) {
+	for _, elem := range elems {
+		if slices.Index(p, elem) > -1 {
 			return true
 		}
 	}
@@ -107,16 +119,18 @@ func (p Slice[T]) Any(elems ...T) bool {
 	return false
 }
 
-// Count 包含元素数量.
-func (p Slice[T]) Count(elem T) (count int) {
-	for _, value := range p {
-		// nolint
-		if value == elem {
-			count++
-		}
-	}
+// Clone 克隆.
+func (p Slice[T]) Clone() Slice[T] { return slices.Clone(p) }
 
-	return
+// Count 包含元素数量.
+func (p Slice[T]) Count(elem T) int { return Count(p, elem) }
+
+// Compare 比较.
+func (p Slice[T]) Compare(dst Slice[T]) int { return slices.Compare(p, dst) }
+
+// Contains 包含.
+func (p Slice[T]) Contains(elem T) bool {
+	return slices.Contains(p, elem)
 }
 
 // Count 包含切片数量.
@@ -146,70 +160,16 @@ func (p Slice[T]) Counts(elems []T) (count int) {
 }
 
 // Equal 比较.
-func (p Slice[T]) Equal(target Slice[T]) bool {
-	if len(p) != len(target) {
-		return false
-	}
-
-	for i, elem := range target {
-		// nolint
-		if p[i] != elem {
-			return false
-		}
-	}
-
-	return true
-}
+func (p Slice[T]) Equal(dst Slice[T]) bool { return slices.Equal(p, dst) }
 
 // Has 包含.
-func (p Slice[T]) Has(elem T) bool {
-	for _, value := range p {
-		// nolint
-		if value == elem {
-			return true
-		}
-	}
-
-	return false
-}
+func (p Slice[T]) Has(elem T) bool { return slices.Index(p, elem) > -1 }
 
 // Index 位置.
-func (p Slice[T]) Index(elem T) int {
-	for index, value := range p {
-		// nolint
-		if value == elem {
-			return index
-		}
-	}
-
-	return -1
-}
+func (p Slice[T]) Index(elem T) int { return slices.Index(p, elem) }
 
 // Indexs 包含.
-func (p Slice[T]) Indexs(elems []T) int {
-	if len(p) < len(elems) {
-		return -1
-	}
-
-	for index := 0; index <= len(p)-len(elems); index++ {
-		has := true
-
-		for elemIndex, elem := range elems {
-			// nolint
-			if p[index+elemIndex] != elem {
-				has = false
-
-				break
-			}
-		}
-
-		if has {
-			return index
-		}
-	}
-
-	return -1
-}
+func (p Slice[T]) Indexs(elems []T) int { return Index(p, elems) }
 
 // Join 集合连接.
 func (p Slice[T]) Join(sep string) string {
@@ -247,9 +207,7 @@ func (p Slice[T]) ReplaceAll(oldSlice, newSlice []T) Slice[T] {
 }
 
 // String 转换成字符串.
-func (p Slice[T]) String() string {
-	return "Slice[" + p.Join(" ") + "]"
-}
+func (p Slice[T]) String() string { return "Slice[" + p.Join(" ") + "]" }
 
 // Swap 交换.
 func (p Slice[T]) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
