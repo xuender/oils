@@ -81,7 +81,7 @@ func (p *Slice[T]) Replace(oldSlice, newSlice []T, num int) Slice[T] {
 }
 
 // Unique 唯一.
-func (p *Slice[T]) Unique() Slice[T] {
+func (p *Slice[T]) Unique() {
 	unique := NewSlice[T]()
 
 	for _, elem := range *p {
@@ -93,8 +93,6 @@ func (p *Slice[T]) Unique() Slice[T] {
 	}
 
 	*p = unique
-
-	return *p
 }
 
 // All 全部包含.
