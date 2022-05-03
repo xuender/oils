@@ -1,4 +1,12 @@
 
+0.1.5 / 2022-05-03
+==================
+
+* feat: nets.Service
+* refactor: slice
+* refactor: unique
+* refactor: slice
+
 0.1.4 / 2022-04-30
 ==================
 
