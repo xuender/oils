@@ -6,15 +6,15 @@ import (
 	"syscall"
 )
 
-type closer interface {
+type Closer interface {
 	Close() error
 }
 
-type errorer interface {
+type Errorer interface {
 	Error(error)
 }
 
-func SignalClose(call errorer, closers ...closer) {
+func SignalClose(call Errorer, closers ...Closer) {
 	if len(closers) == 0 {
 		return
 	}

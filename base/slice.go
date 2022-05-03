@@ -127,9 +127,7 @@ func (p Slice[T]) Count(elem T) int { return Count(p, elem) }
 func (p Slice[T]) Compare(dst Slice[T]) int { return slices.Compare(p, dst) }
 
 // Contains 包含.
-func (p Slice[T]) Contains(elem T) bool {
-	return slices.Contains(p, elem)
-}
+func (p Slice[T]) Contains(elem T) bool { return slices.Contains(p, elem) }
 
 // Count 包含切片数量.
 func (p Slice[T]) Counts(elems []T) (count int) {
@@ -194,10 +192,7 @@ func (p Slice[T]) Join(sep string) string {
 func (p Slice[T]) Len() int { return len(p) }
 
 // Less 小于.
-func (p Slice[T]) Less(i, j int) bool {
-	// nolint
-	return p[i] < p[j]
-}
+func (p Slice[T]) Less(i, j int) bool { return p[i] < p[j] }
 
 // ReplaceAll 全部替换.
 func (p Slice[T]) ReplaceAll(oldSlice, newSlice []T) Slice[T] {
