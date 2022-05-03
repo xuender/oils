@@ -14,7 +14,7 @@ type Errorer interface {
 	Error(error)
 }
 
-func SignalClose(call Errorer, closers ...Closer) {
+func SignalClose(errorer Errorer, closers ...Closer) {
 	if len(closers) == 0 {
 		return
 	}
@@ -28,7 +28,7 @@ func SignalClose(call Errorer, closers ...Closer) {
 
 		for _, closer := range closers {
 			if err := closer.Close(); err != nil {
-				call.Error(err)
+				errorer.Error(err)
 			}
 		}
 	}()
