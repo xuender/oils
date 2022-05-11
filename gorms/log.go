@@ -1,4 +1,4 @@
-package logs
+package groms
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xuender/oils/logs"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -115,9 +116,9 @@ func (p *gormLogger) logger() *zap.SugaredLogger {
 		case strings.Contains(file, oilsPackage):
 		default:
 			// log.Debugw("skip", "skip", skip, "file", file)
-			return log.Desugar().WithOptions(zap.AddCallerSkip(skip - 1)).Sugar()
+			return logs.Desugar().WithOptions(zap.AddCallerSkip(skip - 1)).Sugar()
 		}
 	}
 
-	return log
+	return logs.Desugar().Sugar()
 }
