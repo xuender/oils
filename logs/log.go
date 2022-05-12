@@ -15,9 +15,10 @@ var log = NewDebug().WithOptions(zap.AddCallerSkip(1)).Sugar()
 
 func RotateLog(paths ...string) {
 	week := 7
+	filename := LogName(paths...)
 
 	log = NewRotate(&lumberjack.Logger{
-		Filename: LogName(paths...),
+		Filename: filename,
 		Compress: true,
 		MaxAge:   week,
 	}).WithOptions(zap.AddCallerSkip(1)).Sugar()
