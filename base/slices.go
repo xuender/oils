@@ -46,3 +46,15 @@ func Index[T comparable](slices, sub []T) int {
 
 	return -1
 }
+
+func Filter[T any](elems []T, condition func(T) bool) []T {
+	ret := []T{}
+
+	for _, elem := range elems {
+		if condition(elem) {
+			ret = append(ret, elem)
+		}
+	}
+
+	return ret
+}
