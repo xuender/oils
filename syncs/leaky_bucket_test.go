@@ -50,3 +50,12 @@ func TestBeakyBucket_TryConsume(t *testing.T) {
 
 	assert.Equal(t, 100, count)
 }
+
+func TestBeakyBucket_Consume2(t *testing.T) {
+	t.Parallel()
+
+	bucket := syncs.NewLeakyBucket(3, time.Second)
+	bucket.Consume(5)
+
+	assert.True(t, bucket.TryConsume(1))
+}

@@ -20,3 +20,35 @@ func JSNumber[Num constraints.Integer | constraints.Float](num Num) Num {
 	// nolint
 	return Num(uint64(h&b16)*0x100000000 + uint64(l))
 }
+
+// Max 最大值.
+func Max[Num constraints.Integer | constraints.Float](nums ...Num) Num {
+	var max Num
+	if len(nums) > 0 {
+		max = nums[0]
+	}
+
+	for _, num := range nums {
+		if num > max {
+			max = num
+		}
+	}
+
+	return max
+}
+
+// Min 最小值.
+func Min[Num constraints.Integer | constraints.Float](nums ...Num) Num {
+	var min Num
+	if len(nums) > 0 {
+		min = nums[0]
+	}
+
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+	}
+
+	return min
+}
