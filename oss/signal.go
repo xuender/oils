@@ -1,7 +1,7 @@
 package oss
 
 import (
-	"os"
+	"context"
 	"os/signal"
 	"syscall"
 )
@@ -14,29 +14,31 @@ type Errorer interface {
 	Error(error)
 }
 
-func Signal() {
-	sigChan := make(chan os.Signal, 1)
-	// 监听指定信号 ctrl+c kill等
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-	<-sigChan
-}
-
-func SignalClose(errorer Errorer, closers ...Closer) {
-	if len(closers) == 0 {
-		return
-	}
-
-	sigChan := make(chan os.Signal, 1)
-	// 监听指定信号 ctrl+c kill等
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+func SignalClose(errorer Errorer, closers ...Closer) context.Context {
+	ctx, stop := signal.NotifyContext(context.Background(),
+		// 挂起 终端连接断开
+		syscall.SIGHUP,
+		// 中断 Ctrl+C
+		syscall.SIGINT,
+		// 结束
+		syscall.SIGTERM,
+		// 退出 (Ctrl+/)
+		syscall.SIGQUIT,
+		// 杀死
+		syscall.SIGKILL,
+	)
 
 	go func() {
-		<-sigChan
+		<-ctx.Done()
 
 		for _, closer := range closers {
 			if err := closer.Close(); err != nil {
 				errorer.Error(err)
 			}
 		}
+
+		stop()
 	}()
+
+	return ctx
 }
