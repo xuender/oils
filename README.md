@@ -23,17 +23,41 @@ Golang 常用工具类库.
 
 多国语言.
 
+## cryptos
+
+加密.
+
+## gins
+
+gin web 服务.
+
+## gorms
+
+gorm 数据库操作.
+
+## hashs
+
+哈希.
+
 ## ios
 
-输入输出相关.
+输入输出.
 
 ## logs
 
 使用 uber 的 zap 日志.
 
-## oos
+## nets
 
-操作系统环境相关.
+网络服务.
+
+## oss
+
+操作系统相关.
+
+## syncs
+
+异步控制.
 
 ## License
 
