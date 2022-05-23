@@ -47,6 +47,8 @@ func FuzzAppend(f *testing.F) {
 	}
 
 	f.Fuzz(func(t *testing.T, orig int) {
+		t.Helper()
+
 		rev := base.Append(orig, slice, slice...)
 
 		if orig < 0 {
