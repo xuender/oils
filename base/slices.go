@@ -58,3 +58,22 @@ func Filter[T any](elems []T, condition func(T) bool) []T {
 
 	return ret
 }
+
+// Append 追加，max最大尺寸,max小于0不限制尺寸.
+func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
+	size := len(slice) + len(elems)
+
+	if max < 0 || size <= max {
+		return append(slice, elems...)
+	}
+
+	if max == len(elems) {
+		return elems
+	}
+
+	if max < len(elems) {
+		return elems[len(elems)-max:]
+	}
+
+	return append(slice[size-max:], elems...)
+}
