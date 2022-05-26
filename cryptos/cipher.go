@@ -35,10 +35,10 @@ func (p Cipher) Block(key string) cipher.Block {
 
 	if p == DES {
 		// nolint
-		return base.Panic1(des.NewCipher(keyBytes[:8]))
+		return base.Must1(des.NewCipher(keyBytes[:8]))
 	}
 
-	return base.Panic1(aes.NewCipher(keyBytes[:]))
+	return base.Must1(aes.NewCipher(keyBytes[:]))
 }
 
 func (p Cipher) Stringify(data []byte) string {

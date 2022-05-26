@@ -77,7 +77,7 @@ func WithRecover(handler Handler) http.Handler {
 			writer.Header().Set(ContentType, "application/x-protobuf")
 		}
 
-		data := base.Panic1(io.ReadAll(req.Body))
+		data := base.Must1(io.ReadAll(req.Body))
 		msg := handler.POST(data, isJSON)
 
 		writer.WriteHeader(http.StatusOK)
@@ -89,10 +89,10 @@ func Write(writer http.ResponseWriter, msg proto.Message, isJSON bool) {
 	var data []byte
 	if isJSON {
 		// nolint
-		data = base.Panic1(json.Marshal(msg))
+		data = base.Must1(json.Marshal(msg))
 	} else {
-		data = base.Panic1(proto.Marshal(msg))
+		data = base.Must1(proto.Marshal(msg))
 	}
 
-	base.Panic1(writer.Write(data))
+	base.Must1(writer.Write(data))
 }

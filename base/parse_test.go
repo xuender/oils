@@ -10,7 +10,7 @@ import (
 
 func ExampleParseInteger() {
 	// 字符串转换成整数
-	fmt.Println(base.Panic1(base.ParseInteger[int]("3")))
+	fmt.Println(base.Must1(base.ParseInteger[int]("3")))
 
 	// Output:
 	// 3
@@ -18,7 +18,7 @@ func ExampleParseInteger() {
 
 func ExampleParseFloat() {
 	// 字符串转换成浮点数
-	fmt.Println(base.Panic1(base.ParseFloat[float32]("3.14")))
+	fmt.Println(base.Must1(base.ParseFloat[float32]("3.14")))
 
 	// Output:
 	// 3.14
@@ -47,14 +47,14 @@ func ExampleFormatFloat() {
 func TestParseInteger(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, 10, base.Panic1(base.ParseInteger[int]("10")))
+	assert.Equal(t, 10, base.Must1(base.ParseInteger[int]("10")))
 }
 
 func TestParseInteger_Float(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, 10, base.Panic1(base.ParseInteger[int]("10.3")))
-	assert.Equal(t, 11, base.Panic1(base.ParseInteger[int]("10.5")))
+	assert.Equal(t, 10, base.Must1(base.ParseInteger[int]("10.3")))
+	assert.Equal(t, 11, base.Must1(base.ParseInteger[int]("10.5")))
 }
 
 func TestParseInteger_Error(t *testing.T) {
@@ -68,7 +68,7 @@ func TestParseInteger_Error(t *testing.T) {
 func TestParseFloat(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, 3.14, base.Panic1(base.ParseFloat[float64]("3.14")))
+	assert.Equal(t, 3.14, base.Must1(base.ParseFloat[float64]("3.14")))
 }
 
 func TestItoa(t *testing.T) {

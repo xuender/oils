@@ -10,42 +10,42 @@ import (
 	"github.com/xuender/oils/base"
 )
 
-func TestPanic(t *testing.T) {
+func TestMust(t *testing.T) {
 	t.Parallel()
 
 	assert.Panics(t, func() {
-		base.Panic(io.ErrClosedPipe)
+		base.Must(io.ErrClosedPipe)
 	})
 }
 
-func TestPanic1(t *testing.T) {
+func TestMust1(t *testing.T) {
 	t.Parallel()
 
 	assert.Panics(t, func() {
-		base.Panic1(func() (bool, error) {
+		base.Must1(func() (bool, error) {
 			return false, os.ErrExist
 		}())
 	})
 	assert.Panics(t, func() {
-		base.Panic1(strconv.ParseInt("a", 10, 64))
+		base.Must1(strconv.ParseInt("a", 10, 64))
 	})
 }
 
-func TestPanic2(t *testing.T) {
+func TestMust2(t *testing.T) {
 	t.Parallel()
 
 	assert.Panics(t, func() {
-		base.Panic2(func() (bool, int, error) {
+		base.Must2(func() (bool, int, error) {
 			return false, 1, os.ErrExist
 		}())
 	})
 }
 
-func TestPanic3(t *testing.T) {
+func TestMust3(t *testing.T) {
 	t.Parallel()
 
 	assert.Panics(t, func() {
-		base.Panic3(func() (bool, int, bool, error) {
+		base.Must3(func() (bool, int, bool, error) {
 			return false, 1, false, os.ErrExist
 		}())
 	})

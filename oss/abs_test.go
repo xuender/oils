@@ -14,8 +14,8 @@ import (
 func TestAbs(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, "parent", filepath.Base(base.Panic1(oss.Abs("parent/c/.."))))
-	assert.NotEqual(t, "~", filepath.Base(base.Panic1(oss.Abs("~"))))
+	assert.Equal(t, "parent", filepath.Base(base.Must1(oss.Abs("parent/c/.."))))
+	assert.NotEqual(t, "~", filepath.Base(base.Must1(oss.Abs("~"))))
 
 	home, _ := os.UserHomeDir()
 	path, _ := oss.Abs("~")
