@@ -1,4 +1,13 @@
 
+0.2.10 / 2022-05-26
+==================
+
+* style: index
+* refactor: Panic 改成 Must
+* feat: base.Sorts
+* style: test
+* feat: add Append
+
 0.1.9 / 2022-05-22
 ==================
 
