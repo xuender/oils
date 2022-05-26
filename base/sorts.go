@@ -11,17 +11,17 @@ type sorts[T constraints.Ordered, A any] struct {
 	slices [][]A
 }
 
-func (p sorts[T, A]) Len() int           { return len(p.keys) }
-func (p sorts[T, A]) Less(i, j int) bool { return p.keys[i] < p.keys[j] }
-func (p sorts[T, A]) Swap(i, j int) {
-	p.keys[i], p.keys[j] = p.keys[j], p.keys[i]
+func (p sorts[T, A]) Len() int                     { return len(p.keys) }
+func (p sorts[T, A]) Less(indexA, indexB int) bool { return p.keys[indexA] < p.keys[indexB] }
+func (p sorts[T, A]) Swap(indexA, indexB int) {
+	p.keys[indexA], p.keys[indexB] = p.keys[indexB], p.keys[indexA]
 
 	for _, slice := range p.slices {
-		if size := len(slice); size <= i || size <= j {
+		if size := len(slice); size <= indexA || size <= indexB {
 			continue
 		}
 
-		slice[i], slice[j] = slice[j], slice[i]
+		slice[indexA], slice[indexB] = slice[indexB], slice[indexA]
 	}
 }
 
