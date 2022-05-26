@@ -12,7 +12,6 @@ import (
 
 func TestMust(t *testing.T) {
 	t.Parallel()
-
 	assert.Panics(t, func() {
 		base.Must(io.ErrClosedPipe)
 	})
