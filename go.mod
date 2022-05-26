@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/BurntSushi/toml v1.1.0
+	github.com/agiledragon/gomonkey/v2 v2.7.0
 	github.com/dchest/siphash v1.2.3
 	github.com/gin-gonic/gin v1.7.7
 	github.com/retailnext/hllpp v1.0.0

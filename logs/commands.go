@@ -90,6 +90,10 @@ func Desugar() *zap.Logger {
 	return log.Desugar()
 }
 
+func GetLog() *zap.SugaredLogger {
+	return log
+}
+
 func Sync() {
 	_ = log.Sync()
 }

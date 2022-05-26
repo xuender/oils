@@ -4,3 +4,6 @@ def:
 
 lint:
 	golangci-lint run
+
+test:
+	go test ./... -gcflags=all=-l
