@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 )
 
+const DefaultFileMode os.FileMode = 0o664
+
 func Exist(files ...string) bool {
 	filename, err := filepath.Abs(filepath.Join(files...))
 	if err != nil {

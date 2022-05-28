@@ -1,4 +1,13 @@
 
+0.2.11 / 2022-05-28
+==================
+
+* feat: add default FileMode
+* feat: add oss.Exist
+* feat: add oss.Exec
+* test: gomonkey
+* feat: Panic
+
 0.2.10 / 2022-05-26
 ==================
 
