@@ -47,6 +47,7 @@ func TestNewDebug(t *testing.T) {
 
 func TestNewInfo(t *testing.T) {
 	t.Parallel()
+
 	old := logs.Desugar()
 
 	logs.NewInfo()
