@@ -186,3 +186,11 @@ func TestSlice_Unique(t *testing.T) {
 	slice.Unique()
 	assert.Equal(t, 1, slice.Count(2))
 }
+
+func TestNewSlice(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 4)
+	assert.True(t, slice.Has(4))
+	assert.False(t, slice.Has(3))
+}

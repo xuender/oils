@@ -14,7 +14,8 @@ var locales embed.FS
 
 func ExampleLoad() {
 	_ = i18n.Load(locales)
-	printer := i18n.GetPrinter(language.SimplifiedChinese)
+	tag, _ := i18n.Tag("zh_CN")
+	printer := i18n.GetPrinter(tag)
 
 	printer.Printf("hellohometown")
 

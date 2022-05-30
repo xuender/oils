@@ -74,3 +74,17 @@ func FuzzAppend(f *testing.F) {
 		}
 	})
 }
+
+func TestCount(t *testing.T) {
+	t.Parallel()
+
+	slice := []int{1, 2, 1}
+	assert.Equal(t, 2, base.Count(slice, 1))
+}
+
+func TestIndex(t *testing.T) {
+	t.Parallel()
+
+	slice := []int{1, 2, 1}
+	assert.Equal(t, 1, base.Index(slice, []int{2, 1}))
+}

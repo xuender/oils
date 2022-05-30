@@ -103,3 +103,10 @@ func TestSet_Add(t *testing.T) {
 	assert.Equal(t, 0, len(set))
 	assert.False(t, set.Any(data))
 }
+
+func TestNewSet(t *testing.T) {
+	t.Parallel()
+
+	set := base.NewSet(1, 2, 2)
+	assert.Equal(t, 2, len(set))
+}
