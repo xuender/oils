@@ -56,3 +56,20 @@ func TestDecrypt(t *testing.T) {
 
 	assert.NotNil(t, err)
 }
+
+func TestPadding(t *testing.T) {
+	t.Parallel()
+
+	data := cryptos.Padding("123", 4)
+	assert.Equal(t, 4, len(data))
+}
+
+func TestUnPadding(t *testing.T) {
+	t.Parallel()
+
+	data := cryptos.Padding("123", 14)
+	str, err := cryptos.UnPadding(data)
+
+	assert.Nil(t, err)
+	assert.Equal(t, "123", str)
+}

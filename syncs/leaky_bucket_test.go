@@ -9,7 +9,7 @@ import (
 	"github.com/xuender/oils/syncs"
 )
 
-func TestBeakyBucket_Consume(t *testing.T) {
+func TestLeakyBucket_Consume(t *testing.T) {
 	t.Parallel()
 
 	bucket := syncs.NewLeakyBucket(100, time.Second)
@@ -34,7 +34,7 @@ func TestBeakyBucket_Consume(t *testing.T) {
 	assert.LessOrEqual(t, count, 300)
 }
 
-func TestBeakyBucket_TryConsume(t *testing.T) {
+func TestLeakyBucket_TryConsume(t *testing.T) {
 	t.Parallel()
 
 	bucket := syncs.NewLeakyBucket(100, time.Second)
@@ -51,11 +51,19 @@ func TestBeakyBucket_TryConsume(t *testing.T) {
 	assert.Equal(t, 100, count)
 }
 
-func TestBeakyBucket_Consume2(t *testing.T) {
+func TestLeakyBucket_Consume2(t *testing.T) {
 	t.Parallel()
 
 	bucket := syncs.NewLeakyBucket(3, time.Second)
 	bucket.Consume(5)
 
 	assert.True(t, bucket.TryConsume(1))
+}
+
+func TestNewLeakyBucket(t *testing.T) {
+	t.Parallel()
+
+	bucket := syncs.NewLeakyBucket(100, time.Second)
+
+	assert.NotNil(t, bucket)
 }

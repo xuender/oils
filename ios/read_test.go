@@ -28,3 +28,8 @@ func TestReadLine_Error(t *testing.T) {
 		return os.ErrNotExist
 	}))
 }
+
+func TestReaderLine(t *testing.T) {
+	t.Parallel()
+	// TODO
+}

@@ -20,3 +20,38 @@ func TestLogName(t *testing.T) {
 		assert.Equal(t, "/var/tmp/logs.log", logs.LogName())
 	}
 }
+
+func TestRotateLog(t *testing.T) {
+	t.Parallel()
+
+	old := logs.Desugar()
+
+	logs.RotateLog("/tmp", "test")
+
+	newLog := logs.Desugar()
+
+	assert.NotEqual(t, old, newLog)
+}
+
+func TestNewDebug(t *testing.T) {
+	t.Parallel()
+
+	old := logs.Desugar()
+
+	logs.NewDebug()
+
+	newLog := logs.Desugar()
+
+	assert.NotEqual(t, old, newLog)
+}
+
+func TestNewInfo(t *testing.T) {
+	t.Parallel()
+	old := logs.Desugar()
+
+	logs.NewInfo()
+
+	newLog := logs.Desugar()
+
+	assert.NotEqual(t, old, newLog)
+}
