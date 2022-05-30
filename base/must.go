@@ -9,7 +9,7 @@ func Must(err error) {
 
 // Panic 恐慌.
 //
-// As of v0.1.9, this function simply calls Must.
+// Deprecated: 使用Must.
 func Panic(err error) {
 	Must(err)
 }
@@ -23,7 +23,7 @@ func Must1[T any](t T, err error) T {
 
 // Panic1 恐慌1.
 //
-// As of v0.1.9, this function simply calls Must1.
+// Deprecated: 使用Must1.
 func Panic1[T any](t T, err error) T {
 	return Must1(t, err)
 }

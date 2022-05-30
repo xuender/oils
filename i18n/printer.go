@@ -9,7 +9,7 @@ import (
 )
 
 func GetPrinter(tags ...language.Tag) *message.Printer {
-	return message.NewPrinter(GetTag(strings.Split(os.Getenv("LANGUAGE"), ":")))
+	return message.NewPrinter(GetTag(strings.Split(os.Getenv("LANGUAGE"), ":"), tags...))
 }
 
 func GetTag(langs []string, tags ...language.Tag) language.Tag {
