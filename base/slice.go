@@ -22,6 +22,9 @@ func NewSlice[T constraints.Ordered](elems ...T) Slice[T] {
 // Add 增加.
 func (p *Slice[T]) Add(elems ...T) { *p = append(*p, elems...) }
 
+// Clean 清空.
+func (p *Slice[T]) Clean() { *p = []T{} }
+
 // Clip 删除未使用空间.
 func (p *Slice[T]) Clip() { *p = slices.Clip(*p) }
 

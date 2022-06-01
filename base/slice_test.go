@@ -194,3 +194,12 @@ func TestNewSlice(t *testing.T) {
 	assert.True(t, slice.Has(4))
 	assert.False(t, slice.Has(3))
 }
+
+func TestSlice_Clean(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 4)
+	assert.Equal(t, 3, len(slice))
+	slice.Clean()
+	assert.Equal(t, 0, len(slice))
+}
