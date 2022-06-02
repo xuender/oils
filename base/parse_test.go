@@ -17,7 +17,6 @@ func ExampleParseInteger() {
 }
 
 func ExampleParseFloat() {
-	// 字符串转换成浮点数
 	fmt.Println(base.Must1(base.ParseFloat[float32]("3.14")))
 
 	// Output:
@@ -25,7 +24,6 @@ func ExampleParseFloat() {
 }
 
 func ExampleItoa() {
-	// 字符串转换成浮点数
 	fmt.Println(base.Itoa(3))
 	fmt.Println(base.Itoa(3.14))
 
@@ -35,7 +33,6 @@ func ExampleItoa() {
 }
 
 func ExampleFormatFloat() {
-	// 字符串转换成浮点数
 	fmt.Println(base.FormatFloat(3, 3))
 	fmt.Println(base.FormatFloat(3.14, 3))
 

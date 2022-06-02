@@ -25,6 +25,7 @@ func (p sorts[T, A]) Swap(indexA, indexB int) {
 	}
 }
 
+// Sorts keys 和 slices 都根据keys排序.
 func Sorts[T constraints.Ordered, A any](keys []T, slices ...[]A) {
 	data := sorts[T, A]{keys: keys, slices: slices}
 
