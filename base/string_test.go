@@ -12,4 +12,5 @@ func TestSplit(t *testing.T) {
 
 	assert.Equals(t, []string{"a", "b", "c"}, base.Split("a,b-c", ',', '-', '.'))
 	assert.Equals(t, []string{"a,b-c"}, base.Split("a,b-c"))
+	assert.Equals(t, []string{"aa", "Bb", "URL", "Ok"}, base.Split("aaBbURLOk", base.SepInitialisms))
 }

@@ -203,3 +203,119 @@ func TestSlice_Clean(t *testing.T) {
 	slice.Clean()
 	assert.Equal(t, 0, len(slice))
 }
+
+func TestSlice_Add(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 4)
+	assert.Equal(t, 3, len(slice))
+	slice.Add(4)
+	assert.Equal(t, 4, len(slice))
+}
+
+func TestSlice_Clip(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 2)
+	assert.Equal(t, 3, len(slice))
+	assert.Equal(t, 3, cap(slice))
+	slice.DelAll(2)
+	assert.Equal(t, 1, len(slice))
+	assert.Equal(t, 3, cap(slice))
+	slice.Clip()
+	assert.Equal(t, 1, len(slice))
+	assert.Equal(t, 1, cap(slice))
+}
+
+func TestSlice_Delete(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 2)
+	assert.Equal(t, 3, len(slice))
+	slice.Delete(1, 2)
+	assert.Equal(t, 2, len(slice))
+}
+
+func TestSlice_Grow(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 2)
+	assert.Equal(t, 3, len(slice))
+	assert.Equal(t, 3, cap(slice))
+	slice.Grow(5)
+	assert.Equal(t, 3, len(slice))
+	assert.Equal(t, 8, cap(slice))
+}
+
+func TestSlice_Insert(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	assert.Equal(t, 3, len(slice))
+	slice.Insert(1, 5, 5, 5)
+	assert.Equal(t, 6, len(slice))
+	assert.Equals(t, []int{1, 5, 5, 5, 2, 3}, slice)
+}
+
+func TestSlice_Push(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	slice.Push(5, 5, 5)
+	assert.Equals(t, []int{5, 5, 5, 1, 2, 3}, slice)
+}
+
+func TestSlice_Clone(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	bak := slice.Clone()
+
+	assert.Equals(t, slice, bak)
+}
+
+func TestSlice_Compare(t *testing.T) {
+	t.Parallel()
+
+	sliceA := base.NewSlice(1, 2, 3)
+	sliceB := base.NewSlice(1, 2, 4)
+
+	assert.Equal(t, 1, sliceB.Compare(sliceA))
+}
+
+func TestSlice_Contains(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	assert.True(t, slice.Contains(1))
+	assert.False(t, slice.Contains(4))
+}
+
+func TestSlice_Join(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	assert.Equal(t, "1,2,3", slice.Join(","))
+}
+
+func TestSlice_Len(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	assert.Equal(t, 3, slice.Len())
+}
+
+func TestSlice_Less(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	assert.True(t, slice.Less(1, 2))
+}
+
+func TestSlice_Swap(t *testing.T) {
+	t.Parallel()
+
+	slice := base.NewSlice(1, 2, 3)
+	slice.Swap(1, 2)
+	assert.Equals(t, []int{1, 3, 2}, slice)
+}

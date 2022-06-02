@@ -162,6 +162,8 @@ func (p Slice[T]) Counts(elems []T) (count int) {
 func (p Slice[T]) Equal(dst Slice[T]) bool { return slices.Equal(p, dst) }
 
 // Has 包含.
+//
+// Deprecated: 使用Contains.
 func (p Slice[T]) Has(elem T) bool { return slices.Index(p, elem) > -1 }
 
 // Index 位置.

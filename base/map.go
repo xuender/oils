@@ -13,6 +13,16 @@ func NewMap[K comparable, V any]() Map[K, V] {
 	return Map[K, V]{}
 }
 
+func NewMapSameValue[K comparable, V any](value V, keys ...K) Map[K, V] {
+	ret := Map[K, V]{}
+
+	for _, key := range keys {
+		ret[key] = value
+	}
+
+	return ret
+}
+
 func (p Map[K, V]) Has(key K) bool {
 	_, has := p[key]
 
