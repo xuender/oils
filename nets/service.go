@@ -85,7 +85,7 @@ func WithRecover(handler Handler) http.Handler {
 	})
 }
 
-func Write(writer http.ResponseWriter, msg proto.Message, isJSON bool) {
+func Write(writer io.Writer, msg proto.Message, isJSON bool) {
 	var data []byte
 	if isJSON {
 		// nolint
