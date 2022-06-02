@@ -18,5 +18,6 @@ func TestIsJSON(t *testing.T) {
 	assert.True(t, nets.IsJSON(req))
 
 	header[nets.ContentType] = []string{"application/javascript"}
+
 	assert.False(t, nets.IsJSON(req))
 }
