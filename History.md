@@ -1,4 +1,12 @@
 
+0.2.13 / 2022-06-02
+==================
+
+* test: base.Split
+* feat: add base.Split
+* feat: add nets.Dirs
+* chore: workflows
+
 0.2.12 / 2022-05-30
 ==================
 
