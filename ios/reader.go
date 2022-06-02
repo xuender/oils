@@ -16,11 +16,13 @@ func NewContainsReader(reader io.Reader, subslice []byte) *ContainsReader {
 }
 
 func (p *ContainsReader) Read(data []byte) (n int, err error) {
+	num, err := p.reader.Read(data)
+
 	if !p.contains {
 		p.contains = bytes.Contains(data, p.subslice)
 	}
 
-	return p.reader.Read(data)
+	return num, err
 }
 
 func (p *ContainsReader) Contains() bool {
