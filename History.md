@@ -1,4 +1,12 @@
 
+0.2.14 / 2022-06-08
+==================
+
+* doc: must, pass, sorts, parse
+* fix: ios.ContainsReader
+* test: sytle
+* test: add nets tests
+
 0.2.13 / 2022-06-02
 ==================
 
