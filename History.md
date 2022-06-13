@@ -1,4 +1,13 @@
 
+0.2.15 / 2022-06-13
+==================
+
+* feat: base.Recover
+* Merge remote-tracking branch 'refs/remotes/origin/dev' into dev
+* feat: add times
+* feat: add dbs.id
+* feat: add oss.IsDir, oss.IsFile
+
 0.2.14 / 2022-06-08
 ==================
 
