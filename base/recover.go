@@ -10,6 +10,7 @@ func Recover(call func(error)) {
 		case error:
 			call(err)
 		default:
+			// nolint
 			call(fmt.Errorf("%v", err))
 		}
 	}

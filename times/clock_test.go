@@ -13,9 +13,11 @@ func TestClockStop(t *testing.T) {
 	t.Parallel()
 
 	cid := times.ClockStart()
+
 	time.Sleep(time.Second)
 
 	t1 := times.ClockCount(cid)
+
 	time.Sleep(time.Second)
 
 	assert.True(t, strings.HasPrefix(times.Natural(t1), "1秒钟"))

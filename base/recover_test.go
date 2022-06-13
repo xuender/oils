@@ -15,6 +15,7 @@ func TestRecover(t *testing.T) {
 		defer base.Recover(func(e error) {
 			err = e
 		})
+		// nolint
 		panic(fmt.Errorf("xx"))
 	}()
 
