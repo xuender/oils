@@ -1,9 +1,16 @@
 package assert
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func Nil(errorf errorfer, value any, msgAndArgs ...any) bool {
 	if value == nil {
+		return true
+	}
+
+	if val := reflect.ValueOf(value); !val.IsValid() && val.IsNil() {
 		return true
 	}
 
