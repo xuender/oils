@@ -22,7 +22,7 @@ func JSNumber[Num constraints.Integer | constraints.Float](num Num) Num {
 }
 
 // Max 最大值.
-func Max[Num constraints.Integer | constraints.Float](nums ...Num) Num {
+func Max[Num constraints.Ordered](nums ...Num) Num {
 	var max Num
 	if len(nums) > 0 {
 		max = nums[0]
@@ -38,7 +38,7 @@ func Max[Num constraints.Integer | constraints.Float](nums ...Num) Num {
 }
 
 // Min 最小值.
-func Min[Num constraints.Integer | constraints.Float](nums ...Num) Num {
+func Min[Num constraints.Ordered](nums ...Num) Num {
 	var min Num
 	if len(nums) > 0 {
 		min = nums[0]
