@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var ErrParse = errors.New("parse bool is false")
+var ErrConversion = errors.New("conversion bool is false")
 
 type sliceErrors []error
 

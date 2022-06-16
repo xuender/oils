@@ -2,7 +2,6 @@ package base_test
 
 import (
 	"fmt"
-	"io"
 	"testing"
 
 	"github.com/xuender/oils/assert"
@@ -88,24 +87,4 @@ func TestRound(t *testing.T) {
 
 	assert.Equal(t, 3, base.Round[int](3.14))
 	assert.Equal(t, 3, base.Round[int](2.74))
-}
-
-func TestParsePass(t *testing.T) {
-	t.Parallel()
-
-	writer := &io.PipeWriter{}
-
-	base.ParsePass[io.Reader](writer)
-}
-
-func TestParseMust(t *testing.T) {
-	t.Parallel()
-
-	writer := &io.PipeWriter{}
-
-	assert.Panics(t, func() {
-		base.ParseMust[io.Reader](writer)
-	})
-
-	base.ParseMust[io.Writer](writer)
 }
