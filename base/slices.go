@@ -77,3 +77,14 @@ func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
 
 	return append(slice[size-max:], elems...)
 }
+
+// SliceMap 切片转换.
+func SliceMap[S, T any](elems []S, change func(S) T) []T {
+	ret := make([]T, len(elems))
+
+	for index, elem := range elems {
+		ret[index] = change(elem)
+	}
+
+	return ret
+}

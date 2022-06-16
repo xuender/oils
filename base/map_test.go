@@ -244,3 +244,13 @@ func TestNewMapSameValue(t *testing.T) {
 	assert.True(t, map1.Has(1))
 	assert.False(t, map1.Has(4))
 }
+
+func TestMap_ValuesByKeys(t *testing.T) {
+	t.Parallel()
+
+	testMap := base.NewMap[int, int]()
+	testMap[3] = 1
+	testMap[4] = 6
+	assert.Equals(t, []int{6, 1}, testMap.ValuesByKeys([]int{4, 3}))
+	assert.Equals(t, []int{6, 0}, testMap.ValuesByKeys([]int{4, 2}))
+}

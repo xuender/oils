@@ -88,3 +88,9 @@ func TestIndex(t *testing.T) {
 	slice := []int{1, 2, 1}
 	assert.Equal(t, 1, base.Index(slice, []int{2, 1}))
 }
+
+func TestSliceMap(t *testing.T) {
+	t.Parallel()
+
+	assert.Equals(t, []string{"1", "2"}, base.SliceMap([]int{1, 2}, base.Itoa[int]))
+}

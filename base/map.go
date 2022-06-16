@@ -78,6 +78,9 @@ func (p Map[K, V]) Keys() []K { return maps.Keys(p) }
 // Values 值切片.
 func (p Map[K, V]) Values() []V { return maps.Values(p) }
 
+// ValuesByKey 根据key获取value.
+func (p Map[K, V]) ValuesByKeys(keys []K) []V { return Values(p, keys) }
+
 func (p Map[K, V]) Put(elems ...Map[K, V]) {
 	for _, elem := range elems {
 		for k, v := range elem {
