@@ -48,3 +48,18 @@ func Round[I constraints.Integer, F constraints.Float](float F) I {
 	// nolint
 	return I(math.Floor(float64(float) + half))
 }
+
+func ParsePass[T any](obj any) T {
+	ret, _ := obj.(T)
+
+	return ret
+}
+
+func ParseMast[T any](obj any) T {
+	ret, ok := obj.(T)
+	if !ok {
+		panic(ErrParse)
+	}
+
+	return ret
+}

@@ -1,8 +1,11 @@
 package base
 
 import (
+	"errors"
 	"strings"
 )
+
+var ErrParse = errors.New("parse bool is false")
 
 type sliceErrors []error
 
