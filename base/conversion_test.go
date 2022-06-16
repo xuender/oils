@@ -8,22 +8,16 @@ import (
 	"github.com/xuender/oils/base"
 )
 
-func TestConversionPass(t *testing.T) {
+func TestConversion(t *testing.T) {
 	t.Parallel()
 
 	writer := &io.PipeWriter{}
 
-	base.ConversionPass[io.Reader](writer)
-}
-
-func TestConversionMust(t *testing.T) {
-	t.Parallel()
-
-	writer := &io.PipeWriter{}
+	base.Conversion[io.Reader](writer, false)
 
 	assert.Panics(t, func() {
-		base.ConversionMust[io.Reader](writer)
+		base.Conversion[io.Reader](writer, true)
 	})
 
-	base.ConversionMust[io.Writer](writer)
+	base.Conversion[io.Writer](writer, true)
 }
