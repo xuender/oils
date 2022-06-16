@@ -1,6 +1,7 @@
 package base_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -15,4 +16,5 @@ func TestErrors_Error(t *testing.T) {
 	assert.Nil(t, base.Errors())
 	assert.Nil(t, base.Errors(nil))
 	assert.True(t, base.Errors() == nil)
+	assert.True(t, errors.Is(base.ErrConversion, base.Errors(base.ErrConversion)))
 }

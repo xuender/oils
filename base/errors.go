@@ -15,11 +15,15 @@ func Errors(errs ...error) error {
 	}
 
 	ret := Filter(errs, func(err error) bool { return err != nil })
-	if len(ret) == 0 {
-		return nil
-	}
 
-	return sliceErrors(ret)
+	switch len(ret) {
+	case 0:
+		return nil
+	case 1:
+		return ret[0]
+	default:
+		return sliceErrors(ret)
+	}
 }
 
 func (p sliceErrors) Error() string {
