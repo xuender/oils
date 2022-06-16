@@ -98,14 +98,14 @@ func TestParsePass(t *testing.T) {
 	base.ParsePass[io.Reader](writer)
 }
 
-func TestParseMast(t *testing.T) {
+func TestParseMust(t *testing.T) {
 	t.Parallel()
 
 	writer := &io.PipeWriter{}
 
 	assert.Panics(t, func() {
-		base.ParseMast[io.Reader](writer)
+		base.ParseMust[io.Reader](writer)
 	})
 
-	base.ParseMast[io.Writer](writer)
+	base.ParseMust[io.Writer](writer)
 }
