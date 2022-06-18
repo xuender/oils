@@ -19,25 +19,29 @@ Golang 常用工具类库.
 
 基础的集合操作.
 
-## i18n
-
-多国语言.
-
 ## cryptos
 
 加密.
+
+## dbs
+
+数据库.
+
+## distributed
+
+基于 redis 分布式.
 
 ## gins
 
 gin web 服务.
 
-## gorms
-
-gorm 数据库操作.
-
 ## hashs
 
 哈希.
+
+## i18n
+
+多国语言.
 
 ## ios
 
@@ -58,6 +62,10 @@ gorm 数据库操作.
 ## syncs
 
 异步控制.
+
+## times
+
+时间格式化，计时器等.
 
 ## License
 

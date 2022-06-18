@@ -36,7 +36,7 @@ func NewLocker(client redis.Cmdable, times ...time.Duration) *Locker {
 		locker.expireTime = times[1]
 	}
 
-	go locker.AutoExpire()
+	go locker.autoExpire()
 
 	return locker
 }
@@ -61,8 +61,8 @@ func (p *Locker) Lock(key string, call func() error) error {
 	return err
 }
 
-// AutoExpire 自动续期.
-func (p *Locker) AutoExpire() {
+// autoExpire 自动续期.
+func (p *Locker) autoExpire() {
 	ticker := time.NewTicker(p.expireTime)
 	ctx := context.Background()
 
