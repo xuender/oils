@@ -1,5 +1,5 @@
 // nolint
-package distributed_test
+package distributed_mock
 
 import (
 	context "context"

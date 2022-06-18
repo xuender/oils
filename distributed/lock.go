@@ -36,6 +36,10 @@ func NewLocker(client redis.Cmdable, times ...time.Duration) *Locker {
 		locker.expireTime = times[1]
 	}
 
+	if locker.expireTime >= locker.lockTime {
+		panic(ErrExpire)
+	}
+
 	go locker.autoExpire()
 
 	return locker

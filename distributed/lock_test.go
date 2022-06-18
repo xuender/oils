@@ -10,22 +10,26 @@ import (
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/distributed"
+	distributed_mock "github.com/xuender/oils/distributed/mock"
 )
 
 func TestNewLocker(t *testing.T) {
 	t.Parallel()
 
 	ctrl := gomock.NewController(t)
-	cmd := NewMockCmdable(ctrl)
+	cmd := distributed_mock.NewMockCmdable(ctrl)
 
 	assert.NotNil(t, distributed.NewLocker(cmd, time.Second, time.Millisecond))
+	assert.Panics(t, func() {
+		distributed.NewLocker(cmd, time.Second, time.Minute)
+	})
 }
 
 func TestLocker_Lock(t *testing.T) {
 	t.Parallel()
 
 	ctrl := gomock.NewController(t)
-	cmd := NewMockCmdable(ctrl)
+	cmd := distributed_mock.NewMockCmdable(ctrl)
 	cmd1 := &redis.BoolCmd{}
 	cmd2 := &redis.BoolCmd{}
 
@@ -37,7 +41,7 @@ func TestLocker_Lock(t *testing.T) {
 	cmd.EXPECT().Del(gomock.Any(), "oils-test-LOCK").Return(redis.NewIntCmd(nil)).AnyTimes()
 	cmd.EXPECT().Expire(gomock.Any(), "oils-test-LOCK", gomock.Any()).Return(cmd1).AnyTimes()
 
-	locker := distributed.NewLocker(cmd)
+	locker := distributed.NewLocker(cmd, time.Second*2, time.Millisecond*500)
 	count := 0
 
 	for i := 0; i < 10; i++ {
@@ -57,7 +61,7 @@ func TestLocker_Lock_Error(t *testing.T) {
 	t.Parallel()
 
 	ctrl := gomock.NewController(t)
-	cmd := NewMockCmdable(ctrl)
+	cmd := distributed_mock.NewMockCmdable(ctrl)
 
 	cmd1 := &redis.BoolCmd{}
 	cmd1.SetVal(false)
