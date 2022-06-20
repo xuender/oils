@@ -1,4 +1,21 @@
 
+0.2.18 / 2022-06-18
+==================
+
+* feat: 分布式锁
+
+0.2.17 / 2022-06-18
+==================
+
+* feat: add bases.Values
+* feat: 多异常合并
+* refactor: base.Conversion
+* refactor: base.Conversion
+* doc: ParsePass ParseMust
+* feat: add ParsePass & ParseMust
+* feat: max, min
+* chore: gomonkey/v2 v2.7.0
+
 0.2.16 / 2022-06-14
 ==================
 
