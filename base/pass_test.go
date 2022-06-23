@@ -47,4 +47,8 @@ func TestPass(t *testing.T) {
 	t.Parallel()
 
 	base.Pass(os.ErrClosed)
+	base.Pass(os.ErrClosed, os.ErrClosed)
+	assert.Panics(t, func() {
+		base.Pass(os.ErrExist, os.ErrClosed)
+	})
 }
