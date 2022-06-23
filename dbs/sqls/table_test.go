@@ -32,4 +32,16 @@ func TestCount(t *testing.T) {
 	t.Parallel()
 
 	assert.Equal(t, "select count(*) from a where b=?", sqls.Count("select a, b\tfrom a\t\twhere b=? order by a limit 10"))
+	assert.Equal(t, "select count(*) from a where b=?", sqls.Count("select a, b from a where b=? limit 10"))
+	assert.Equal(t, "select count(*) from a where b=?", sqls.Count("select a, b from a where b=? group by b"))
+}
+
+func TestOffset(t *testing.T) {
+	t.Parallel()
+
+	assert.Equals(t, []int{}, sqls.Offset(0, 100))
+	assert.Equals(t, []int{0}, sqls.Offset(10, 100))
+	assert.Equals(t, []int{8, 4, 0}, sqls.Offset(10, 4))
+	assert.Equals(t, []int{5, 0}, sqls.Offset(10, 5))
+	assert.Equals(t, []int{9, 6, 3, 0}, sqls.Offset(10, 3))
 }
