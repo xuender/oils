@@ -49,6 +49,8 @@ var CommonInitialisms = NewSet(
 	"XSS",
 )
 
+// Split 根据分割符拆分字符串.
+// SepInitialisms 缩写子母拆分.
 func Split(str string, seps ...rune) []string {
 	if len(seps) == 0 {
 		return []string{str}
@@ -82,6 +84,37 @@ func Split(str string, seps ...rune) []string {
 	}
 
 	ret = append(ret, string(slice))
+
+	return ret
+}
+
+// SplitFunc 根据函数拆分字符串.
+func SplitFunc(str string, splitFunc func(rune) bool) []string {
+	ret := []string{}
+	start := 0
+
+	for index, value := range str {
+		if splitFunc(value) {
+			if start < 0 {
+				continue
+			}
+
+			if start == index {
+				start++
+
+				continue
+			}
+
+			ret = append(ret, str[start:index])
+			start = -1
+		} else if start < 0 {
+			start = index
+		}
+	}
+
+	if start > -1 {
+		ret = append(ret, str[start:])
+	}
 
 	return ret
 }
