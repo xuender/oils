@@ -18,6 +18,8 @@ func TestIsDir(t *testing.T) {
 }
 
 func TestMkdirParent(t *testing.T) {
+	t.Parallel()
+
 	path := "/tmp/a/b/c/d"
 
 	os.Remove(path)

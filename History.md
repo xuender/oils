@@ -1,4 +1,16 @@
 
+0.2.19 / 2022-06-27
+==================
+
+* feat: add ios.NewWriter
+* feat: sqls.Params
+* feat: sqls
+* feat: sqls
+* Merge remote-tracking branch 'refs/remotes/origin/dev' into dev
+* test: distributed_mock
+* doc: 分布式
+* feat: add SliceMap
+
 0.2.18 / 2022-06-18
 ==================
 
