@@ -16,3 +16,10 @@ func IsDir(paths ...string) bool {
 
 	return false
 }
+
+func MkdirParent(path string) {
+	dir := filepath.Dir(path)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		_ = os.MkdirAll(dir, DefaultDirFileMod)
+	}
+}
