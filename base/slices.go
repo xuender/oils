@@ -88,3 +88,68 @@ func SliceMap[S, T any](elems []S, change func(S) T) []T {
 
 	return ret
 }
+
+// Sub 切片截取.
+func Sub[Elem any](slice []Elem, nums ...int) []Elem {
+	length := len(slice)
+
+	if length == 0 {
+		return []Elem{}
+	}
+
+	start, end := 0, length
+
+	if len(nums) > 0 {
+		start = nums[0]
+	}
+
+	if start < 0 {
+		if -start > length {
+			start = 0
+		} else {
+			start += length
+		}
+	}
+
+	if len(nums) > 1 && nums[1] < length {
+		end = nums[1]
+	}
+
+	if end < 0 {
+		end += length
+	}
+
+	if start >= length || start >= end {
+		return []Elem{}
+	}
+
+	return slice[start:end]
+}
+
+// Chunk 切片分块.
+func Chunk[Elem any](slice []Elem, size int) [][]Elem {
+	if len(slice) == 0 || size < 1 {
+		return [][]Elem{}
+	}
+
+	length := len(slice)
+	retLen := length / size
+
+	if length%size > 0 {
+		retLen++
+	}
+
+	ret := make([][]Elem, retLen)
+
+	for index := 0; index < retLen; index++ {
+		end := index*size + size
+
+		if end > length {
+			end = length
+		}
+
+		ret[index] = slice[index*size : end]
+	}
+
+	return ret
+}

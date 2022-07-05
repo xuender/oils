@@ -51,7 +51,7 @@ func GinRecoveryHandler(ctx *gin.Context) {
 			)
 
 			switch err.(type) {
-			case validator.ValidationErrors:
+			case validator.ValidationErrors, map[string]string:
 				ctx.JSON(http.StatusBadRequest, err)
 				ctx.Abort()
 			default:
