@@ -17,6 +17,8 @@ func RotateLog(paths ...string) {
 	week := 7
 	filename := LogName(paths...)
 
+	log.Info(filename)
+
 	log = NewRotate(&lumberjack.Logger{
 		Filename: filename,
 		Compress: true,

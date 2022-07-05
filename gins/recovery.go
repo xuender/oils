@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/xuender/oils/logs"
 )
 
@@ -48,7 +49,14 @@ func GinRecoveryHandler(ctx *gin.Context) {
 				"error", err,
 				"request", string(httpRequest),
 			)
-			ctx.AbortWithStatus(http.StatusInternalServerError)
+
+			switch err.(type) {
+			case validator.ValidationErrors:
+				ctx.JSON(http.StatusBadRequest, err)
+				ctx.About()
+			default:
+				ctx.AbortWithStatus(http.StatusInternalServerError)
+			}
 		}
 	}()
 

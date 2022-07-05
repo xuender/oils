@@ -11,17 +11,33 @@ import (
 	"github.com/xuender/oils/base"
 )
 
-func GET(engine *gin.Engine, uri string) *http.Response {
+func Get(engine *gin.Engine, uri string) *http.Response {
 	return method(engine, http.MethodGet, uri, "", nil)
 }
 
-func POST(engine *gin.Engine, uri string, body any) *http.Response {
+func GetBySession(engine *gin.Engine, uri, session string) *http.Response {
+	return method(engine, http.MethodGet, uri, session, nil)
+}
+
+func Post(engine *gin.Engine, uri string, body any) *http.Response {
 	data := base.Must1(json.Marshal(body))
 
 	return method(engine, http.MethodPost, uri, "", bytes.NewReader(data))
 }
 
-func DELETE(engine *gin.Engine, uri string) *http.Response {
+func PostBySession(engine *gin.Engine, uri, session string, body any) *http.Response {
+	data := base.Must1(json.Marshal(body))
+
+	return method(engine, http.MethodPost, uri, session, bytes.NewReader(data))
+}
+
+func PutBySession(engine *gin.Engine, uri, session string, body any) *http.Response {
+	data := base.Must1(json.Marshal(body))
+
+	return method(engine, http.MethodPut, uri, session, bytes.NewReader(data))
+}
+
+func Delete(engine *gin.Engine, uri string) *http.Response {
 	return method(engine, http.MethodDelete, uri, "", nil)
 }
 
