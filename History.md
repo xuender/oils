@@ -1,4 +1,11 @@
 
+0.3.20 / 2022-07-05
+==================
+
+* test: session
+* feat: dbs add Cache, BitMap
+* feat: gins tests
+
 0.2.19 / 2022-06-27
 ==================
 
