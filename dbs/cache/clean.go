@@ -11,27 +11,28 @@ type cleaner interface {
 
 type cleaners struct {
 	data     map[uint64]cleaner
-	lock     sync.RWMutex
+	lock     sync.Mutex
 	previous time.Time
 }
 
 func newCleaners() *cleaners {
 	return &cleaners{
 		data:     map[uint64]cleaner{},
+		lock:     sync.Mutex{},
 		previous: time.Now(),
 	}
 }
 
 func (p *cleaners) Set(id uint64, cleaner cleaner) {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
+	p.lock.Lock()
+	defer p.lock.Unlock()
 
 	p.data[id] = cleaner
 }
 
 func (p *cleaners) Del(id uint64) {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
+	p.lock.Lock()
+	defer p.lock.Unlock()
 
 	delete(p.data, id)
 }
@@ -42,8 +43,8 @@ func (p *cleaners) Clean() {
 		return
 	}
 
-	p.lock.RLock()
-	defer p.lock.RUnlock()
+	p.lock.Lock()
+	defer p.lock.Unlock()
 
 	now = time.Now()
 	if now.Sub(p.previous) < time.Second {
