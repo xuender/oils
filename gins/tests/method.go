@@ -20,18 +20,21 @@ func GetBySession(engine *gin.Engine, uri, session string) *http.Response {
 }
 
 func Post(engine *gin.Engine, uri string, body any) *http.Response {
+	// nolint
 	data := base.Must1(json.Marshal(body))
 
 	return method(engine, http.MethodPost, uri, "", bytes.NewReader(data))
 }
 
 func PostBySession(engine *gin.Engine, uri, session string, body any) *http.Response {
+	// nolint
 	data := base.Must1(json.Marshal(body))
 
 	return method(engine, http.MethodPost, uri, session, bytes.NewReader(data))
 }
 
 func PutBySession(engine *gin.Engine, uri, session string, body any) *http.Response {
+	// nolint
 	data := base.Must1(json.Marshal(body))
 
 	return method(engine, http.MethodPut, uri, session, bytes.NewReader(data))
