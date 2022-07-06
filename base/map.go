@@ -50,12 +50,18 @@ func (p Map[K, V]) All(keys ...K) bool {
 }
 
 // Clear 清除.
+//
+// Deprecated: 使用 maps.Clear.
 func (p Map[K, V]) Clear() { maps.Clear(p) }
 
 // Clone 克隆.
+//
+// Deprecated: 使用 maps.Clone.
 func (p Map[K, V]) Clone() Map[K, V] { return maps.Clone(p) }
 
 // Copy 复制.
+//
+// Deprecated: 使用 maps.Copy.
 func (p Map[K, V]) Copy(dst Map[K, V]) { maps.Copy(dst, p) }
 
 func (p Map[K, V]) Del(keys ...K) {
@@ -73,9 +79,13 @@ func (p Map[K, V]) DelMap(elems ...Map[K, V]) {
 }
 
 // Keys 键切片.
+//
+// Deprecated: 使用 maps.Keys.
 func (p Map[K, V]) Keys() []K { return maps.Keys(p) }
 
 // Values 值切片.
+//
+// Deprecated: 使用 maps.Values.
 func (p Map[K, V]) Values() []V { return maps.Values(p) }
 
 // ValuesByKey 根据key获取value.

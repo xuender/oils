@@ -2,6 +2,8 @@ package base
 
 import (
 	"unicode"
+
+	"golang.org/x/exp/slices"
 )
 
 // SepInitialisms 首字母缩写分割.
@@ -67,7 +69,7 @@ func Split(str string, seps ...rune) []string {
 			slice.Clean()
 		}
 
-		if Has(seps, elem) {
+		if slices.Contains(seps, elem) {
 			ret = append(ret, string(slice))
 			slice.Clean()
 

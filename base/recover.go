@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Recover 异常捕捉.
 func Recover(call func(error)) {
 	if rec := recover(); rec != nil {
 		switch err := rec.(type) {

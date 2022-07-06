@@ -161,3 +161,15 @@ func BenchmarkDel(b *testing.B) {
 		base.Del(array, 'd', 'e')
 	}
 }
+
+func TestReverse(t *testing.T) {
+	t.Parallel()
+
+	slice := []int{1, 2, 3}
+	base.Reverse(slice)
+	assert.Equals(t, []int{3, 2, 1}, slice)
+
+	slice = []int{1}
+	base.Reverse(slice)
+	assert.Equals(t, []int{1}, slice)
+}

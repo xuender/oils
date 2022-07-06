@@ -8,6 +8,8 @@ import (
 )
 
 // Has 包含.
+//
+// Deprecated: 使用 slices.Contains.
 func Has[E comparable](elems []E, elem E) bool {
 	return slices.Index(elems, elem) > -1
 }
@@ -227,4 +229,15 @@ func DelAll[E comparable](slice []E, elems ...E) []E {
 	}
 
 	return slice
+}
+
+// Reverse 反转切片.
+func Reverse[E any](slice []E) {
+	if len(slice) <= 1 {
+		return
+	}
+
+	for start, end := 0, len(slice)-1; start < end; start, end = start+1, end-1 {
+		slice[start], slice[end] = slice[end], slice[start]
+	}
 }
