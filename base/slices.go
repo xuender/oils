@@ -241,3 +241,79 @@ func Reverse[E any](slice []E) {
 		slice[start], slice[end] = slice[end], slice[start]
 	}
 }
+
+func Counts[E comparable](slice, sub []E) (count int) {
+	if len(slice) < len(sub) {
+		return
+	}
+
+	if len(sub) < 1 {
+		return len(slice)
+	}
+
+	for index := 0; index <= len(slice)-len(sub); index++ {
+		has := true
+
+		for elemIndex, elem := range sub {
+			if slice[index+elemIndex] != elem {
+				has = false
+
+				break
+			}
+		}
+
+		if has {
+			count++
+		}
+	}
+
+	return
+}
+
+// All 全部包含.
+func All[E comparable](slice, elems []E) bool {
+	for _, elem := range elems {
+		if slices.Index(slice, elem) < 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Any 任意包含.
+func Any[E comparable](slice, elems []E) bool {
+	for _, elem := range elems {
+		if slices.Index(slice, elem) > -1 {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Replace 替换.
+func Replace[E comparable](slice, sub, newSub []E, num int) []E {
+	if num == 0 {
+		return slice
+	}
+
+	if count := Counts(slice, sub); count == 0 {
+		return slice
+	} else if num < 0 || count < num {
+		num = count
+	}
+
+	start := 0
+	for i := 0; i < num; i++ {
+		index := Index(slice[start:], sub)
+		slice = append(slice[:start+index], append(newSub, slice[start+index+len(sub):]...)...)
+	}
+
+	return slice
+}
+
+// ReplaceAll 全部替换.
+func ReplaceAll[E comparable](slice, sub, newSub []E) []E {
+	return Replace(slice, sub, newSub, -1)
+}

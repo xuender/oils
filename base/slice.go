@@ -56,28 +56,18 @@ func (p *Slice[T]) Delete(start, end int) { *p = slices.Delete(*p, start, end) }
 func (p *Slice[T]) Grow(size int) { *p = slices.Grow(*p, size) }
 
 // Insert 插入.
+//
+// Deprecated: 使用 slices.Insert.
 func (p *Slice[T]) Insert(index int, elems ...T) { *p = slices.Insert(*p, index, elems...) }
 
 // Push 顶部压入元素.
 func (p *Slice[T]) Push(elems ...T) { *p = append(elems, *p...) }
 
 // Replace 替换.
+//
+// Deprecated: 使用 Replace.
 func (p *Slice[T]) Replace(oldSlice, newSlice []T, num int) Slice[T] {
-	if num == 0 {
-		return *p
-	}
-
-	if count := p.Counts(oldSlice); count == 0 {
-		return *p
-	} else if num < 0 || count < num {
-		num = count
-	}
-
-	start := 0
-	for i := 0; i < num; i++ {
-		index := (*p)[start:].Indexs(oldSlice)
-		*p = append((*p)[0:start+index], append(newSlice, (*p)[start+index+len(oldSlice):]...)...)
-	}
+	*p = Replace(*p, oldSlice, newSlice, num)
 
 	return *p
 }
@@ -90,26 +80,14 @@ func (p *Slice[T]) Unique() {
 }
 
 // All 全部包含.
-func (p Slice[T]) All(elems ...T) bool {
-	for _, elem := range elems {
-		if slices.Index(p, elem) < 0 {
-			return false
-		}
-	}
-
-	return true
-}
+//
+// Deprecated: 使用 All.
+func (p Slice[T]) All(elems ...T) bool { return All(p, elems) }
 
 // Any 任意包含.
-func (p Slice[T]) Any(elems ...T) bool {
-	for _, elem := range elems {
-		if slices.Index(p, elem) > -1 {
-			return true
-		}
-	}
-
-	return false
-}
+//
+// Deprecated: 使用 Any.
+func (p Slice[T]) Any(elems ...T) bool { return Any(p, elems) }
 
 // Clone 克隆.
 //
@@ -132,30 +110,8 @@ func (p Slice[T]) Compare(dst Slice[T]) int { return slices.Compare(p, dst) }
 func (p Slice[T]) Contains(elem T) bool { return slices.Contains(p, elem) }
 
 // Count 包含切片数量.
-func (p Slice[T]) Counts(elems []T) (count int) {
-	if len(p) < len(elems) {
-		return
-	}
-
-	for index := 0; index <= len(p)-len(elems); index++ {
-		has := true
-
-		for elemIndex, elem := range elems {
-			// nolint
-			if p[index+elemIndex] != elem {
-				has = false
-
-				break
-			}
-		}
-
-		if has {
-			count++
-		}
-	}
-
-	return
-}
+// Deprecated: 使用 Counts.
+func (p Slice[T]) Counts(elems []T) (count int) { return Counts(p, elems) }
 
 // Equal 比较.
 //
@@ -189,8 +145,10 @@ func (p Slice[T]) Len() int { return len(p) }
 func (p Slice[T]) Less(i, j int) bool { return p[i] < p[j] }
 
 // ReplaceAll 全部替换.
+//
+// Deprecated: 使用 ReplaceAll.
 func (p Slice[T]) ReplaceAll(oldSlice, newSlice []T) Slice[T] {
-	return p.Replace(oldSlice, newSlice, -1)
+	return ReplaceAll(p, oldSlice, newSlice)
 }
 
 // String 转换成字符串.
