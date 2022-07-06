@@ -1,9 +1,6 @@
 package base
 
 import (
-	"fmt"
-	"strings"
-
 	"golang.org/x/exp/constraints"
 	"golang.org/x/exp/slices"
 )
@@ -30,22 +27,14 @@ func (p *Slice[T]) Clip() { *p = slices.Clip(*p) }
 
 // Del 删除.
 func (p *Slice[T]) Del(elems ...T) Slice[T] {
-	for _, elem := range elems {
-		if i := p.Index(elem); i >= 0 {
-			*p = append((*p)[0:i], (*p)[i+1:]...)
-		}
-	}
+	*p = Del(*p, elems...)
 
 	return *p
 }
 
 // DelAll 删除全部.
 func (p *Slice[T]) DelAll(elems ...T) Slice[T] {
-	for _, elem := range elems {
-		for i := p.Index(elem); i >= 0; i = p.Index(elem) {
-			*p = append((*p)[0:i], (*p)[i+1:]...)
-		}
-	}
+	*p = DelAll(*p, elems...)
 
 	return *p
 }
@@ -85,17 +74,7 @@ func (p *Slice[T]) Replace(oldSlice, newSlice []T, num int) Slice[T] {
 
 // Unique 唯一.
 func (p *Slice[T]) Unique() {
-	unique := NewSlice[T]()
-
-	for _, elem := range *p {
-		if slices.Index(unique, elem) > -1 {
-			continue
-		}
-
-		unique.Add(elem)
-	}
-
-	*p = unique
+	*p = Unique(*p)
 }
 
 // All 全部包含.
@@ -173,25 +152,7 @@ func (p Slice[T]) Index(elem T) int { return slices.Index(p, elem) }
 func (p Slice[T]) Indexs(elems []T) int { return Index(p, elems) }
 
 // Join 集合连接.
-func (p Slice[T]) Join(sep string) string {
-	switch len(p) {
-	case 0:
-		return ""
-	case 1:
-		return fmt.Sprintf("%v", p[0])
-	}
-
-	var builder strings.Builder
-
-	builder.WriteString(fmt.Sprintf("%v", p[0]))
-
-	for _, elem := range p[1:] {
-		builder.WriteString(sep)
-		builder.WriteString(fmt.Sprintf("%v", elem))
-	}
-
-	return builder.String()
-}
+func (p Slice[T]) Join(sep string) string { return Join(p, sep) }
 
 // Len 长度.
 func (p Slice[T]) Len() int { return len(p) }

@@ -82,22 +82,46 @@ func TestSlice_String(t *testing.T) {
 func TestSlice_Del(t *testing.T) {
 	t.Parallel()
 
-	s := base.NewSlice("a", "a", "c")
+	slice := base.NewSlice("a", "a", "c")
 
-	s.Del("a", "c")
+	slice.Del("a", "c")
 
-	assert.Equal(t, 1, len(s))
-	assert.Equal(t, "a", s[0])
+	assert.Equal(t, 1, len(slice))
+	assert.Equal(t, "a", slice[0])
+
+	slice = base.NewSlice[string]()
+
+	slice.Del("a", "c")
+
+	assert.Equal(t, 0, len(slice))
+
+	slice = base.NewSlice("a", "a", "c")
+
+	slice.Del()
+
+	assert.Equal(t, 3, len(slice))
 }
 
 func TestSlice_DelAll(t *testing.T) {
 	t.Parallel()
 
-	s := base.NewSlice("a", "a", "c")
+	slice := base.NewSlice("a", "a", "c")
 
-	s.DelAll("a", "c")
+	slice.DelAll("a", "c")
 
-	assert.Equal(t, 0, len(s))
+	assert.Equal(t, 0, len(slice))
+
+	slice = base.NewSlice("a", "a", "c")
+
+	slice.DelAll()
+
+	assert.Equal(t, 3, len(slice))
+
+	slice = base.NewSlice[string]()
+
+	slice.DelAll("a", "c")
+
+	assert.Equal(t, 0, len(slice))
 }
 
 func TestSlice_DelAllError(t *testing.T) {

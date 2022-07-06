@@ -1,6 +1,9 @@
 package base
 
 import (
+	"fmt"
+	"strings"
+
 	"golang.org/x/exp/slices"
 )
 
@@ -90,29 +93,29 @@ func SliceMap[S, T any](elems []S, change func(S) T) []T {
 }
 
 // Sub 切片截取.
-func Sub[Elem any](slice []Elem, nums ...int) []Elem {
+func Sub[Elem any](slice []Elem, startAndEnd ...int) (sub []Elem) {
 	length := len(slice)
 
 	if length == 0 {
-		return []Elem{}
+		return
 	}
 
 	start, end := 0, length
 
-	if len(nums) > 0 {
-		start = nums[0]
-	}
+	if len(startAndEnd) > 0 {
+		start = startAndEnd[0]
 
-	if start < 0 {
-		if -start > length {
-			start = 0
-		} else {
+		if start < 0 {
 			start += length
+
+			if start < 0 {
+				start = 0
+			}
 		}
 	}
 
-	if len(nums) > 1 && nums[1] < length {
-		end = nums[1]
+	if len(startAndEnd) > 1 && startAndEnd[1] < length {
+		end = startAndEnd[1]
 	}
 
 	if end < 0 {
@@ -120,7 +123,7 @@ func Sub[Elem any](slice []Elem, nums ...int) []Elem {
 	}
 
 	if start >= length || start >= end {
-		return []Elem{}
+		return
 	}
 
 	return slice[start:end]
@@ -152,4 +155,76 @@ func Chunk[Elem any](slice []Elem, size int) [][]Elem {
 	}
 
 	return ret
+}
+
+// Unique 去重.
+func Unique[E comparable](slice []E) []E {
+	unique := []E{}
+
+	for _, elem := range slice {
+		if slices.Index(unique, elem) > -1 {
+			continue
+		}
+
+		unique = append(unique, elem)
+	}
+
+	return unique
+}
+
+// Join 集合连接.
+func Join[E any](slice []E, sep string) string {
+	switch len(slice) {
+	case 0:
+		return ""
+	case 1:
+		return fmt.Sprintf("%v", slice[0])
+	}
+
+	var builder strings.Builder
+
+	builder.WriteString(fmt.Sprintf("%v", slice[0]))
+
+	for _, elem := range slice[1:] {
+		builder.WriteString(sep)
+		builder.WriteString(fmt.Sprintf("%v", elem))
+	}
+
+	return builder.String()
+}
+
+func Del[E comparable](slice []E, elems ...E) []E {
+	if len(slice) == 0 {
+		return []E{}
+	}
+
+	if len(elems) == 0 {
+		return slice
+	}
+
+	for _, elem := range elems {
+		if i := slices.Index(slice, elem); i >= 0 {
+			slice = append((slice)[0:i], (slice)[i+1:]...)
+		}
+	}
+
+	return slice
+}
+
+func DelAll[E comparable](slice []E, elems ...E) []E {
+	if len(slice) == 0 {
+		return []E{}
+	}
+
+	if len(elems) == 0 {
+		return slice
+	}
+
+	for _, elem := range elems {
+		for i := slices.Index(slice, elem); i >= 0; i = slices.Index(slice, elem) {
+			slice = append(slice[0:i], slice[i+1:]...)
+		}
+	}
+
+	return slice
 }

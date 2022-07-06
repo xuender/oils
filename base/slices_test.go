@@ -2,6 +2,7 @@ package base_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/xuender/oils/assert"
@@ -139,4 +140,24 @@ func TestSub(t *testing.T) {
 	assert.Equals(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, 1, 5))
 	assert.Equals(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, 1, 3))
 	assert.Equals(t, []int{1, 2}, base.Sub([]int{1, 2, 3}, -10, -1))
+}
+
+func BenchmarkChunk(b *testing.B) {
+	array := []rune(strings.Repeat("ender", 100))
+
+	b.ResetTimer()
+
+	for n := 0; n < b.N; n++ {
+		base.Chunk(array, 3)
+	}
+}
+
+func BenchmarkDel(b *testing.B) {
+	array := []rune(strings.Repeat("ender", 100))
+
+	b.ResetTimer()
+
+	for n := 0; n < b.N; n++ {
+		base.Del(array, 'd', 'e')
+	}
 }
