@@ -1,4 +1,10 @@
 
+0.3.21 / 2022-07-06
+==================
+
+* feat: add Sub, Chunk, String2Map, Tag2Map
+* fix: concurrent map writes
+
 0.3.20 / 2022-07-05
 ==================
 
