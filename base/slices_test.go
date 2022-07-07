@@ -207,3 +207,12 @@ func TestShuffle(t *testing.T) {
 	shuffle = base.Shuffle(slice)
 	assert.True(t, slices.Equal(shuffle, slice))
 }
+
+func TestReplace(t *testing.T) {
+	t.Parallel()
+
+	old := []int{1, 2, 3}
+	slice := base.Replace(old, []int{2, 3}, []int{7, 8}, 1)
+
+	assert.NotEquals(t, old, slice)
+}

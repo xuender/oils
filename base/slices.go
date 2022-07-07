@@ -294,7 +294,7 @@ func Any[E comparable](slice, elems []E) bool {
 }
 
 // Replace 替换.
-func Replace[E comparable](slice, sub, newSub []E, num int) []E {
+func Replace[E comparable](slice, sub, newSub []E, num int) []E { // nolint
 	if num == 0 {
 		return slice
 	}
@@ -305,13 +305,16 @@ func Replace[E comparable](slice, sub, newSub []E, num int) []E {
 		num = count
 	}
 
+	ret := make([]E, len(slice))
+	copy(ret, slice)
+
 	start := 0
 	for i := 0; i < num; i++ {
-		index := Index(slice[start:], sub)
-		slice = append(slice[:start+index], append(newSub, slice[start+index+len(sub):]...)...)
+		index := Index(ret[start:], sub)
+		ret = append(ret[:start+index], append(newSub, ret[start+index+len(sub):]...)...)
 	}
 
-	return slice
+	return ret
 }
 
 // ReplaceAll 全部替换.

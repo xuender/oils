@@ -49,3 +49,29 @@ func Equals[T comparable](errorf errorfer, expected, actual []T, msgAndArgs ...a
 
 	return Fail(errorf, fmt.Sprintf("[%#v] != [%#v]", expected, actual), msgAndArgs...)
 }
+
+func NotEquals[T comparable](errorf errorfer, expected, actual []T, msgAndArgs ...any) bool {
+	if len(expected) != len(actual) {
+		return true
+	}
+
+	equal := true
+
+	for i, elem := range expected {
+		if elem != actual[i] {
+			equal = false
+
+			break
+		}
+	}
+
+	if !equal {
+		return true
+	}
+
+	if h, ok := errorf.(tHelper); ok {
+		h.Helper()
+	}
+
+	return Fail(errorf, fmt.Sprintf("[%#v] == [%#v]", expected, actual), msgAndArgs...)
+}
