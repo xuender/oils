@@ -2,11 +2,13 @@ package base_test
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base"
+	"golang.org/x/exp/slices"
 )
 
 func TestFilter(t *testing.T) {
@@ -172,4 +174,36 @@ func TestReverse(t *testing.T) {
 	slice = []int{1}
 	base.Reverse(slice)
 	assert.Equals(t, []int{1}, slice)
+}
+
+func TestSample(t *testing.T) {
+	t.Parallel()
+
+	slice := []int{1, 3, 4}
+	assert.True(t, slices.Contains(slice, base.Sample(slice)))
+
+	assert.Panics(t, func() {
+		base.Sample([]int{})
+	})
+}
+
+func ExampleShuffle() {
+	fmt.Println(base.Shuffle([]int{1, 2, 3, 4, 5, 6}))
+}
+
+func TestShuffle(t *testing.T) {
+	t.Parallel()
+
+	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	shuffle := base.Shuffle(slice)
+	assert.False(t, slices.Equal(shuffle, slice))
+
+	sort.Ints(shuffle)
+	sort.Ints(slice)
+
+	assert.True(t, slices.Equal(shuffle, slice))
+
+	slice = []int{1}
+	shuffle = base.Shuffle(slice)
+	assert.True(t, slices.Equal(shuffle, slice))
 }

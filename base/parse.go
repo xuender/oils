@@ -25,6 +25,43 @@ func ParseInteger[T constraints.Integer](str string) (T, error) {
 	return T(u64), err
 }
 
+// ParseIntegerAny 任意类型转换成数值.
+// nolint
+func ParseIntegerAny[T constraints.Integer](elem any) (T, error) {
+	switch num := elem.(type) {
+	case string:
+		return ParseInteger[T](num)
+	case float32:
+		return Round[T](num), nil
+	case float64:
+		return Round[T](num), nil
+	case int:
+		return T(num), nil
+	case uint:
+		return T(num), nil
+	case int8:
+		return T(num), nil
+	case uint8:
+		return T(num), nil
+	case int16:
+		return T(num), nil
+	case uint16:
+		return T(num), nil
+	case int32:
+		return T(num), nil
+	case uint32:
+		return T(num), nil
+	case int64:
+		return T(num), nil
+	case uint64:
+		return T(num), nil
+	case []byte:
+		return Bytes2Number[T](num), nil
+	}
+
+	return 0, ErrNotNum
+}
+
 // ParseFloat 字符串转换成浮点数.
 func ParseFloat[T constraints.Float](str string) (T, error) {
 	f64, err := strconv.ParseFloat(str, SixtyFour)

@@ -2,6 +2,7 @@ package base
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 
 	"golang.org/x/exp/slices"
@@ -316,4 +317,35 @@ func Replace[E comparable](slice, sub, newSub []E, num int) []E {
 // ReplaceAll 全部替换.
 func ReplaceAll[E comparable](slice, sub, newSub []E) []E {
 	return Replace(slice, sub, newSub, -1)
+}
+
+// Sample 获得一个随机元素.
+func Sample[E any](slice []E) E {
+	if len(slice) == 0 {
+		panic(ErrEmpty)
+	}
+	// nolint
+	return slice[rand.Intn(len(slice))]
+}
+
+// Shuffle 打乱切片.
+func Shuffle[E any](slice []E) []E { // nolint
+	length := len(slice)
+
+	if length <= 1 {
+		return slice
+	}
+
+	ret := make([]E, length)
+	copy(ret, slice)
+
+	length--
+
+	for i := 0; i < length; i++ {
+		// nolint
+		num := rand.Intn(length - i)
+		ret[i], ret[length-num] = ret[length-num], ret[i]
+	}
+
+	return ret
 }

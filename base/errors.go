@@ -5,7 +5,11 @@ import (
 	"strings"
 )
 
-var ErrConversion = errors.New("conversion bool is false")
+var (
+	ErrConversion = errors.New("conversion bool is false")
+	ErrNotNum     = errors.New("不是数值类型")
+	ErrEmpty      = errors.New("切片为空")
+)
 
 type sliceErrors []error
 
