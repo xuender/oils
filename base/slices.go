@@ -205,13 +205,15 @@ func Del[E comparable](slice []E, elems ...E) []E {
 		return slice
 	}
 
+	ret := append([]E{}, slice...)
+
 	for _, elem := range elems {
-		if i := slices.Index(slice, elem); i >= 0 {
-			slice = append((slice)[0:i], (slice)[i+1:]...)
+		if i := slices.Index(ret, elem); i >= 0 {
+			ret = append((ret)[0:i], (ret)[i+1:]...)
 		}
 	}
 
-	return slice
+	return ret
 }
 
 func DelAll[E comparable](slice []E, elems ...E) []E {
@@ -305,8 +307,7 @@ func Replace[E comparable](slice, sub, newSub []E, num int) []E { // nolint
 		num = count
 	}
 
-	ret := make([]E, len(slice))
-	copy(ret, slice)
+	ret := append([]E{}, slice...)
 
 	start := 0
 	for i := 0; i < num; i++ {
@@ -339,8 +340,7 @@ func Shuffle[E any](slice []E) []E { // nolint
 		return slice
 	}
 
-	ret := make([]E, length)
-	copy(ret, slice)
+	ret := append([]E{}, slice...)
 
 	length--
 

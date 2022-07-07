@@ -216,3 +216,28 @@ func TestReplace(t *testing.T) {
 
 	assert.NotEquals(t, old, slice)
 }
+
+func BenchmarkAppend(b *testing.B) {
+	array := []rune(strings.Repeat("ender", 100))
+
+	b.ResetTimer()
+
+	for n := 0; n < b.N; n++ {
+		slice := append([]rune{}, array...)
+
+		slice[0] = '1'
+	}
+}
+
+func BenchmarkAppendMake(b *testing.B) {
+	array := []rune(strings.Repeat("ender", 100))
+
+	b.ResetTimer()
+
+	for n := 0; n < b.N; n++ {
+		slice := make([]rune, len(array))
+		copy(slice, array)
+
+		slice[0] = '1'
+	}
+}
