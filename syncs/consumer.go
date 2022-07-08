@@ -28,17 +28,17 @@ func NewConsumer[E any](cacheSize, sliceMax int, minTime time.Duration) *Consume
 // routine 消费协程数量.
 // producer 生产者.
 // consumer 消费者.
-func (p *Consumer[E]) Consume(routine int, producer func(produceChan chan E), consumer func(elems []E)) {
+func (p *Consumer[E]) Consume(routine int, producer func(produceChan chan E), consumer func(num int, elems []E)) {
 	ctx, cancel := context.WithCancel(context.Background())
 	waitGroup := &sync.WaitGroup{}
 
-	for i := 0; i < routine; i++ {
+	for index := 0; index < routine; index++ {
 		waitGroup.Add(1)
 
-		go func() {
-			p.consume(ctx, consumer)
+		go func(num int) {
+			p.consume(ctx, num, consumer)
 			waitGroup.Done()
-		}()
+		}(index)
 	}
 
 	producer(p.cache)
@@ -47,7 +47,7 @@ func (p *Consumer[E]) Consume(routine int, producer func(produceChan chan E), co
 	waitGroup.Wait()
 }
 
-func (p *Consumer[E]) consume(ctx context.Context, consumer func([]E)) {
+func (p *Consumer[E]) consume(ctx context.Context, num int, consumer func(int, []E)) {
 	datas := make([]E, p.max)
 	index := 0
 
@@ -55,7 +55,7 @@ func (p *Consumer[E]) consume(ctx context.Context, consumer func([]E)) {
 		select {
 		case <-ctx.Done():
 			if index > 0 {
-				consumer(datas[:index])
+				consumer(num, datas[:index])
 			}
 
 			return
@@ -66,7 +66,7 @@ func (p *Consumer[E]) consume(ctx context.Context, consumer func([]E)) {
 			if index >= p.max {
 				index = 0
 
-				consumer(datas)
+				consumer(num, datas)
 			}
 		}
 	}
