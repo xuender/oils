@@ -196,7 +196,7 @@ func Join[E any](slice []E, sep string) string {
 	return builder.String()
 }
 
-func Del[E comparable](slice []E, elems ...E) []E {
+func Del[E comparable](slice []E, elems ...E) []E { // nolint
 	if len(slice) == 0 {
 		return []E{}
 	}
