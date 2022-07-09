@@ -12,6 +12,11 @@ type Consumer[E any] struct {
 	min   time.Duration
 }
 
+type ProducerAndConsumer[E any] interface {
+	Produc(produceChan chan E)
+	Consum(num int, elems []E)
+}
+
 // NewConsumer 新建消费器.
 // cacheSize 缓存数量.
 // sliceMax 每次消费最大数量.
@@ -24,11 +29,11 @@ func NewConsumer[E any](cacheSize, sliceMax int, minTime time.Duration) *Consume
 	}
 }
 
-// Consume 消费.
-// routine 消费协程数量.
-// producer 生产者.
-// consumer 消费者.
-func (p *Consumer[E]) Consume(routine int, producer func(produceChan chan E), consumer func(num int, elems []E)) {
+func (p *Consumer[E]) ConsumeFunc(
+	routine int,
+	producFunc func(produceChan chan E),
+	consumFunc func(num int, elems []E),
+) {
 	ctx, cancel := context.WithCancel(context.Background())
 	waitGroup := &sync.WaitGroup{}
 
@@ -36,18 +41,26 @@ func (p *Consumer[E]) Consume(routine int, producer func(produceChan chan E), co
 		waitGroup.Add(1)
 
 		go func(num int) {
-			p.consume(ctx, num, consumer)
+			p.consume(ctx, num, consumFunc)
 			waitGroup.Done()
 		}(index)
 	}
 
-	producer(p.cache)
+	producFunc(p.cache)
 	time.Sleep(p.min)
 	cancel()
 	waitGroup.Wait()
 }
 
-func (p *Consumer[E]) consume(ctx context.Context, num int, consumer func(int, []E)) {
+// Consume 消费.
+// routine 消费协程数量.
+// producer 生产者.
+// consumer 消费者.
+func (p *Consumer[E]) Consume(routine int, pac ProducerAndConsumer[E]) {
+	p.ConsumeFunc(routine, pac.Produc, pac.Consum)
+}
+
+func (p *Consumer[E]) consume(ctx context.Context, num int, consumFunc func(num int, elems []E)) {
 	datas := make([]E, p.max)
 	index := 0
 
@@ -55,7 +68,7 @@ func (p *Consumer[E]) consume(ctx context.Context, num int, consumer func(int, [
 		select {
 		case <-ctx.Done():
 			if index > 0 {
-				consumer(num, datas[:index])
+				consumFunc(num, datas[:index])
 			}
 
 			return
@@ -66,7 +79,7 @@ func (p *Consumer[E]) consume(ctx context.Context, num int, consumer func(int, [
 			if index >= p.max {
 				index = 0
 
-				consumer(num, datas)
+				consumFunc(num, datas)
 			}
 		}
 	}
