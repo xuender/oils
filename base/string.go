@@ -170,35 +170,36 @@ func LevenshteinDistance(str1, str2 string) int {
 	return column[runeStr1Len]
 }
 
-// StringMatch 字符串匹配.
+// Wildcard 字符串通配符匹配.
 // pattern 支持 * 和 ?.
-func StringMatch(str string, pattern string) bool {
-	strLen, patternLen := len(str), len(pattern)
-	data := make([][]bool, strLen+1)
-
-	for i := 0; i <= strLen; i++ {
-		data[i] = make([]bool, patternLen+1)
+func Wildcard(str string, pattern string) bool {
+	strIndex, patternIndex := 0, 0
+	match, startIndex := 0, -1
+	isStar := func() bool {
+		return patternIndex < len(pattern) && pattern[patternIndex] == '*'
 	}
 
-	data[0][0] = true
-
-	for index := 1; index <= patternLen; index++ {
-		if pattern[index-1] == '*' {
-			data[0][index] = true
-		} else {
-			break
+	for strIndex < len(str) {
+		switch {
+		case patternIndex < len(pattern) && (pattern[patternIndex] == '?' || pattern[patternIndex] == str[strIndex]):
+			patternIndex++
+			strIndex++
+		case isStar():
+			startIndex = patternIndex
+			match = strIndex
+			patternIndex++
+		case startIndex != -1:
+			patternIndex = startIndex + 1
+			match++
+			strIndex = match
+		default:
+			return false
 		}
 	}
 
-	for i := 1; i <= strLen; i++ {
-		for j := 1; j <= patternLen; j++ {
-			if pattern[j-1] == '*' {
-				data[i][j] = data[i][j-1] || data[i-1][j]
-			} else if pattern[j-1] == '?' || str[i-1] == pattern[j-1] {
-				data[i][j] = data[i-1][j-1]
-			}
-		}
+	for isStar() {
+		patternIndex++
 	}
 
-	return data[strLen][patternLen]
+	return patternIndex == len(pattern)
 }

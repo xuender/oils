@@ -39,12 +39,13 @@ func TestLevenshteinDistance(t *testing.T) {
 	assert.Equal(t, 5, base.LevenshteinDistance("intention", "execution"))
 }
 
-func TestStringMatch(t *testing.T) {
+func TestWildcard(t *testing.T) {
 	t.Parallel()
 
-	assert.False(t, base.StringMatch("aa", "a"))
-	assert.True(t, base.StringMatch("aa", "*"))
-	assert.False(t, base.StringMatch("cb", "?a"))
-	assert.True(t, base.StringMatch("adceb", "a*b"))
-	assert.False(t, base.StringMatch("acdcb", "a*c?b"))
+	assert.False(t, base.Wildcard("aa", "a"))
+	assert.True(t, base.Wildcard("aa", "*"))
+	assert.False(t, base.Wildcard("cb", "?a"))
+	assert.True(t, base.Wildcard("adceb", "a*b"))
+	assert.False(t, base.Wildcard("acdcb", "a*c?b"))
+	assert.True(t, base.Wildcard("a", "*a*"))
 }
