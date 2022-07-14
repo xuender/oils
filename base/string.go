@@ -120,3 +120,52 @@ func SplitFunc(str string, splitFunc func(rune) bool) []string {
 
 	return ret
 }
+
+// LevenshteinDistance 编辑距离.
+func LevenshteinDistance(str1, str2 string) int {
+	if str1 == str2 {
+		return 0
+	}
+
+	runeStr1 := []rune(str1)
+	runeStr2 := []rune(str2)
+	runeStr1Len := len(runeStr1)
+	runeStr2Len := len(runeStr2)
+
+	if runeStr1Len == 0 {
+		return runeStr2Len
+	}
+
+	if runeStr2Len == 0 {
+		return runeStr1Len
+	}
+
+	column := make([]int, runeStr1Len+1)
+
+	for index := 1; index <= runeStr1Len; index++ {
+		column[index] = index
+	}
+
+	for index2 := 1; index2 <= runeStr2Len; index2++ {
+		column[0] = index2
+		lastkey := index2 - 1
+
+		for index1 := 1; index1 <= runeStr1Len; index1++ {
+			oldkey := column[index1]
+			sub := 0
+
+			if runeStr1[index1-1] != runeStr2[index2-1] {
+				sub = 1
+			}
+
+			column[index1] = Min(
+				column[index1]+1,   // 插入
+				column[index1-1]+1, // 删除
+				lastkey+sub,        // 修改
+			)
+			lastkey = oldkey
+		}
+	}
+
+	return column[runeStr1Len]
+}

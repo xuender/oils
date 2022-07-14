@@ -28,3 +28,13 @@ func TestSplitFunc(t *testing.T) {
 	assert.Equals(t, []string{"ab"}, base.SplitFunc("  ab ", unicode.IsSpace))
 	assert.Equals(t, []string{"ab"}, base.SplitFunc("ab", unicode.IsSpace))
 }
+
+func TestLevenshteinDistance(t *testing.T) {
+	t.Parallel()
+
+	assert.Equal(t, 0, base.LevenshteinDistance("a", "a"))
+	assert.Equal(t, 1, base.LevenshteinDistance("a", ""))
+	assert.Equal(t, 1, base.LevenshteinDistance("", "a"))
+	assert.Equal(t, 3, base.LevenshteinDistance("horse", "ros"))
+	assert.Equal(t, 5, base.LevenshteinDistance("intention", "execution"))
+}
