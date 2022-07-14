@@ -169,3 +169,36 @@ func LevenshteinDistance(str1, str2 string) int {
 
 	return column[runeStr1Len]
 }
+
+// StringMatch 字符串匹配.
+// pattern 支持 * 和 ?.
+func StringMatch(str string, pattern string) bool {
+	strLen, patternLen := len(str), len(pattern)
+	data := make([][]bool, strLen+1)
+
+	for i := 0; i <= strLen; i++ {
+		data[i] = make([]bool, patternLen+1)
+	}
+
+	data[0][0] = true
+
+	for index := 1; index <= patternLen; index++ {
+		if pattern[index-1] == '*' {
+			data[0][index] = true
+		} else {
+			break
+		}
+	}
+
+	for i := 1; i <= strLen; i++ {
+		for j := 1; j <= patternLen; j++ {
+			if pattern[j-1] == '*' {
+				data[i][j] = data[i][j-1] || data[i-1][j]
+			} else if pattern[j-1] == '?' || str[i-1] == pattern[j-1] {
+				data[i][j] = data[i-1][j-1]
+			}
+		}
+	}
+
+	return data[strLen][patternLen]
+}
