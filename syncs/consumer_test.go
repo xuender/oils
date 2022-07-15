@@ -9,9 +9,8 @@ import (
 	"github.com/xuender/oils/syncs"
 )
 
-func ExampleConsumer() {
-	consumer := syncs.NewConsumer[int](10, 3, time.Millisecond)
-	consumer.ConsumeFunc(3, func(produceChan chan int) {
+func ExampleConsumeFunc() {
+	syncs.ConsumeFunc(10, 3, 3, time.Millisecond, func(produceChan chan int) {
 		for i := 0; i < 100; i++ {
 			produceChan <- i
 		}
@@ -25,8 +24,8 @@ func TestNewConsumerFunc(t *testing.T) {
 	t.Parallel()
 
 	sum := 0
-	consumer := syncs.NewConsumer[int](10, 3, time.Millisecond)
-	consumer.ConsumeFunc(3, func(produceChan chan int) {
+
+	syncs.ConsumeFunc(10, 3, 3, time.Millisecond, func(produceChan chan int) {
 		for i := 0; i < 100; i++ {
 			produceChan <- i
 		}
@@ -63,8 +62,8 @@ func TestNewConsumer(t *testing.T) {
 	t.Parallel()
 
 	pac := &testPAC{}
-	chanConsumer := syncs.NewConsumer[int](10, 3, time.Millisecond)
-	chanConsumer.Consume(3, pac)
+	count := syncs.Consume[int](10, 3, 3, time.Millisecond, pac)
 
 	assert.Equal(t, 4950, pac.sum)
+	assert.Equal(t, 100, count)
 }
