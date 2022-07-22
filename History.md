@@ -1,4 +1,21 @@
 
+0.3.22 / 2022-07-22
+==================
+
+* feat: 消费方法
+* feat: 字符串通配符匹配
+* feat: 字符串匹配
+* feat: 编辑距离
+* feat: 生产消费接口
+* feat: 消费协程号
+* feat: add syncs.Consumer 多协程消费
+* feat: 切片删除不改变原始切片
+* feat: 切片替换不改变原始切片
+* feat: add Sample, Shuffle
+* refactor: 废弃重复的API
+* refactor: 废弃重复的API
+* refactor: slice Del, DelAll, Join, Unique
+
 0.3.21 / 2022-07-06
 ==================
 
