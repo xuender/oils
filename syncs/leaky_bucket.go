@@ -9,9 +9,9 @@ import (
 
 // LeakyBucket 漏桶算法.
 type LeakyBucket struct {
-	capacity     uint
+	capacity     int
 	leakInterval time.Duration
-	used         uint
+	used         int
 	lastLeak     time.Time
 	mutex        sync.Mutex
 }
@@ -19,7 +19,7 @@ type LeakyBucket struct {
 // NewLeakyBucket 新建漏桶.
 func NewLeakyBucket(capacity uint, leakInterval time.Duration) *LeakyBucket {
 	return &LeakyBucket{
-		capacity:     capacity,
+		capacity:     int(capacity),
 		leakInterval: leakInterval,
 		used:         0,
 		lastLeak:     time.Now(),
@@ -33,11 +33,11 @@ func (p *LeakyBucket) TryConsume(drop uint) bool {
 
 	p.leak()
 
-	if p.used+drop > p.capacity {
+	if p.used+int(drop) > p.capacity {
 		return false
 	}
 
-	p.used += drop
+	p.used += int(drop)
 
 	return true
 }
@@ -50,13 +50,13 @@ func (p *LeakyBucket) Consume(drop uint) {
 	for {
 		sleep := p.leak()
 
-		if p.used+drop > p.capacity {
+		if p.used+int(drop) > p.capacity {
 			time.Sleep(sleep)
 
 			continue
 		}
 
-		p.used += drop
+		p.used += int(drop)
 
 		return
 	}
@@ -70,7 +70,7 @@ func (p *LeakyBucket) leak() time.Duration {
 		return p.leakInterval - sub
 	}
 	// 泄漏一个桶的容量或者根据时间间隔泄漏
-	p.used -= base.Max(p.capacity, uint(sub/p.leakInterval)*p.capacity)
+	p.used -= base.Max(p.capacity, int(sub/p.leakInterval)*p.capacity)
 	p.lastLeak = now
 	// 如果桶内余额大于桶的容量，返回足够的间隔时间
 	if p.used > p.capacity {
