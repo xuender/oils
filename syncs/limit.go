@@ -17,8 +17,8 @@ func NewLimit(qps uint) *Limit {
 	return &Limit{interval: time.Second / time.Duration(qps)}
 }
 
-// Try 尝试执行.
-func (p *Limit) Try() {
+// Wait 等待执行.
+func (p *Limit) Wait() {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
@@ -33,4 +33,20 @@ func (p *Limit) Try() {
 
 	time.Sleep(sleep)
 	p.last = time.Now()
+}
+
+// Try 尝试执行.
+func (p *Limit) Try() error {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+	now := time.Now()
+	sleep := p.interval - now.Sub(p.last)
+
+	if sleep <= 0 {
+		p.last = now
+
+		return nil
+	}
+
+	return ErrLimit
 }

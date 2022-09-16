@@ -16,7 +16,7 @@ func TestNewLimit(t *testing.T) {
 	cha := syncs.NewLimit(3)
 
 	for i := 0; i < 5; i++ {
-		cha.Try()
+		cha.Wait()
 	}
 
 	assert.GreaterOrEqual(t, times.ClockStop(start), time.Second)
