@@ -10,8 +10,8 @@ import (
 
 func TestDebounced(t *testing.T) {
 	t.Parallel()
-	count := 0
 
+	count := 0
 	debouncedFn := times.Debounced(func() {
 		count++
 	}, 10*time.Millisecond)

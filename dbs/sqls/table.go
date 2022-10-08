@@ -29,7 +29,12 @@ func TableName(sql string) string {
 }
 
 // TableNames 数据库名及表名.
-func TableNames(sql string) (schema string, table string) {
+func TableNames(sql string) (string, string) {
+	var (
+		schema string
+		table  string
+	)
+
 	name := TableName(sql)
 	names := strings.Split(name, ".")
 
@@ -42,7 +47,7 @@ func TableNames(sql string) (schema string, table string) {
 		table = names[1]
 	}
 
-	return
+	return schema, table
 }
 
 const regSpace = "\\s+"

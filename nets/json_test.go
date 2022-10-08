@@ -8,6 +8,7 @@ import (
 	"github.com/xuender/oils/nets"
 )
 
+// nolint: exhaustruct
 func TestIsJSON(t *testing.T) {
 	t.Parallel()
 

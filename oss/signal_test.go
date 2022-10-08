@@ -21,6 +21,7 @@ func (p *closer) Close() error {
 
 func (p *closer) Error(error) {}
 
+// nolint: exhaustruct
 func TestSignalClose(t *testing.T) {
 	t.Parallel()
 

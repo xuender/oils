@@ -40,12 +40,12 @@ func ID() uint64 {
 }
 
 // DecodeID id解码.
-func DecodeID(id uint64) (ts uint64, serial uint64, machine uint64) {
-	machine = id % machineMax
-	serial = (id >> serialPosition) % serialMax
-	ts = id >> tsPosition
+func DecodeID(id uint64) (uint64, uint64, uint64) {
+	machine := id % machineMax
+	serial := (id >> serialPosition) % serialMax
+	ts := id >> tsPosition
 
-	return
+	return ts, serial, machine
 }
 
 func genID(machine uint64) uint64 {

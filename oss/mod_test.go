@@ -15,6 +15,7 @@ func TestGetMod(t *testing.T) {
 	}
 }
 
+// nolint: exhaustruct
 func TestGetModByInfo(t *testing.T) {
 	t.Parallel()
 

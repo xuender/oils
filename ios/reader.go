@@ -15,7 +15,7 @@ func NewContainsReader(reader io.Reader, subslice []byte) *ContainsReader {
 	return &ContainsReader{reader: reader, subslice: subslice}
 }
 
-func (p *ContainsReader) Read(data []byte) (n int, err error) {
+func (p *ContainsReader) Read(data []byte) (int, error) {
 	num, err := p.reader.Read(data)
 
 	if !p.contains {

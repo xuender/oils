@@ -14,7 +14,11 @@ type Limit struct {
 
 // NewLimit 频率限制，qps每秒限制次数.
 func NewLimit(qps uint) *Limit {
-	return &Limit{interval: time.Second / time.Duration(qps)}
+	return &Limit{
+		interval: time.Second / time.Duration(qps),
+		mutex:    sync.Mutex{},
+		last:     time.Now(),
+	}
 }
 
 // Wait 等待执行.
@@ -39,6 +43,7 @@ func (p *Limit) Wait() {
 func (p *Limit) Try() error {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
+
 	now := time.Now()
 	sleep := p.interval - now.Sub(p.last)
 

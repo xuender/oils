@@ -7,8 +7,10 @@ import (
 
 // Debounced 防抖函数.
 func Debounced(fun func(), interval time.Duration) func() {
-	var mutex sync.Mutex
-	var timer *time.Timer
+	var (
+		mutex sync.Mutex
+		timer *time.Timer
+	)
 
 	return func() {
 		mutex.Lock()

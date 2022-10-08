@@ -30,6 +30,7 @@ func (p *testHandler) POST(data []byte, isJSON bool) proto.Message {
 	panic("error")
 }
 
+// nolint: exhaustruct
 func (p *testHandler) Recover(any) proto.Message {
 	return &Data{Str: "error"}
 }
@@ -40,6 +41,7 @@ func TestNewService(t *testing.T) {
 	assert.NotNil(t, nets.NewService(nil))
 }
 
+// nolint: exhaustruct
 func TestService_Handler(t *testing.T) {
 	t.Parallel()
 
@@ -53,6 +55,7 @@ func TestService_Handler(t *testing.T) {
 	assert.Equal(t, http.StatusOK, res.Code)
 }
 
+// nolint: exhaustruct
 func TestWithNotFound(t *testing.T) {
 	t.Parallel()
 
@@ -71,6 +74,7 @@ func TestWithNotFound(t *testing.T) {
 	assert.Equal(t, handler.req, req)
 }
 
+// nolint: exhaustruct
 func TestWithLogging(t *testing.T) {
 	t.Parallel()
 
@@ -84,6 +88,7 @@ func TestWithLogging(t *testing.T) {
 	assert.True(t, handler.req == req)
 }
 
+// nolint: exhaustruct
 func TestWithRecover(t *testing.T) {
 	t.Parallel()
 
@@ -114,6 +119,7 @@ func TestWithRecover(t *testing.T) {
 	assert.Equal(t, 3, len(res.Body.Bytes()))
 }
 
+// nolint: exhaustruct
 func TestWrite(t *testing.T) {
 	t.Parallel()
 

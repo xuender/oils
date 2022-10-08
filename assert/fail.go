@@ -11,6 +11,7 @@ func Fail(errorf errorfer, failureMessage string, msgAndArgs ...any) bool {
 	}
 
 	if len(msgAndArgs) > 0 {
+		// nolint: asasalint
 		errorf.Errorf("%s: %s\n", Message(msgAndArgs), failureMessage)
 	} else {
 		errorf.Errorf("%s\n", failureMessage)

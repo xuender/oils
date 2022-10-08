@@ -61,7 +61,7 @@ func (p *testPAC) Consum(num int, elems []int) {
 func TestNewConsumer(t *testing.T) {
 	t.Parallel()
 
-	pac := &testPAC{}
+	pac := &testPAC{sum: 0}
 	count := syncs.Consume[int](10, 3, 3, time.Millisecond, pac)
 
 	assert.Equal(t, 4950, pac.sum)

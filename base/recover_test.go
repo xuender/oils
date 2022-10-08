@@ -8,6 +8,7 @@ import (
 	"github.com/xuender/oils/base"
 )
 
+// nolint
 func TestRecover(t *testing.T) {
 	t.Parallel()
 

@@ -16,6 +16,7 @@ func NewRoutineGroup(size uint) *RoutineGroup {
 
 	return &RoutineGroup{
 		ch: make(chan struct{}, size),
+		wg: sync.WaitGroup{},
 	}
 }
 

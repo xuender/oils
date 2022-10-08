@@ -23,6 +23,7 @@ func NewLeakyBucket(capacity uint, leakInterval time.Duration) *LeakyBucket {
 		leakInterval: leakInterval,
 		used:         0,
 		lastLeak:     time.Now(),
+		mutex:        sync.Mutex{},
 	}
 }
 

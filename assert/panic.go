@@ -44,6 +44,7 @@ func PanicsWithError(errorf errorfer, errString string, call panicFunc, msgAndAr
 	)
 }
 
+// nolint: nonamedreturns
 func panics(call panicFunc) (ret any) {
 	defer func() {
 		ret = recover()

@@ -52,7 +52,7 @@ func WithLogging(handler http.Handler) http.Handler {
 
 func WithRecover(handler Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, req *http.Request) {
-		if req.Method == "GET" {
+		if req.Method == http.MethodGet {
 			writer.WriteHeader(http.StatusOK)
 			_, _ = writer.Write(handler.GET())
 

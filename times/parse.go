@@ -28,17 +28,15 @@ var layouts = []string{
 	"2006/01/02 15:04:05",
 }
 
-func Parse(str string) (date time.Time, err error) {
+func Parse(str string) (time.Time, error) {
 	length := len(str)
 	for _, layout := range layouts {
 		if length == len(layout) {
-			if date, err = time.Parse(layout, str); err == nil {
-				return
-			}
+			return time.Parse(layout, str)
 		}
 	}
 
-	return
+	return time.Now(), ErrParseError
 }
 
 func ParseNumber[T constraints.Integer | constraints.Float](num T) time.Time {

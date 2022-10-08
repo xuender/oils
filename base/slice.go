@@ -111,7 +111,7 @@ func (p Slice[T]) Contains(elem T) bool { return slices.Contains(p, elem) }
 
 // Count 包含切片数量.
 // Deprecated: 使用 Counts.
-func (p Slice[T]) Counts(elems []T) (count int) { return Counts(p, elems) }
+func (p Slice[T]) Counts(elems []T) int { return Counts(p, elems) }
 
 // Equal 比较.
 //

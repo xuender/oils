@@ -18,7 +18,7 @@ func RotateLog(paths ...string) {
 	filename := LogName(paths...)
 
 	log.Info(filename)
-
+	// nolint: exhaustruct
 	log = NewRotate(&lumberjack.Logger{
 		Filename: filename,
 		Compress: true,
@@ -35,6 +35,7 @@ func NewInfo() *zap.Logger {
 }
 
 func newLogger(level zapcore.Level) *zap.Logger {
+	// nolint: exhaustruct
 	config := zap.Config{
 		Level:            zap.NewAtomicLevelAt(level),
 		Development:      level == zap.DebugLevel,

@@ -96,11 +96,11 @@ func SliceMap[S, T any](elems []S, change func(S) T) []T {
 }
 
 // Sub 切片截取.
-func Sub[Elem any](slice []Elem, startAndEnd ...int) (sub []Elem) {
+func Sub[Elem any](slice []Elem, startAndEnd ...int) []Elem {
 	length := len(slice)
 
 	if length == 0 {
-		return
+		return []Elem{}
 	}
 
 	start, end := 0, length
@@ -126,7 +126,7 @@ func Sub[Elem any](slice []Elem, startAndEnd ...int) (sub []Elem) {
 	}
 
 	if start >= length || start >= end {
-		return
+		return []Elem{}
 	}
 
 	return slice[start:end]
@@ -245,9 +245,11 @@ func Reverse[E any](slice []E) {
 	}
 }
 
-func Counts[E comparable](slice, sub []E) (count int) {
+func Counts[E comparable](slice, sub []E) int {
+	count := 0
+
 	if len(slice) < len(sub) {
-		return
+		return count
 	}
 
 	if len(sub) < 1 {
@@ -270,7 +272,7 @@ func Counts[E comparable](slice, sub []E) (count int) {
 		}
 	}
 
-	return
+	return count
 }
 
 // All 全部包含.

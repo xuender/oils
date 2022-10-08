@@ -52,5 +52,5 @@ func (p Dirs) ModTime() time.Time                           { return time.Now() 
 func (p Dirs) IsDir() bool                                  { return true }
 func (p Dirs) Sys() any                                     { return p }
 func (p Dirs) Close() error                                 { return nil }
-func (p Dirs) Read(data []byte) (n int, err error)          { return 0, nil }
+func (p Dirs) Read(data []byte) (int, error)                { return 0, nil }
 func (p Dirs) Seek(offset int64, whence int) (int64, error) { return offset, nil }

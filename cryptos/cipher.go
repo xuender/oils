@@ -52,6 +52,7 @@ func IsEncrypt(str string) bool {
 	return err == nil
 }
 
+// nolint: nonamedreturns
 func Parse(str string) (src []byte, cipher Cipher, err error) {
 	start := strings.Index(str, "(")
 	end := strings.LastIndex(str, ")")
