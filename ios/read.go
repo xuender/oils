@@ -6,8 +6,12 @@ import (
 	"os"
 )
 
+const (
+	defaultBufSize = 1024 * 1000
+)
+
 func ReaderLine(reader io.Reader, call func(line string) error) error {
-	buf := bufio.NewReader(reader)
+	buf := bufio.NewReaderSize(reader, defaultBufSize)
 
 	for {
 		line, _, err := buf.ReadLine()
