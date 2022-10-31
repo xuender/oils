@@ -12,7 +12,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/retailnext/hllpp v1.0.0
 	go.uber.org/zap v1.23.0
-	golang.org/x/exp v0.0.0-20221026004748-78e5e7837ae6
+	golang.org/x/exp v0.0.0-20221028150844-83b7d23a625f
 	golang.org/x/text v0.4.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
@@ -34,7 +34,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/mattn/go-sqlite3 v1.14.15 // indirect
+	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
