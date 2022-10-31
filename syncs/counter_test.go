@@ -3,6 +3,7 @@ package syncs_test
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/syncs"
@@ -22,12 +23,34 @@ func ExampleCounter() {
 	fmt.Println(counter.Get("test3"))
 	counter.Clean()
 	fmt.Println(counter.Get("test1"))
+	fmt.Println(counter.Size())
 
 	// Output:
 	// 2
 	// 1
 	// 4
 	// 0
+	// 1
+}
+
+func ExampleCounter_concurrent() {
+	counter := syncs.NewCounter[int]()
+	work := func() {
+		for i := 0; i < 1000; i++ {
+			counter.Inc(i)
+		}
+	}
+
+	for i := 0; i < 1000; i++ {
+		go work()
+	}
+
+	time.Sleep(time.Second)
+
+	fmt.Println(counter.Sum())
+
+	// Output:
+	// 1000000
 }
 
 func TestNewCounter(t *testing.T) {
