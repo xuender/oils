@@ -10,6 +10,12 @@ import (
 	"github.com/xuender/oils/syncs"
 )
 
+const (
+	_windowsNum = 10
+	_expiration = time.Second / _windowsNum
+)
+
+// Limit 滑动窗口限流.
 type Limit struct {
 	key      string
 	keyTimer string
@@ -19,12 +25,14 @@ type Limit struct {
 
 // NewLimit 频率限制，qps每秒限制次数.
 func NewLimit(client *redis.Client, key string, qps uint) *Limit {
-	return &Limit{
+	ret := &Limit{
 		client:   client,
 		key:      key,
 		keyTimer: fmt.Sprintf("_%s_", key),
-		qps:      qps,
+		qps:      qps / _windowsNum,
 	}
+
+	return ret
 }
 
 // Wait 等待执行.
@@ -40,7 +48,7 @@ func (p *Limit) wait() time.Duration {
 	if base.Must1(p.client.Exists(ctx, p.keyTimer).Result()) == 0 {
 		// 不存在计时器: 创建计时器，删除计数器
 		base.Must1(p.client.Pipelined(ctx, func(pipe redis.Pipeliner) error {
-			if _, err := pipe.SetEX(ctx, p.keyTimer, "1", time.Second).Result(); err != nil {
+			if _, err := pipe.Set(ctx, p.keyTimer, "1", _expiration).Result(); err != nil {
 				return err
 			}
 
