@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	_windowsNum = 10
-	_expiration = time.Second / _windowsNum
+	_windowNum  = 10
+	_expiration = time.Second / _windowNum
 )
 
 // Limit 滑动窗口限流.
@@ -23,13 +23,13 @@ type Limit struct {
 	client   *redis.Client
 }
 
-// NewLimit 频率限制，qps每秒限制次数.
+// NewLimit 频率限制, client redis客户端, key 键，qps 每秒限制次数.
 func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 	ret := &Limit{
 		client:   client,
 		key:      key,
 		keyTimer: fmt.Sprintf("_%s_", key),
-		qps:      int64(qps / _windowsNum),
+		qps:      int64(qps / _windowNum),
 	}
 
 	return ret
@@ -38,15 +38,15 @@ func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 // Wait 等待执行.
 func (p *Limit) Wait() {
 	for {
-		if wait := p.wait(); wait > 0 {
-			time.Sleep(wait)
+		if dur := p.waiting(); dur > 0 {
+			time.Sleep(dur)
 		} else {
 			return
 		}
 	}
 }
 
-func (p *Limit) wait() time.Duration {
+func (p *Limit) waiting() time.Duration {
 	ctx := context.Background()
 	// 判断计时器是否存在
 	if base.Must1(p.client.Exists(ctx, p.keyTimer).Result()) == 0 {
@@ -63,10 +63,8 @@ func (p *Limit) wait() time.Duration {
 	}
 	// 计数器大与QPS
 	if base.Must1(p.client.Incr(ctx, p.key).Result()) > p.qps {
-		wait := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result())
-
-		if wait > 0 {
-			return wait
+		if dur := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result()); dur > 0 {
+			return dur
 		}
 	}
 
@@ -75,7 +73,7 @@ func (p *Limit) wait() time.Duration {
 
 // Try 尝试执行.
 func (p *Limit) Try() error {
-	if p.wait() > 0 {
+	if p.waiting() > 0 {
 		return syncs.ErrLimit
 	}
 
