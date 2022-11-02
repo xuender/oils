@@ -39,10 +39,15 @@ func (p *Limit) wait() time.Duration {
 	// 判断计时器是否存在
 	if base.Must1(p.client.Exists(ctx, p.keyTimer).Result()) == 0 {
 		// 不存在计时器: 创建计时器，删除计数器
-		pipe := p.client.Pipeline()
-		pipe.SetEX(ctx, p.keyTimer, "1", time.Second)
-		pipe.Del(ctx, p.key)
-		_, _ = pipe.Exec(ctx)
+		base.Must1(p.client.Pipelined(ctx, func(pipe redis.Pipeliner) error {
+			if _, err := pipe.SetEX(ctx, p.keyTimer, "1", time.Second).Result(); err != nil {
+				return err
+			}
+
+			_, err := pipe.Del(ctx, p.key).Result()
+
+			return err
+		}))
 	}
 	// 计数器大与QPS
 	if base.Must1(p.client.Incr(ctx, p.key).Result()) > int64(p.qps) {

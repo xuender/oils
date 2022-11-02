@@ -18,11 +18,13 @@ func ExampleNewLimit() {
 	limit := rdb.NewLimit(clean, "limit", 10)
 	clock := times.ClockStart()
 
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 25; i++ {
 		limit.Wait()
 	}
 
-	limit.Try()
+	_ = limit.Try()
 
 	fmt.Println(times.ClockStop(clock))
+	// 1output:
+	// 1
 }
