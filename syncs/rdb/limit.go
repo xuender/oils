@@ -19,7 +19,7 @@ const (
 type Limit struct {
 	key      string
 	keyTimer string
-	qps      uint
+	qps      int64
 	client   *redis.Client
 }
 
@@ -29,7 +29,7 @@ func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 		client:   client,
 		key:      key,
 		keyTimer: fmt.Sprintf("_%s_", key),
-		qps:      qps / _windowsNum,
+		qps:      int64(qps / _windowsNum),
 	}
 
 	return ret
@@ -37,8 +37,12 @@ func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 
 // Wait 等待执行.
 func (p *Limit) Wait() {
-	if wait := p.wait(); wait > 0 {
-		time.Sleep(wait)
+	for {
+		if wait := p.wait(); wait > 0 {
+			time.Sleep(wait)
+		} else {
+			return
+		}
 	}
 }
 
@@ -58,7 +62,7 @@ func (p *Limit) wait() time.Duration {
 		}))
 	}
 	// 计数器大与QPS
-	if base.Must1(p.client.Incr(ctx, p.key).Result()) > int64(p.qps) {
+	if base.Must1(p.client.Incr(ctx, p.key).Result()) > p.qps {
 		wait := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result())
 
 		if wait > 0 {
