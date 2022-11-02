@@ -60,6 +60,7 @@ func TestNewCounter(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		count.Inc(1)
 	}
+
 	for i := 0; i < 2000; i++ {
 		count.Inc(2)
 	}

@@ -55,7 +55,7 @@ func (p *Counter[T]) addKey(key T) int {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
-	num := int(p.size)
+	num := p.size
 
 	if index := slices.Index(p.keys[:num], key); index >= 0 {
 		return index
@@ -81,7 +81,7 @@ func (p *Counter[T]) Dec(key T) int64 {
 
 // Size 键值数量.
 func (p *Counter[T]) Size() int {
-	return int(p.size)
+	return p.size
 }
 
 // Sum 计数总量.
