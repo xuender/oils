@@ -37,12 +37,8 @@ func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 
 // Wait 等待执行.
 func (p *Limit) Wait() {
-	for {
-		if dur := p.waiting(); dur > 0 {
-			time.Sleep(dur)
-		} else {
-			return
-		}
+	for dur := p.waiting(); dur > 0; dur = p.waiting() {
+		time.Sleep(dur)
 	}
 }
 
