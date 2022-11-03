@@ -1,27 +1,12 @@
 package i18n_test
 
 import (
-	"embed"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/i18n"
 	"golang.org/x/text/language"
 )
-
-//go:embed locales
-var locales embed.FS
-
-func ExampleLoad() {
-	_ = i18n.Load(locales)
-	tag, _ := i18n.Tag("zh_CN")
-	printer := i18n.GetPrinter(tag)
-
-	printer.Printf("hellohometown")
-
-	// Output:
-	// 你好家乡!
-}
 
 func TestTag(t *testing.T) {
 	t.Parallel()

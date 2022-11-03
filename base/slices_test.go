@@ -1,7 +1,6 @@
 package base_test
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 	"testing"
@@ -122,15 +121,6 @@ func TestChunk(t *testing.T) {
 	assert.Equals(t, []int{3, 4}, group[1])
 }
 
-func ExampleSub() {
-	fmt.Println(base.Sub([]int{1, 2, 3}, -1))
-	fmt.Println(base.Sub([]int{1, 2, 3, 4, 5}, 1, -2))
-
-	// Output:
-	// [3]
-	// [2 3]
-}
-
 func TestSub(t *testing.T) {
 	t.Parallel()
 
@@ -185,10 +175,6 @@ func TestSample(t *testing.T) {
 	assert.Panics(t, func() {
 		base.Sample([]int{})
 	})
-}
-
-func ExampleShuffle() {
-	fmt.Println(base.Shuffle([]int{1, 2, 3, 4, 5, 6}))
 }
 
 func TestShuffle(t *testing.T) {

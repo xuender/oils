@@ -1,7 +1,6 @@
 package base_test
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -9,16 +8,6 @@ import (
 	"github.com/xuender/oils/base"
 	"golang.org/x/exp/slices"
 )
-
-func ExampleMap() {
-	map1 := base.NewMap[int, int]()
-	map1[1] = 2
-	map1[3] = 5
-	fmt.Println(len(map1))
-
-	// Output:
-	// 2
-}
 
 func TestNewMap(t *testing.T) {
 	t.Parallel()

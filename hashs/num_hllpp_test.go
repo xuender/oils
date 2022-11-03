@@ -1,25 +1,11 @@
 package hashs_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/hashs"
 )
-
-func ExampleNumHLLPP() {
-	hll := hashs.NewNumHLLPP[int]()
-	hll.Add(3)
-	hll.Add(3)
-	hll.Add(1)
-	hll.Add(3)
-
-	fmt.Println(hll.Count())
-
-	// Output:
-	// 2
-}
 
 // nolint
 func FuzzNumHLLPP(f *testing.F) {

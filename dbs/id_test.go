@@ -1,25 +1,12 @@
 package dbs_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/dbs"
 )
-
-func ExampleNewID() {
-	fmt.Println(dbs.NewID(3))
-	id := dbs.ID()
-	fmt.Println(id)
-	fmt.Println(dbs.DecodeID(id))
-}
-
-func ExampleID() {
-	fmt.Println(dbs.ID())
-	fmt.Println(dbs.ID())
-}
 
 func TestNewID(t *testing.T) {
 	t.Parallel()

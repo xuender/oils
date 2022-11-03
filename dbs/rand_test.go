@@ -1,16 +1,11 @@
 package dbs_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/dbs"
 )
-
-func ExampleRand() {
-	fmt.Println(dbs.Rand())
-}
 
 func TestRand(t *testing.T) {
 	t.Parallel()
