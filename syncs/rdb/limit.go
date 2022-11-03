@@ -12,7 +12,7 @@ import (
 
 const _defaultWindow = 10
 
-// Limit 滑动窗口限流.
+// Limit 滑动窗口限频.
 type Limit struct {
 	key        string
 	keyTimer   string
@@ -49,19 +49,26 @@ func (p *Limit) Wait() {
 
 func (p *Limit) waiting() time.Duration {
 	ctx := context.Background()
-	// 设置计时器
+	// 设置计时器及过期时间
 	if base.Must1(p.client.SetNX(ctx, p.keyTimer, "1", p.expiration).Result()) {
-		// 计时器设置成功后删除计数器
+		// 计时器设置成功后重置计数器
 		base.Must1(p.client.Del(ctx, p.key).Result())
 	}
-	// 计数器大与QPS
+	// 计数器大与QPS，需要等待
 	if base.Must1(p.client.Incr(ctx, p.key).Result()) > p.qps {
 		// 获取计时器剩余时间
-		if dur := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result()); dur >= 0 {
-			return dur
+		dur := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result())
+
+		if dur < 0 {
+			if dur == -1 {
+				// 计时器有问题删除
+				base.Must1(p.client.Del(ctx, p.keyTimer).Result())
+			}
+			// 延时重试
+			return p.expiration / _defaultWindow
 		}
-		// 延时重试
-		return p.expiration / _defaultWindow
+
+		return dur
 	}
 
 	return 0

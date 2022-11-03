@@ -34,5 +34,5 @@ func ExampleNewLimit() {
 
 	fmt.Println(times.ClockStop(clock))
 	// 1Output:
-	// 1
+	// 4.188548639s
 }
