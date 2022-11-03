@@ -5,12 +5,6 @@ import (
 	"time"
 )
 
-// Limiter 等待器.
-type Limiter interface {
-	Wait()
-	Try() error
-}
-
 // Limit 频率限制.
 type Limit struct {
 	interval time.Duration
@@ -29,15 +23,16 @@ func NewLimit(qps uint) *Limit {
 
 // Wait 等待执行.
 func (p *Limit) Wait() {
-	if wait := p.wait(); wait > 0 {
-		time.Sleep(wait)
-	}
-}
-
-func (p *Limit) wait() time.Duration {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
+	if wait := p.waiting(); wait > 0 {
+		time.Sleep(wait)
+		p.last = time.Now()
+	}
+}
+
+func (p *Limit) waiting() time.Duration {
 	now := time.Now()
 	sleep := p.interval - now.Sub(p.last)
 
@@ -47,14 +42,15 @@ func (p *Limit) wait() time.Duration {
 		return 0
 	}
 
-	p.last = now.Add(sleep)
-
 	return sleep
 }
 
 // Try 尝试执行.
 func (p *Limit) Try() error {
-	if p.wait() > 0 {
+	p.mutex.Lock()
+	defer p.mutex.Unlock()
+
+	if p.waiting() > 0 {
 		return ErrLimit
 	}
 
