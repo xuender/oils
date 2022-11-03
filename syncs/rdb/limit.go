@@ -48,21 +48,14 @@ func (p *Limit) Wait() {
 
 func (p *Limit) waiting() time.Duration {
 	ctx := context.Background()
-	// 判断计时器是否存在
-	if base.Must1(p.client.Exists(ctx, p.keyTimer).Result()) == 0 {
-		// 不存在计时器: 创建计时器，删除计数器
-		base.Must1(p.client.Pipelined(ctx, func(pipe redis.Pipeliner) error {
-			if _, err := pipe.Set(ctx, p.keyTimer, "1", _expiration).Result(); err != nil {
-				return err
-			}
-
-			_, err := pipe.Del(ctx, p.key).Result()
-
-			return err
-		}))
+	// 设置计时器
+	if base.Must1(p.client.SetNX(ctx, p.keyTimer, "1", _expiration).Result()) {
+		// 计时器设置成功后删除计数器
+		base.Must1(p.client.Del(ctx, p.key).Result())
 	}
 	// 计数器大与QPS
 	if base.Must1(p.client.Incr(ctx, p.key).Result()) > p.qps {
+		// 获取计时器剩余时间
 		if dur := base.Must1(p.client.PTTL(ctx, p.keyTimer).Result()); dur > 0 {
 			return dur
 		}

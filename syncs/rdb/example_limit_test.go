@@ -10,7 +10,7 @@ import (
 
 func ExampleNewLimit() {
 	clean := redis.NewClient(&redis.Options{
-		Addr:     "127.0.0.1:6379",
+		Addr:     "192.168.1.11:6379",
 		Password: "",
 		DB:       0,
 	})
@@ -33,6 +33,6 @@ func ExampleNewLimit() {
 	_ = limit.Try()
 
 	fmt.Println(times.ClockStop(clock))
-	// 1output:
+	// 1Output:
 	// 1
 }

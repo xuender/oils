@@ -52,8 +52,8 @@ func IsEncrypt(str string) bool {
 	return err == nil
 }
 
-// nolint: nonamedreturns
-func Parse(str string) (src []byte, cipher Cipher, err error) {
+// Parse 解析密文, 返回数据和加密算法.
+func Parse(str string) (src []byte, cipher Cipher, err error) { // nolint
 	start := strings.Index(str, "(")
 	end := strings.LastIndex(str, ")")
 
