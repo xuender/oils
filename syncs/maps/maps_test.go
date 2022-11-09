@@ -113,9 +113,9 @@ func TestMaps_DelMin(t *testing.T) {
 	assert.False(t, tmap.DelMin())
 	assert.Equal(t, 0, tmap.Len())
 
-	tmap.Add(80, 80)
+	assert.True(t, tmap.Add(80, 80))
 	assert.Equal(t, 1, tmap.Len())
-	tmap.Add(80, 80)
+	assert.False(t, tmap.Add(80, 80))
 	assert.Equal(t, 1, tmap.Len())
 
 	for i := 0; i < 100; i++ {
