@@ -135,7 +135,7 @@ func TestTreeMap_Prefix(t *testing.T) {
 	}
 
 	for i := 0; i < 10; i++ {
-		tmap.Set([]byte{'b', byte(i)}, i)
+		tmap.Set([]byte{'b', byte(i)}, i*3)
 	}
 
 	list := []int{}
@@ -147,7 +147,7 @@ func TestTreeMap_Prefix(t *testing.T) {
 	}, []byte{'b'})
 
 	for i := 0; i < 10; i++ {
-		assert.Equal(t, list[i], i)
+		assert.Equal(t, list[i], i*3)
 	}
 
 	assert.Equal(t, 10, len(list))

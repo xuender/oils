@@ -6,25 +6,27 @@ import (
 	"github.com/xuender/oils/base/treemap"
 )
 
-func ExampleTreeMap() {
+func Example() {
 	tmap := treemap.New(0)
 
 	for i := 0; i < 10; i++ {
 		tmap.Set([]byte{byte(i)}, i)
 	}
 
-	for i := 7; i < 8; i++ {
+	for i := 3; i < 8; i++ {
 		tmap.Del([]byte{byte(i)})
 	}
 
-	for i := 0; i < 10; i++ {
-		value, has := tmap.Get([]byte{byte(i)})
-		if has && value != i {
-			fmt.Println(i, value)
-		}
-	}
+	tmap.Each(func(key []byte, value int) bool {
+		fmt.Println(value)
 
-	fmt.Println(tmap.Len())
-	// output:
+		return true
+	})
+
+	// Output:
+	// 0
+	// 1
+	// 2
+	// 8
 	// 9
 }

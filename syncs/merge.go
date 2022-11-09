@@ -1,7 +1,7 @@
 package syncs
 
 // Merge 多个管道内容合并.
-func Merge[T any](less func(T, T) bool, chans ...<-chan T) <-chan T {
+func Merge[T any](less func(T, T) bool, chans ...chan T) <-chan T {
 	out := make(chan T)
 	opens := map[int]T{}
 

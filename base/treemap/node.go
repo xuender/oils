@@ -30,10 +30,9 @@ func (p *node[V]) moveRedLeft() *node[V] {
 
 func (p *node[V]) rotateLeft() *node[V] {
 	right := p.right
-	if right.black {
-		panic(ErrBlack)
-	}
-
+	// if right.black {
+	// 	panic(ErrBlack)
+	// }
 	p.right = right.left
 	right.left = p
 	right.black = p.black
@@ -44,10 +43,9 @@ func (p *node[V]) rotateLeft() *node[V] {
 
 func (p *node[V]) rotateRight() *node[V] {
 	left := p.left
-	if left.black {
-		panic(ErrBlack)
-	}
-
+	// if left.black {
+	// 	panic(ErrBlack)
+	// }
 	p.left = left.right
 	left.right = p
 	left.black = p.black

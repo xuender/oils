@@ -6,22 +6,27 @@ import (
 
 type ItemIterator[V any] func(key []byte, value V) bool
 
+// Each 遍历.
 func (p *TreeMap[V]) Each(iterator ItemIterator[V]) {
 	p.rangeAsc(iterator, p.root)
 }
 
+// Range 范围.
 func (p *TreeMap[V]) Range(iterator ItemIterator[V], greaterOrEqual, lessThan []byte) {
 	p.rangeAsc(iterator, p.root, greaterOrEqual, lessThan)
 }
 
+// GreateOrEqual 大于等于.
 func (p *TreeMap[V]) GreateOrEqual(iterator ItemIterator[V], greaterOrEqual []byte) {
 	p.rangeAsc(iterator, p.root, greaterOrEqual)
 }
 
+// LessThan 小于.
 func (p *TreeMap[V]) LessThan(iterator ItemIterator[V], lessThan []byte) {
 	p.rangeAsc(iterator, p.root, nil, lessThan)
 }
 
+// Prefix 前缀.
 func (p *TreeMap[V]) Prefix(iterator ItemIterator[V], prefix []byte) {
 	p.rangeAsc(iterator, p.root, prefix, BytesInc(prefix))
 }
@@ -50,22 +55,27 @@ func (p *TreeMap[V]) rangeAsc(iterator ItemIterator[V], elem *node[V], infs ...[
 	return p.rangeAsc(iterator, elem.right, infs...)
 }
 
+// EachDesc 倒叙遍历.
 func (p *TreeMap[V]) EachDesc(iterator ItemIterator[V]) {
 	p.rangeDesc(iterator, p.root)
 }
 
+// RangeDesc 倒叙范围.
 func (p *TreeMap[V]) RangeDesc(iterator ItemIterator[V], greaterOrEqual, lessThan []byte) {
 	p.rangeDesc(iterator, p.root, greaterOrEqual, lessThan)
 }
 
+// GreateOrEqualDesc 倒叙大于等于.
 func (p *TreeMap[V]) GreateOrEqualDesc(iterator ItemIterator[V], greaterOrEqual []byte) {
 	p.rangeDesc(iterator, p.root, greaterOrEqual)
 }
 
+// LessThanDesc 倒叙小于.
 func (p *TreeMap[V]) LessThanDesc(iterator ItemIterator[V], lessThan []byte) {
 	p.rangeDesc(iterator, p.root, nil, lessThan)
 }
 
+// PrefixDesc 倒叙前缀.
 func (p *TreeMap[V]) PrefixDesc(iterator ItemIterator[V], prefix []byte) {
 	p.rangeDesc(iterator, p.root, prefix, BytesInc(prefix))
 }

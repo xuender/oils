@@ -7,13 +7,13 @@ import (
 )
 
 func ExampleTreeMap_Each() {
-	tmap := treemap.New(-1)
+	llrb := treemap.New(-1)
 
 	for i := 0; i < 5; i++ {
-		tmap.Set([]byte{byte(i)}, i)
+		llrb.Set([]byte{byte(i)}, i)
 	}
 
-	tmap.Each(func(b []byte, i int) bool {
+	llrb.Each(func(b []byte, i int) bool {
 		fmt.Println(b, i)
 
 		return true

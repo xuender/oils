@@ -201,10 +201,6 @@ func (p *TreeMap[V]) delRight(elem *node[V]) bool {
 
 	elem.right, subDeleted, value = p.delMin(elem.right)
 
-	if subDeleted == nil {
-		panic(ErrLogic)
-	}
-
 	elem.key = subDeleted
 	elem.value = value
 
