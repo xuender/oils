@@ -120,16 +120,16 @@ func (p *Maps[K, V]) MinByBytes() (V, []byte) {
 
 	value := p.notFound
 
-	for index := 0; index < p.group; index++ {
-		p.locks[index].RLock()
-		valueTmp, keyTmp := p.maps[index].Min()
+	for group := 0; group < p.group; group++ {
+		p.locks[group].RLock()
+		valueTmp, keyTmp := p.maps[group].Min()
 
 		if keyTmp != nil && (key == nil || bytes.Compare(key, keyTmp) >= 0) {
 			key = keyTmp
 			value = valueTmp
 		}
 
-		p.locks[index].RUnlock()
+		p.locks[group].RUnlock()
 	}
 
 	return value, key
@@ -148,16 +148,16 @@ func (p *Maps[K, V]) MaxByBytes() (V, []byte) {
 
 	value := p.notFound
 
-	for index := 0; index < p.group; index++ {
-		p.locks[index].RLock()
-		valueTmp, keyTmp := p.maps[index].Max()
+	for group := 0; group < p.group; group++ {
+		p.locks[group].RLock()
+		valueTmp, keyTmp := p.maps[group].Max()
 
 		if keyTmp != nil && bytes.Compare(key, keyTmp) <= 0 {
 			key = keyTmp
 			value = valueTmp
 		}
 
-		p.locks[index].RUnlock()
+		p.locks[group].RUnlock()
 	}
 
 	return value, key
