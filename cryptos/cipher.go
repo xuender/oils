@@ -20,7 +20,7 @@ const (
 )
 
 // nolint
-var ciphers = [2]Cipher{AES, DES}
+var ciphers = [...]Cipher{AES, DES}
 
 func (p Cipher) String() string {
 	if p == DES {

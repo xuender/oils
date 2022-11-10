@@ -17,8 +17,6 @@ const (
 	Exa
 )
 
-var _nums = [6]int{Kilo, Meg, Giga, Tera, Peta, Exa}
-
 func Unit(size int64, prec int) string {
 	switch {
 	case size < Kilo:

@@ -9,7 +9,7 @@ import (
 
 // nolint
 func FuzzNumHLLPP(f *testing.F) {
-	testcases := []int{0, 1, 2, 3, 4}
+	testcases := [...]int{0, 1, 2, 3, 4}
 	for _, tc := range testcases {
 		f.Add(tc)
 	}
