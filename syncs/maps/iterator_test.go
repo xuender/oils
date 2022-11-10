@@ -1,7 +1,10 @@
 package maps_test
 
 import (
+	"math/rand"
+	"sync"
 	"testing"
+	"time"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/syncs/maps"
@@ -286,4 +289,39 @@ func TestMaps_Each_float32(t *testing.T) {
 	})
 
 	assert.Equals(t, []int{1, 2, 3, 4, 5}, list)
+}
+
+func TestTreeMap_Each_sync(t *testing.T) {
+	t.Parallel()
+
+	num := -1
+	tmap := maps.New(num, num)
+
+	for i := 0; i < 10_000; i++ {
+		tmap.Set(i, i)
+	}
+
+	group := sync.WaitGroup{}
+
+	group.Add(10)
+	rand.Seed(time.Now().UnixMilli())
+
+	for f := 0; f < 10; f++ {
+		go func() {
+			for i := 0; i < 1_000; i++ {
+				// nolint
+				tmap.Del(rand.Intn(10_000))
+			}
+
+			group.Done()
+		}()
+	}
+
+	group.Wait()
+	tmap.Each(func(key, value int) bool {
+		assert.Greater(t, key, num)
+		num = key
+
+		return true
+	})
 }

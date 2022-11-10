@@ -1,7 +1,9 @@
 package treemap_test
 
 import (
+	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base/treemap"
@@ -264,4 +266,29 @@ func TestTreeMap_LessThanDesc(t *testing.T) {
 	}
 
 	assert.Equal(t, 20, len(list))
+}
+
+func TestTreeMap_Each_order(t *testing.T) {
+	t.Parallel()
+
+	num := -1
+	tmap := treemap.New(num, num)
+
+	for i := 0; i < 10_000; i++ {
+		tmap.Set(i, i)
+	}
+
+	rand.Seed(time.Now().UnixMilli())
+
+	for i := 0; i < 10_000; i++ {
+		// nolint
+		tmap.Del(rand.Intn(10_000))
+	}
+
+	tmap.Each(func(key, value int) bool {
+		assert.Greater(t, key, num)
+		num = key
+
+		return true
+	})
 }

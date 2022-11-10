@@ -9,6 +9,7 @@ import (
 )
 
 // Encode 转换字节码.
+// Deprecated: 直接使用god.
 func Encode(elem any) []byte {
 	if elem == nil {
 		return []byte{}
@@ -30,6 +31,7 @@ func Encode(elem any) []byte {
 }
 
 // Decode 字节码解码.
+// Deprecated: 直接使用god.
 func Decode[T any](elem []byte) T {
 	obj := new(T)
 
