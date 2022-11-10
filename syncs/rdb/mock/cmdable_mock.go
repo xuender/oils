@@ -1,5 +1,5 @@
 // nolint
-package distributed_mock
+package rdb_mock
 
 import (
 	context "context"

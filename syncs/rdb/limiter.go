@@ -12,24 +12,24 @@ import (
 
 const _defaultWindow = 10
 
-// Limit 滑动窗口限频.
-type Limit struct {
+// Limiter 滑动窗口限频.
+type Limiter struct {
 	key        string
 	keyTimer   string
 	qps        int64
-	client     *redis.Client
+	client     redis.Cmdable
 	expiration time.Duration
 }
 
-// NewLimit 频率限制, client redis客户端, key 键，qps 每秒限制次数.
-func NewLimit(client *redis.Client, key string, qps uint) *Limit {
+// NewLimiter 频率限制, client redis客户端, key 键，qps 每秒限制次数.
+func NewLimiter(client redis.Cmdable, key string, qps uint) *Limiter {
 	windowNum := _defaultWindow
 
 	if qps < _defaultWindow {
 		windowNum = int(qps)
 	}
 
-	ret := &Limit{
+	ret := &Limiter{
 		client:     client,
 		key:        key,
 		keyTimer:   fmt.Sprintf("_%s_", key),
@@ -41,13 +41,13 @@ func NewLimit(client *redis.Client, key string, qps uint) *Limit {
 }
 
 // Wait 等待执行.
-func (p *Limit) Wait() {
+func (p *Limiter) Wait() {
 	for dur := p.waiting(); dur > 0; dur = p.waiting() {
 		time.Sleep(dur)
 	}
 }
 
-func (p *Limit) waiting() time.Duration {
+func (p *Limiter) waiting() time.Duration {
 	ctx := context.Background()
 	// 设置计时器及过期时间
 	if base.Must1(p.client.SetNX(ctx, p.keyTimer, "1", p.expiration).Result()) {
@@ -75,7 +75,7 @@ func (p *Limit) waiting() time.Duration {
 }
 
 // Try 尝试执行.
-func (p *Limit) Try() error {
+func (p *Limiter) Try() error {
 	if p.waiting() > 0 {
 		return syncs.ErrLimit
 	}

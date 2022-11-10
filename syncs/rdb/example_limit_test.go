@@ -8,14 +8,14 @@ import (
 	"github.com/xuender/oils/times"
 )
 
-func ExampleNewLimit() {
-	clean := redis.NewClient(&redis.Options{
+func ExampleLimit() {
+	client := redis.NewClient(&redis.Options{
 		Addr:     "192.168.1.11:6379",
 		Password: "",
 		DB:       0,
 	})
 
-	limit := rdb.NewLimit(clean, "limit", 1000)
+	limit := rdb.NewLimiter(client, "limit", 1000)
 	clock := times.ClockStart()
 
 	for f := 0; f < 4; f++ {
