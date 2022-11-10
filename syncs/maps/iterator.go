@@ -23,7 +23,7 @@ func desc[K constraints.Ordered, V any](item1, item2 *item[K, V]) bool { return 
 func (p *Maps[K, V]) Each(iterator Iterator[K, V]) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.Each(ii)
 		},
 		aes[K, V],
@@ -32,7 +32,7 @@ func (p *Maps[K, V]) Each(iterator Iterator[K, V]) {
 
 func (p *Maps[K, V]) each(
 	iterator Iterator[K, V],
-	run func(*treemap.TreeMap[K, V], treemap.ItemIterator[K, V]),
+	run func(*treemap.TreeMap[K, V], treemap.Iterator[K, V]),
 	less func(*item[K, V], *item[K, V]) bool,
 ) {
 	ins := make([]chan *item[K, V], p.group)
@@ -85,7 +85,7 @@ func (p *Maps[K, V]) each(
 func (p *Maps[K, V]) Range(iterator Iterator[K, V], greaterOrEqual, lessThan K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.Range(ii, greaterOrEqual, lessThan)
 		},
 		aes[K, V],
@@ -96,7 +96,7 @@ func (p *Maps[K, V]) Range(iterator Iterator[K, V], greaterOrEqual, lessThan K) 
 func (p *Maps[K, V]) GreateOrEqual(iterator Iterator[K, V], greaterOrEqual K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.GreateOrEqual(ii, greaterOrEqual)
 		},
 		aes[K, V],
@@ -107,7 +107,7 @@ func (p *Maps[K, V]) GreateOrEqual(iterator Iterator[K, V], greaterOrEqual K) {
 func (p *Maps[K, V]) LessThan(iterator Iterator[K, V], lessThan K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.LessThan(ii, lessThan)
 		},
 		aes[K, V],
@@ -129,7 +129,7 @@ func (p *Maps[K, V]) LessThan(iterator Iterator[K, V], lessThan K) {
 func (p *Maps[K, V]) EachDesc(iterator Iterator[K, V]) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.EachDesc(ii)
 		},
 		desc[K, V],
@@ -140,7 +140,7 @@ func (p *Maps[K, V]) EachDesc(iterator Iterator[K, V]) {
 func (p *Maps[K, V]) RangeDesc(iterator Iterator[K, V], greaterOrEqual, lessThan K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.RangeDesc(ii, greaterOrEqual, lessThan)
 		},
 		desc[K, V],
@@ -151,7 +151,7 @@ func (p *Maps[K, V]) RangeDesc(iterator Iterator[K, V], greaterOrEqual, lessThan
 func (p *Maps[K, V]) GreateOrEqualDesc(iterator Iterator[K, V], greaterOrEqual K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.GreateOrEqualDesc(ii, greaterOrEqual)
 		},
 		desc[K, V],
@@ -162,7 +162,7 @@ func (p *Maps[K, V]) GreateOrEqualDesc(iterator Iterator[K, V], greaterOrEqual K
 func (p *Maps[K, V]) LessThanDesc(iterator Iterator[K, V], lessThan K) {
 	p.each(
 		iterator,
-		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
+		func(t *treemap.TreeMap[K, V], ii treemap.Iterator[K, V]) {
 			t.LessThanDesc(ii, lessThan)
 		},
 		desc[K, V],

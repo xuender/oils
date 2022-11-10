@@ -12,12 +12,12 @@ func NewString[V any](notFoundValue V) *String[V] {
 }
 
 // Prefix 前缀.
-func (p *String[V]) Prefix(iterator ItemIterator[string, V], prefix string) {
+func (p *String[V]) Prefix(iterator Iterator[string, V], prefix string) {
 	p.Range(iterator, prefix, PrefixNext(prefix))
 }
 
 // PrefixDesc 倒叙前缀.
-func (p *String[V]) PrefixDesc(iterator ItemIterator[string, V], prefix string) {
+func (p *String[V]) PrefixDesc(iterator Iterator[string, V], prefix string) {
 	p.RangeDesc(iterator, prefix, PrefixNext(prefix))
 }
 
