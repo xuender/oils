@@ -1,4 +1,11 @@
 
+0.4.39 / 2022-11-10
+==================
+
+* feat: TreeMap 和 Maps 修改key规则
+* refactor: rename
+* test: TreeMap.Add
+
 0.4.38 / 2022-11-09
 ==================
 
