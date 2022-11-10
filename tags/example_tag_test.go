@@ -1,13 +1,13 @@
-package dbs_test
+package tags_test
 
 import (
 	"fmt"
 
-	"github.com/xuender/oils/dbs"
+	"github.com/xuender/oils/tags"
 )
 
 func ExampleTag() {
-	var tag dbs.Tag
+	var tag tags.Tag
 
 	tag.Add(1, 2)
 	fmt.Println(tag.Has(1))

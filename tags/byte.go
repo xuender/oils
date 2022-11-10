@@ -1,4 +1,4 @@
-package dbs
+package tags
 
 import "golang.org/x/exp/constraints"
 

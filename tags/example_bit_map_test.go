@@ -1,13 +1,13 @@
-package dbs_test
+package tags_test
 
 import (
 	"fmt"
 
-	"github.com/xuender/oils/dbs"
+	"github.com/xuender/oils/tags"
 )
 
 func ExampleBitMap() {
-	tag := dbs.NewBitMap(1, 2, 33)
+	tag := tags.NewBitMap(1, 2, 33)
 
 	fmt.Println(tag.Has(1))
 	fmt.Println(tag.Has(3))
