@@ -1,4 +1,15 @@
 
+0.5.40 / 2022-11-10
+==================
+
+* refactor: 删除 distributed
+* refactor: add tags
+* doc: Tag 索引
+* feat: dbs.Tag
+* doc: treemap.Interator
+* test: times.Debounced
+* test: syncs/maps 并发测试
+
 0.4.39 / 2022-11-10
 ==================
 
