@@ -69,8 +69,8 @@ func ParseFloat[T constraints.Float](str string) (T, error) {
 	return T(f64), err
 }
 
-// Itoa 数值装换成字符串.
-func Itoa[T constraints.Integer | constraints.Float](num T) string {
+// Itoa 整数转换成字符串.
+func Itoa[T constraints.Integer](num T) string {
 	return strconv.Itoa(int(num))
 }
 
