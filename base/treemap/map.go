@@ -1,50 +1,53 @@
 package treemap
 
 import (
-	"bytes"
+	"golang.org/x/exp/constraints"
 )
 
 // TreeMap 左倾红黑树Map.
 // left-leaning red-black tree map.
-type TreeMap[V any] struct {
-	root     *node[V]
-	count    int
-	notFound V
+type TreeMap[K constraints.Ordered, V any] struct {
+	root          *node[K, V]
+	count         int
+	notFoundKey   K
+	notFoundValue V
 }
 
 // New 新建 TreeMap.
 // notFound 找不到时返回的值.
-func New[V any](notFound V) *TreeMap[V] {
-	return &TreeMap[V]{
-		notFound: notFound,
+func New[K constraints.Ordered, V any](noFoundKey K, notFoundValue V) *TreeMap[K, V] {
+	return &TreeMap[K, V]{
+		notFoundKey:   noFoundKey,
+		notFoundValue: notFoundValue,
 	}
 }
 
 // Len 长度.
-func (p *TreeMap[V]) Len() int {
+func (p *TreeMap[K, V]) Len() int {
 	return p.count
 }
 
 // Get 根据 key 获取 Value.
-func (p *TreeMap[V]) Get(key []byte) (V, bool) {
+func (p *TreeMap[K, V]) Get(key K) (V, bool) {
 	elem := p.root
 
 	for elem != nil {
-		switch bytes.Compare(key, elem.key) {
-		case -1:
-			elem = elem.left
-		case 1:
-			elem = elem.right
-		default:
+		if key == elem.key {
 			return elem.value, true
+		}
+
+		if key < elem.key {
+			elem = elem.left
+		} else {
+			elem = elem.right
 		}
 	}
 
-	return p.notFound, false
+	return p.notFoundValue, false
 }
 
 // Set 覆盖，返回是之前否存在.
-func (p *TreeMap[V]) Set(key []byte, value V) bool {
+func (p *TreeMap[K, V]) Set(key K, value V) bool {
 	var add bool
 	p.root, add = p.set(p.root, key, value)
 	p.root.black = true
@@ -56,29 +59,30 @@ func (p *TreeMap[V]) Set(key []byte, value V) bool {
 	return add
 }
 
-func (p *TreeMap[V]) set(elem *node[V], key []byte, value V) (*node[V], bool) {
+func (p *TreeMap[K, V]) set(elem *node[K, V], key K, value V) (*node[K, V], bool) {
 	if elem == nil {
-		return &node[V]{key: key, value: value}, true
+		return &node[K, V]{key: key, value: value}, true
 	}
 	// elem = walkDownRot23(elem)
 	add := false
 
-	switch bytes.Compare(key, elem.key) {
-	case -1:
-		elem.left, add = p.set(elem.left, key, value)
-	case 1:
-		elem.right, add = p.set(elem.right, key, value)
-	default:
+	if key == elem.key {
 		elem.value = value
 
 		return elem, false
+	}
+
+	if key < elem.key {
+		elem.left, add = p.set(elem.left, key, value)
+	} else {
+		elem.right, add = p.set(elem.right, key, value)
 	}
 
 	return elem.walkUpRot23(), add
 }
 
 // Add 增加，如果存在则忽略，返回之前是否存在.
-func (p *TreeMap[V]) Add(key []byte, value V) bool {
+func (p *TreeMap[K, V]) Add(key K, value V) bool {
 	add := false
 	p.root, add = p.add(p.root, key, value)
 	p.root.black = true
@@ -90,37 +94,38 @@ func (p *TreeMap[V]) Add(key []byte, value V) bool {
 	return add
 }
 
-func (p *TreeMap[V]) add(elem *node[V], key []byte, value V) (*node[V], bool) {
+func (p *TreeMap[K, V]) add(elem *node[K, V], key K, value V) (*node[K, V], bool) {
 	if elem == nil {
-		return &node[V]{key: key, value: value}, true
+		return &node[K, V]{key: key, value: value}, true
 	}
 	// elem = walkDownRot23(elem)
 	add := false
 
-	switch bytes.Compare(key, elem.key) {
-	case -1:
-		elem.left, add = p.add(elem.left, key, value)
-	case 1:
-		elem.right, add = p.add(elem.right, key, value)
-	default:
+	if key == elem.key {
 		return elem, false
+	}
+
+	if key < elem.key {
+		elem.left, add = p.add(elem.left, key, value)
+	} else {
+		elem.right, add = p.add(elem.right, key, value)
 	}
 
 	return elem.walkUpRot23(), add
 }
 
 // Clear 清空.
-func (p *TreeMap[V]) Clear() {
+func (p *TreeMap[K, V]) Clear() {
 	p.count = 0
 	p.root = nil
 }
 
 // Min 最小键.
-func (p *TreeMap[V]) Min() (V, []byte) {
+func (p *TreeMap[K, V]) Min() (V, K) {
 	elem := p.root
 
 	if elem == nil {
-		return p.notFound, nil
+		return p.notFoundValue, p.notFoundKey
 	}
 
 	for elem.left != nil {
@@ -131,11 +136,11 @@ func (p *TreeMap[V]) Min() (V, []byte) {
 }
 
 // Max 最大键.
-func (p *TreeMap[V]) Max() (V, []byte) {
+func (p *TreeMap[K, V]) Max() (V, K) {
 	elem := p.root
 
 	if elem == nil {
-		return p.notFound, nil
+		return p.notFoundValue, p.notFoundKey
 	}
 
 	for elem.right != nil {
@@ -146,7 +151,7 @@ func (p *TreeMap[V]) Max() (V, []byte) {
 }
 
 // Del 删除.
-func (p *TreeMap[V]) Del(key []byte) bool {
+func (p *TreeMap[K, V]) Del(key K) bool {
 	var deleted bool
 	p.root, deleted = p.del(p.root, key)
 
@@ -161,12 +166,12 @@ func (p *TreeMap[V]) Del(key []byte) bool {
 	return deleted
 }
 
-func (p *TreeMap[V]) del(elem *node[V], key []byte) (*node[V], bool) {
+func (p *TreeMap[K, V]) del(elem *node[K, V], key K) (*node[K, V], bool) {
 	if elem == nil {
 		return nil, false
 	}
 
-	if bytes.Compare(key, elem.key) < 0 {
+	if key < elem.key {
 		return p.delLeft(elem, key)
 	}
 
@@ -174,7 +179,7 @@ func (p *TreeMap[V]) del(elem *node[V], key []byte) (*node[V], bool) {
 		elem = elem.rotateRight()
 	}
 
-	if bytes.Compare(elem.key, key) >= 0 && elem.right == nil {
+	if elem.key >= key && elem.right == nil {
 		return nil, true
 	}
 
@@ -184,7 +189,7 @@ func (p *TreeMap[V]) del(elem *node[V], key []byte) (*node[V], bool) {
 
 	deleted := false
 
-	if bytes.Compare(elem.key, key) >= 0 {
+	if elem.key >= key {
 		deleted = p.delRight(elem)
 	} else {
 		elem.right, deleted = p.del(elem.right, key)
@@ -193,9 +198,9 @@ func (p *TreeMap[V]) del(elem *node[V], key []byte) (*node[V], bool) {
 	return elem.fixUp(), deleted
 }
 
-func (p *TreeMap[V]) delRight(elem *node[V]) bool {
+func (p *TreeMap[K, V]) delRight(elem *node[K, V]) bool {
 	var (
-		subDeleted []byte
+		subDeleted K
 		value      V
 	)
 
@@ -207,7 +212,7 @@ func (p *TreeMap[V]) delRight(elem *node[V]) bool {
 	return true
 }
 
-func (p *TreeMap[V]) delLeft(elem *node[V], key []byte) (*node[V], bool) {
+func (p *TreeMap[K, V]) delLeft(elem *node[K, V], key K) (*node[K, V], bool) {
 	if elem.left == nil {
 		return elem, false
 	}
@@ -222,9 +227,9 @@ func (p *TreeMap[V]) delLeft(elem *node[V], key []byte) (*node[V], bool) {
 	return elem.fixUp(), deleted
 }
 
-func (p *TreeMap[V]) delMin(elem *node[V]) (*node[V], []byte, V) {
+func (p *TreeMap[K, V]) delMin(elem *node[K, V]) (*node[K, V], K, V) {
 	if elem == nil {
-		return nil, nil, p.notFound
+		return nil, p.notFoundKey, p.notFoundValue
 	}
 
 	if elem.left == nil {
@@ -236,7 +241,7 @@ func (p *TreeMap[V]) delMin(elem *node[V]) (*node[V], []byte, V) {
 	}
 
 	var (
-		deleted []byte
+		deleted K
 		value   V
 	)
 
@@ -246,15 +251,15 @@ func (p *TreeMap[V]) delMin(elem *node[V]) (*node[V], []byte, V) {
 }
 
 // DelMin 删除最小键.
-func (p *TreeMap[V]) DelMin() bool {
-	var deleted []byte
+func (p *TreeMap[K, V]) DelMin() bool {
+	var deleted K
 	p.root, deleted, _ = p.delMin(p.root)
 
 	if p.root != nil {
 		p.root.black = true
 	}
 
-	if deleted != nil {
+	if deleted != p.notFoundKey {
 		p.count--
 
 		return true
@@ -264,7 +269,7 @@ func (p *TreeMap[V]) DelMin() bool {
 }
 
 // DelMin 删除最大键.
-func (p *TreeMap[V]) DelMax() bool {
+func (p *TreeMap[K, V]) DelMax() bool {
 	deleted := false
 	p.root, deleted = delMax(p.root)
 
@@ -279,7 +284,7 @@ func (p *TreeMap[V]) DelMax() bool {
 	return deleted
 }
 
-func delMax[V any](elem *node[V]) (*node[V], bool) {
+func delMax[K constraints.Ordered, V any](elem *node[K, V]) (*node[K, V], bool) {
 	if elem == nil {
 		return nil, false
 	}

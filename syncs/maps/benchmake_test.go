@@ -9,7 +9,7 @@ import (
 )
 
 func BenchmarkMaps(b *testing.B) {
-	obj := maps.New[string](-1)
+	obj := maps.New("", -1)
 
 	for i := 0; i < 1_000_000; i++ {
 		obj.Set(strconv.Itoa(i), i)
@@ -20,7 +20,7 @@ func BenchmarkMaps(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		group := sync.WaitGroup{}
 
-		for f := 0; f < 10; f++ {
+		for index := 0; index < 10; index++ {
 			group.Add(1)
 
 			go func(num int) {
@@ -29,7 +29,7 @@ func BenchmarkMaps(b *testing.B) {
 				}
 
 				group.Done()
-			}(f)
+			}(index)
 		}
 
 		group.Wait()
@@ -48,7 +48,7 @@ func BenchmarkMap(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		group := sync.WaitGroup{}
 
-		for f := 0; f < 10; f++ {
+		for index := 0; index < 10; index++ {
 			group.Add(1)
 
 			go func(num int) {
@@ -57,7 +57,7 @@ func BenchmarkMap(b *testing.B) {
 				}
 
 				group.Done()
-			}(f)
+			}(index)
 		}
 
 		group.Wait()
@@ -76,7 +76,7 @@ func BenchmarkSyncMap(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		group := sync.WaitGroup{}
 
-		for f := 0; f < 10; f++ {
+		for index := 0; index < 10; index++ {
 			group.Add(1)
 
 			go func(num int) {
@@ -85,7 +85,7 @@ func BenchmarkSyncMap(b *testing.B) {
 				}
 
 				group.Done()
-			}(f)
+			}(index)
 		}
 
 		group.Wait()

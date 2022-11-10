@@ -7,7 +7,7 @@ import (
 )
 
 func ExampleMaps_Each() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)
@@ -28,7 +28,7 @@ func ExampleMaps_Each() {
 }
 
 func ExampleMaps_Range() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		syncMap.Set(i, i)
@@ -49,7 +49,7 @@ func ExampleMaps_Range() {
 }
 
 func ExampleMaps_GreateOrEqual() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)
@@ -70,7 +70,7 @@ func ExampleMaps_GreateOrEqual() {
 }
 
 func ExampleMaps_LessThan() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)
@@ -91,7 +91,7 @@ func ExampleMaps_LessThan() {
 }
 
 func ExampleMaps_EachDesc() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)
@@ -112,7 +112,7 @@ func ExampleMaps_EachDesc() {
 }
 
 func ExampleMaps_RangeDesc() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		syncMap.Set(i, i)
@@ -133,7 +133,7 @@ func ExampleMaps_RangeDesc() {
 }
 
 func ExampleMaps_GreateOrEqualDesc() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)
@@ -154,7 +154,7 @@ func ExampleMaps_GreateOrEqualDesc() {
 }
 
 func ExampleMaps_LessThanDesc() {
-	syncMap := maps.New[int](-1)
+	syncMap := maps.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
 		syncMap.Set(i, i)

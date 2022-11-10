@@ -1,7 +1,6 @@
 package maps_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/xuender/oils/assert"
@@ -11,7 +10,7 @@ import (
 func TestMaps_Each(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 1_000; i++ {
 		tmap.Set(i, i)
@@ -45,7 +44,7 @@ func TestMaps_Each(t *testing.T) {
 func TestMaps_Range(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		tmap.Set(i, i)
@@ -81,7 +80,7 @@ func TestMaps_Range(t *testing.T) {
 func TestMaps_GreateOrEqual(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		tmap.Set(i, i)
@@ -105,7 +104,7 @@ func TestMaps_GreateOrEqual(t *testing.T) {
 func TestMaps_LessThan(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		tmap.Set(i, i)
@@ -126,62 +125,10 @@ func TestMaps_LessThan(t *testing.T) {
 	assert.Equal(t, 20, len(list))
 }
 
-func TestMaps_Prefix(t *testing.T) {
-	t.Parallel()
-
-	tmap := maps.New[string](-1)
-
-	for i := 0; i < 100; i++ {
-		tmap.Set(fmt.Sprintf("a%d", i), i)
-	}
-
-	for i := 0; i < 10; i++ {
-		tmap.Set(fmt.Sprintf("b%d", i), i)
-	}
-
-	list := []int{}
-
-	tmap.Prefix(func(key string, value int) bool {
-		list = append(list, value)
-
-		return true
-	}, "b")
-
-	// for i := 0; i < 10; i++ {
-	// 	assert.Equal(t, list[i], i)
-	// }
-
-	assert.Equal(t, 10, len(list))
-}
-
-func TestMaps_Prefix2(t *testing.T) {
-	t.Parallel()
-
-	tmap := maps.New[string](-1)
-
-	tmap.Set(fmt.Sprintf("a%d", 1), 1)
-	tmap.Set(fmt.Sprintf("a%d", 2), 2)
-	tmap.Set(fmt.Sprintf("b%d", 3), 3)
-
-	list := []int{}
-
-	tmap.Prefix(func(key string, value int) bool {
-		list = append(list, value)
-
-		return true
-	}, "b")
-
-	// for i := 0; i < 10; i++ {
-	// 	assert.Equal(t, list[i], i)
-	// }
-
-	assert.Equal(t, 1, len(list))
-}
-
 func TestMaps_Iterator_EachDesc(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 	num := 100
 
 	for i := 0; i < num; i++ {
@@ -214,7 +161,7 @@ func TestMaps_Iterator_EachDesc(t *testing.T) {
 func TestMaps_Iterator_EachDesc2(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 	num := 3
 
 	for i := 0; i < num; i++ {
@@ -237,7 +184,7 @@ func TestMaps_Iterator_EachDesc2(t *testing.T) {
 func TestMaps_RangeDesc(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		tmap.Set(i, i)
@@ -274,7 +221,7 @@ func TestMaps_RangeDesc(t *testing.T) {
 func TestMaps_GreateOrEqualDesc(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 100; i++ {
 		tmap.Set(i, i)
@@ -298,7 +245,7 @@ func TestMaps_GreateOrEqualDesc(t *testing.T) {
 func TestMaps_LessThanDesc(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 30; i++ {
 		tmap.Set(i, i)
@@ -319,30 +266,24 @@ func TestMaps_LessThanDesc(t *testing.T) {
 	assert.Equal(t, 20, len(list))
 }
 
-func TestMaps_PrefixDesc(t *testing.T) {
+func TestMaps_Each_float32(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[string](-1)
+	tmap := maps.New(-0.1, -1)
 
-	for i := 0; i < 100; i++ {
-		tmap.Set(fmt.Sprintf("a%d", i), i)
-	}
-
-	for i := 0; i < 10; i++ {
-		tmap.Set(fmt.Sprintf("b%d", i), i)
-	}
+	tmap.Set(1.0, 1)
+	tmap.Set(1.1, 2)
+	tmap.Set(1.1111, 3)
+	tmap.Set(1.4, 4)
+	tmap.Set(2.0, 5)
 
 	list := []int{}
 
-	tmap.PrefixDesc(func(key string, value int) bool {
+	tmap.Each(func(key float64, value int) bool {
 		list = append(list, value)
 
 		return true
-	}, "b")
+	})
 
-	for i := 0; i < 10; i++ {
-		assert.Equal(t, list[i], 9-i)
-	}
-
-	assert.Equal(t, 10, len(list))
+	assert.Equals(t, []int{1, 2, 3, 4, 5}, list)
 }

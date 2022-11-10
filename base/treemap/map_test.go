@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/xuender/oils/assert"
-	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/base/treemap"
 	"github.com/xuender/oils/dbs"
 )
@@ -12,14 +11,14 @@ import (
 func TestNew(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New(0)
+	tmap := treemap.New(-1, -1)
 
 	for i := 0; i < 10000; i++ {
-		tmap.Set([]byte(base.Itoa(i)), i)
+		tmap.Set(i, i)
 	}
 
 	assert.Equal(t, 10000, tmap.Len())
-	value, _ := tmap.Get([]byte(base.Itoa(1000)))
+	value, _ := tmap.Get(1000)
 	assert.Equal(t, 1000, value)
 	tmap.Clear()
 	assert.Equal(t, 0, tmap.Len())
@@ -28,77 +27,78 @@ func TestNew(t *testing.T) {
 func TestTreeMap_Set(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New(0)
+	tmap := treemap.New(-1, -1)
 
-	tmap.Set(base.Number2Bytes(7), 7)
+	tmap.Set(7, 7)
 
 	for i := 0; i < 10000; i++ {
-		tmap.Set(base.Number2Bytes(i), i)
+		tmap.Set(i, i)
 	}
 
 	for i := 0; i < 10000; i++ {
-		num, has := tmap.Get(base.Number2Bytes(i))
+		num, has := tmap.Get(i)
 
 		assert.True(t, has)
 		assert.Equal(t, i, num)
 	}
 
-	_, has := tmap.Get(base.Number2Bytes(-3))
+	not, has := tmap.Get(-3)
 	assert.False(t, has)
+	assert.Equal(t, -1, not)
 }
 
 func TestTreeMap_Del(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New(0)
+	tmap := treemap.New(-1, -1)
 
-	tmap.Set(base.Number2Bytes(7), 7)
+	tmap.Set(7, 7)
 
 	for i := 0; i < 10000; i++ {
-		tmap.Set(base.Number2Bytes(i), i)
+		tmap.Set(i, i)
 	}
 
 	for i := 500; i < 2000; i++ {
-		tmap.Del(base.Number2Bytes(i))
+		tmap.Del(i)
 	}
 
-	tmap.Del(base.Number2Bytes(0))
+	tmap.Del(0)
 
 	for i := 1; i < 500; i++ {
-		num, has := tmap.Get(base.Number2Bytes(i))
+		num, has := tmap.Get(i)
 
 		assert.True(t, has)
 		assert.Equal(t, i, num)
 	}
 
 	for i := 2000; i < 10000; i++ {
-		num, has := tmap.Get(base.Number2Bytes(i))
+		num, has := tmap.Get(i)
 
 		assert.True(t, has)
 		assert.Equal(t, i, num)
 	}
 
 	for i := 500; i < 2000; i++ {
-		_, has := tmap.Get(base.Number2Bytes(i))
+		_, has := tmap.Get(i)
 		assert.False(t, has)
 	}
 
-	_, has := tmap.Get(base.Number2Bytes(0))
+	_, has := tmap.Get(0)
 	assert.False(t, has)
 }
 
 func TestTreeMap_Del1(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New[uint64](0)
+	tmap := treemap.New(uint64(0), -1)
 
-	for i := 0; i < 100000; i++ {
+	for num := 0; num < 100000; num++ {
 		if dbs.Rand()%7 > 0 {
 			key := dbs.Rand() / 100
-			tmap.Del(base.Number2Bytes(key))
+			tmap.Del(key)
 		} else {
 			key := dbs.Rand() / 100
-			tmap.Set(base.Number2Bytes(key), key)
+			tmap.Set(key, num)
 		}
 	}
 }
@@ -106,7 +106,7 @@ func TestTreeMap_Del1(t *testing.T) {
 func TestTreeMap_DelMin(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New(-1)
+	tmap := treemap.New(-1, -1)
 
 	min, _ := tmap.Min()
 	assert.Equal(t, -1, min)
@@ -114,13 +114,13 @@ func TestTreeMap_DelMin(t *testing.T) {
 	assert.False(t, tmap.DelMin())
 	assert.Equal(t, 0, tmap.Len())
 
-	tmap.Add(base.Number2Bytes(80), 80)
+	tmap.Add(80, 80)
 	assert.Equal(t, 1, tmap.Len())
-	tmap.Add(base.Number2Bytes(80), 80)
+	tmap.Add(80, 80)
 	assert.Equal(t, 1, tmap.Len())
 
 	for i := 0; i < 100; i++ {
-		tmap.Add(base.Number2Bytes(i), i)
+		tmap.Add(i, i)
 	}
 
 	assert.Equal(t, 100, tmap.Len())
@@ -136,14 +136,14 @@ func TestTreeMap_DelMin(t *testing.T) {
 func TestTreeMap_DelMax(t *testing.T) {
 	t.Parallel()
 
-	tmap := treemap.New(-1)
+	tmap := treemap.New(-1, -1)
 
 	max, _ := tmap.Max()
 	assert.Equal(t, -1, max)
 	assert.False(t, tmap.DelMax())
 
 	for i := 0; i < 100; i++ {
-		tmap.Add(base.Number2Bytes(i), i)
+		tmap.Add(i, i)
 	}
 
 	assert.True(t, tmap.DelMax())

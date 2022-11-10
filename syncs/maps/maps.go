@@ -1,42 +1,44 @@
 package maps
 
 import (
-	"bytes"
 	"sync"
 
 	"github.com/xuender/oils/base/treemap"
+	"golang.org/x/exp/constraints"
 )
 
 const _defaultGroup = 32
 
 // Maps 线程安全的map.
-type Maps[K, V any] struct {
-	maps     []*treemap.TreeMap[V]
-	locks    []sync.RWMutex
-	group    int
-	notFound V
+type Maps[K constraints.Ordered, V any] struct {
+	maps          []*treemap.TreeMap[K, V]
+	locks         []sync.RWMutex
+	group         int
+	notFoundKey   K
+	notFoundValue V
 }
 
 // New 新建map，默认分组32个.
-func New[K, V any](notFound V) *Maps[K, V] {
-	return NewByGroup[K](_defaultGroup, notFound)
+func New[K constraints.Ordered, V any](notFoundKey K, notFoundValue V) *Maps[K, V] {
+	return NewByGroup(_defaultGroup, notFoundKey, notFoundValue)
 }
 
 // NewByGroup 新建map，自定义分组数量.
-func NewByGroup[K, V any](group int, notFound V) *Maps[K, V] {
-	maps := make([]*treemap.TreeMap[V], group)
+func NewByGroup[K constraints.Ordered, V any](group int, notFoundKey K, notFoundValue V) *Maps[K, V] {
+	maps := make([]*treemap.TreeMap[K, V], group)
 	locks := make([]sync.RWMutex, group)
 
 	for i := 0; i < group; i++ {
-		maps[i] = treemap.New(notFound)
+		maps[i] = treemap.New(notFoundKey, notFoundValue)
 		locks[i] = sync.RWMutex{}
 	}
 
 	return &Maps[K, V]{
-		maps:     maps,
-		locks:    locks,
-		group:    group,
-		notFound: notFound,
+		maps:          maps,
+		locks:         locks,
+		group:         group,
+		notFoundKey:   notFoundKey,
+		notFoundValue: notFoundValue,
 	}
 }
 
@@ -55,11 +57,6 @@ func (p *Maps[K, V]) Len() int {
 
 // Get 取值.
 func (p *Maps[K, V]) Get(key K) (V, bool) {
-	return p.GetByBytes(Encode(key))
-}
-
-// GetByBytes 根据[]byte键取值.
-func (p *Maps[K, V]) GetByBytes(key []byte) (V, bool) {
 	group := Group(key, p.group)
 
 	p.locks[group].RLock()
@@ -70,11 +67,6 @@ func (p *Maps[K, V]) GetByBytes(key []byte) (V, bool) {
 
 // Set 设值.
 func (p *Maps[K, V]) Set(key K, value V) bool {
-	return p.SetByBytes(Encode(key), value)
-}
-
-// SetByBytes 根据[]byte键设值.
-func (p *Maps[K, V]) SetByBytes(key []byte, value V) bool {
 	group := Group(key, p.group)
 
 	p.locks[group].Lock()
@@ -85,11 +77,6 @@ func (p *Maps[K, V]) SetByBytes(key []byte, value V) bool {
 
 // Add 增加，如果有则忽略.
 func (p *Maps[K, V]) Add(key K, value V) bool {
-	return p.AddByBytes(Encode(key), value)
-}
-
-// AddByBytes 根据[]byte键增加，如果有则忽略.
-func (p *Maps[K, V]) AddByBytes(key []byte, value V) bool {
 	group := Group(key, p.group)
 
 	p.locks[group].Lock()
@@ -109,22 +96,14 @@ func (p *Maps[K, V]) Clear() {
 
 // Min 最小键值.
 func (p *Maps[K, V]) Min() (V, K) {
-	value, key := p.MinByBytes()
-
-	return value, Decode[K](key)
-}
-
-// Min 最小键值,[]byte.
-func (p *Maps[K, V]) MinByBytes() (V, []byte) {
-	var key []byte
-
-	value := p.notFound
+	key := p.notFoundKey
+	value := p.notFoundValue
 
 	for group := 0; group < p.group; group++ {
 		p.locks[group].RLock()
 		valueTmp, keyTmp := p.maps[group].Min()
 
-		if keyTmp != nil && (key == nil || bytes.Compare(key, keyTmp) >= 0) {
+		if keyTmp != p.notFoundKey && (key == p.notFoundKey || key >= keyTmp) {
 			key = keyTmp
 			value = valueTmp
 		}
@@ -137,22 +116,14 @@ func (p *Maps[K, V]) MinByBytes() (V, []byte) {
 
 // Max 最大键值.
 func (p *Maps[K, V]) Max() (V, K) {
-	value, key := p.MaxByBytes()
-
-	return value, Decode[K](key)
-}
-
-// Min 最小键值,[]byte.
-func (p *Maps[K, V]) MaxByBytes() (V, []byte) {
-	var key []byte
-
-	value := p.notFound
+	key := p.notFoundKey
+	value := p.notFoundValue
 
 	for group := 0; group < p.group; group++ {
 		p.locks[group].RLock()
 		valueTmp, keyTmp := p.maps[group].Max()
 
-		if keyTmp != nil && bytes.Compare(key, keyTmp) <= 0 {
+		if keyTmp != p.notFoundKey && key <= keyTmp {
 			key = keyTmp
 			value = valueTmp
 		}
@@ -165,11 +136,6 @@ func (p *Maps[K, V]) MaxByBytes() (V, []byte) {
 
 // Del 删除.
 func (p *Maps[K, V]) Del(key K) bool {
-	return p.DelByBytes(Encode(key))
-}
-
-// DelByBytes 根据[]byte键删除.
-func (p *Maps[K, V]) DelByBytes(key []byte) bool {
 	group := Group(key, p.group)
 
 	p.locks[group].Lock()
@@ -180,22 +146,22 @@ func (p *Maps[K, V]) DelByBytes(key []byte) bool {
 
 // DelMin 删除最小键.
 func (p *Maps[K, V]) DelMin() bool {
-	_, key := p.MinByBytes()
+	_, key := p.Min()
 
-	if key == nil {
+	if key == p.notFoundKey {
 		return false
 	}
 
-	return p.DelByBytes(key)
+	return p.Del(key)
 }
 
 // DelMax 删除最大键.
 func (p *Maps[K, V]) DelMax() bool {
-	_, key := p.MaxByBytes()
+	_, key := p.Max()
 
-	if key == nil {
+	if key == p.notFoundKey {
 		return false
 	}
 
-	return p.DelByBytes(key)
+	return p.Del(key)
 }

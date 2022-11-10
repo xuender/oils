@@ -8,7 +8,7 @@ import (
 )
 
 func Example() {
-	syncMap := maps.New[string](-1)
+	syncMap := maps.NewString(-1)
 
 	for i := 0; i <= 100; i++ {
 		syncMap.Set(strconv.Itoa(i), i)

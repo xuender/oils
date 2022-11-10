@@ -1,46 +1,41 @@
 package treemap
 
 import (
-	"bytes"
+	"golang.org/x/exp/constraints"
 )
 
-type ItemIterator[V any] func(key []byte, value V) bool
+type ItemIterator[K constraints.Ordered, V any] func(key K, value V) bool
 
 // Each 遍历.
-func (p *TreeMap[V]) Each(iterator ItemIterator[V]) {
+func (p *TreeMap[K, V]) Each(iterator ItemIterator[K, V]) {
 	p.rangeAsc(iterator, p.root)
 }
 
 // Range 范围.
-func (p *TreeMap[V]) Range(iterator ItemIterator[V], greaterOrEqual, lessThan []byte) {
+func (p *TreeMap[K, V]) Range(iterator ItemIterator[K, V], greaterOrEqual, lessThan K) {
 	p.rangeAsc(iterator, p.root, greaterOrEqual, lessThan)
 }
 
 // GreateOrEqual 大于等于.
-func (p *TreeMap[V]) GreateOrEqual(iterator ItemIterator[V], greaterOrEqual []byte) {
+func (p *TreeMap[K, V]) GreateOrEqual(iterator ItemIterator[K, V], greaterOrEqual K) {
 	p.rangeAsc(iterator, p.root, greaterOrEqual)
 }
 
 // LessThan 小于.
-func (p *TreeMap[V]) LessThan(iterator ItemIterator[V], lessThan []byte) {
-	p.rangeAsc(iterator, p.root, nil, lessThan)
+func (p *TreeMap[K, V]) LessThan(iterator ItemIterator[K, V], lessThan K) {
+	p.rangeAsc(iterator, p.root, p.notFoundKey, lessThan)
 }
 
-// Prefix 前缀.
-func (p *TreeMap[V]) Prefix(iterator ItemIterator[V], prefix []byte) {
-	p.rangeAsc(iterator, p.root, prefix, BytesInc(prefix))
-}
-
-func (p *TreeMap[V]) rangeAsc(iterator ItemIterator[V], elem *node[V], infs ...[]byte) bool {
+func (p *TreeMap[K, V]) rangeAsc(iterator ItemIterator[K, V], elem *node[K, V], infs ...K) bool {
 	if elem == nil {
 		return true
 	}
 
-	if len(infs) > 1 && bytes.Compare(elem.key, infs[1]) >= 0 {
+	if len(infs) > 1 && elem.key >= infs[1] {
 		return p.rangeAsc(iterator, elem.left, infs...)
 	}
 
-	if len(infs) > 0 && bytes.Compare(elem.key, infs[0]) < 0 {
+	if len(infs) > 0 && elem.key < infs[0] {
 		return p.rangeAsc(iterator, elem.right, infs...)
 	}
 
@@ -56,40 +51,35 @@ func (p *TreeMap[V]) rangeAsc(iterator ItemIterator[V], elem *node[V], infs ...[
 }
 
 // EachDesc 倒叙遍历.
-func (p *TreeMap[V]) EachDesc(iterator ItemIterator[V]) {
+func (p *TreeMap[K, V]) EachDesc(iterator ItemIterator[K, V]) {
 	p.rangeDesc(iterator, p.root)
 }
 
 // RangeDesc 倒叙范围.
-func (p *TreeMap[V]) RangeDesc(iterator ItemIterator[V], greaterOrEqual, lessThan []byte) {
+func (p *TreeMap[K, V]) RangeDesc(iterator ItemIterator[K, V], greaterOrEqual, lessThan K) {
 	p.rangeDesc(iterator, p.root, greaterOrEqual, lessThan)
 }
 
 // GreateOrEqualDesc 倒叙大于等于.
-func (p *TreeMap[V]) GreateOrEqualDesc(iterator ItemIterator[V], greaterOrEqual []byte) {
+func (p *TreeMap[K, V]) GreateOrEqualDesc(iterator ItemIterator[K, V], greaterOrEqual K) {
 	p.rangeDesc(iterator, p.root, greaterOrEqual)
 }
 
 // LessThanDesc 倒叙小于.
-func (p *TreeMap[V]) LessThanDesc(iterator ItemIterator[V], lessThan []byte) {
-	p.rangeDesc(iterator, p.root, nil, lessThan)
+func (p *TreeMap[K, V]) LessThanDesc(iterator ItemIterator[K, V], lessThan K) {
+	p.rangeDesc(iterator, p.root, p.notFoundKey, lessThan)
 }
 
-// PrefixDesc 倒叙前缀.
-func (p *TreeMap[V]) PrefixDesc(iterator ItemIterator[V], prefix []byte) {
-	p.rangeDesc(iterator, p.root, prefix, BytesInc(prefix))
-}
-
-func (p *TreeMap[V]) rangeDesc(iterator ItemIterator[V], elem *node[V], infs ...[]byte) bool {
+func (p *TreeMap[K, V]) rangeDesc(iterator ItemIterator[K, V], elem *node[K, V], infs ...K) bool {
 	if elem == nil {
 		return true
 	}
 
-	if len(infs) > 0 && bytes.Compare(elem.key, infs[0]) < 0 {
+	if len(infs) > 0 && elem.key < infs[0] {
 		return p.rangeDesc(iterator, elem.right, infs...)
 	}
 
-	if len(infs) > 1 && bytes.Compare(elem.key, infs[1]) >= 0 {
+	if len(infs) > 1 && elem.key >= infs[1] {
 		return p.rangeDesc(iterator, elem.left, infs...)
 	}
 

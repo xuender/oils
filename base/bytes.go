@@ -8,7 +8,7 @@ import (
 )
 
 func Number2Bytes[T constraints.Integer | constraints.Float](num T) []byte {
-	switch (interface{})(num).(type) {
+	switch (any)(num).(type) {
 	case float32, float64:
 		return Number2Bytes(math.Float64bits(float64(num)))
 	}
@@ -33,7 +33,7 @@ func Bytes2Number[T constraints.Integer | constraints.Float](data []byte) T {
 
 	tt := new(T)
 
-	switch (interface{})(*tt).(type) {
+	switch (any)(*tt).(type) {
 	case float32, float64:
 		return T(math.Float64frombits(num))
 	}

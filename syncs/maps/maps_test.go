@@ -11,7 +11,7 @@ import (
 func TestNew(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](0)
+	tmap := maps.New(-1, -1)
 
 	for i := 0; i < 10000; i++ {
 		tmap.Set(i, i)
@@ -27,7 +27,7 @@ func TestNew(t *testing.T) {
 func TestMaps_Set(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](0)
+	tmap := maps.New(-1, -1)
 
 	tmap.Set(7, 7)
 
@@ -49,7 +49,7 @@ func TestMaps_Set(t *testing.T) {
 func TestMaps_Del(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](0)
+	tmap := maps.New(-1, -1)
 
 	tmap.Set(7, 7)
 
@@ -89,7 +89,7 @@ func TestMaps_Del(t *testing.T) {
 func TestMaps_Del1(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[uint64](0)
+	tmap := maps.New(uint64(0), -1)
 
 	for index := 0; index < 100000; index++ {
 		if dbs.Rand()%7 > 0 {
@@ -105,7 +105,7 @@ func TestMaps_Del1(t *testing.T) {
 func TestMaps_DelMin(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	min, _ := tmap.Min()
 	assert.Equal(t, -1, min)
@@ -135,7 +135,7 @@ func TestMaps_DelMin(t *testing.T) {
 func TestMaps_DelMax(t *testing.T) {
 	t.Parallel()
 
-	tmap := maps.New[int](-1)
+	tmap := maps.New(-1, -1)
 
 	max, _ := tmap.Max()
 	assert.Equal(t, -1, max)

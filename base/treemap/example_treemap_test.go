@@ -7,17 +7,17 @@ import (
 )
 
 func Example() {
-	tmap := treemap.New(0)
+	tmap := treemap.New(-1, -1)
 
 	for i := 0; i < 10; i++ {
-		tmap.Set([]byte{byte(i)}, i)
+		tmap.Set(i, i)
 	}
 
 	for i := 3; i < 8; i++ {
-		tmap.Del([]byte{byte(i)})
+		tmap.Del(i)
 	}
 
-	tmap.Each(func(key []byte, value int) bool {
+	tmap.Each(func(key, value int) bool {
 		fmt.Println(value)
 
 		return true

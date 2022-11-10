@@ -1,20 +1,22 @@
 package treemap
 
-type node[V any] struct {
-	right *node[V]
-	left  *node[V]
+import "golang.org/x/exp/constraints"
+
+type node[K constraints.Ordered, V any] struct {
+	right *node[K, V]
+	left  *node[K, V]
 	black bool
-	key   []byte
+	key   K
 	value V
 }
 
-func (p *node[V]) flip() {
+func (p *node[K, V]) flip() {
 	p.black = !p.black
 	p.left.black = !p.left.black
 	p.right.black = !p.right.black
 }
 
-func (p *node[V]) moveRedLeft() *node[V] {
+func (p *node[K, V]) moveRedLeft() *node[K, V] {
 	p.flip()
 
 	if isRed(p.right.left) {
@@ -28,7 +30,7 @@ func (p *node[V]) moveRedLeft() *node[V] {
 	return p
 }
 
-func (p *node[V]) rotateLeft() *node[V] {
+func (p *node[K, V]) rotateLeft() *node[K, V] {
 	right := p.right
 	// if right.black {
 	// 	panic(ErrBlack)
@@ -41,7 +43,7 @@ func (p *node[V]) rotateLeft() *node[V] {
 	return right
 }
 
-func (p *node[V]) rotateRight() *node[V] {
+func (p *node[K, V]) rotateRight() *node[K, V] {
 	left := p.left
 	// if left.black {
 	// 	panic(ErrBlack)
@@ -54,7 +56,7 @@ func (p *node[V]) rotateRight() *node[V] {
 	return left
 }
 
-func (p *node[V]) moveRedRight() *node[V] {
+func (p *node[K, V]) moveRedRight() *node[K, V] {
 	p.flip()
 
 	if isRed(p.left.left) {
@@ -67,7 +69,7 @@ func (p *node[V]) moveRedRight() *node[V] {
 	return p
 }
 
-func (p *node[V]) fixUp() *node[V] {
+func (p *node[K, V]) fixUp() *node[K, V] {
 	elem := p
 
 	if isRed(elem.right) {
@@ -85,7 +87,7 @@ func (p *node[V]) fixUp() *node[V] {
 	return elem
 }
 
-func (p *node[V]) walkUpRot23() *node[V] {
+func (p *node[K, V]) walkUpRot23() *node[K, V] {
 	elem := p
 
 	if isRed(elem.right) && !isRed(elem.left) {
@@ -103,7 +105,7 @@ func (p *node[V]) walkUpRot23() *node[V] {
 	return elem
 }
 
-func isRed[V any](elem *node[V]) bool {
+func isRed[K constraints.Ordered, V any](elem *node[K, V]) bool {
 	if elem == nil {
 		return false
 	}
