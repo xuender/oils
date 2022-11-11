@@ -27,3 +27,11 @@ func TestNotEqual(t *testing.T) {
 	assert.True(t, assert.NotEqual(&errorfer{}, 1, 2))
 	assert.False(t, assert.NotEqual(&errorfer{}, 1, 1))
 }
+
+func TestNotEquals(t *testing.T) {
+	t.Parallel()
+
+	assert.True(t, assert.NotEquals(&errorfer{}, []int{1}, []int{2}))
+	assert.True(t, assert.NotEquals(&errorfer{}, []int{1}, []int{2, 3}))
+	assert.False(t, assert.NotEquals(&errorfer{}, []int{1}, []int{1}))
+}
