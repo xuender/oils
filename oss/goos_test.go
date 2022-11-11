@@ -17,3 +17,23 @@ func TestIsWindows(t *testing.T) {
 		assert.False(t, oss.IsWindows())
 	}
 }
+
+func TestIsLinux(t *testing.T) {
+	t.Parallel()
+
+	if runtime.GOOS == "linux" {
+		assert.True(t, oss.IsLinux())
+	} else {
+		assert.False(t, oss.IsLinux())
+	}
+}
+
+func TestIsDarwin(t *testing.T) {
+	t.Parallel()
+
+	if runtime.GOOS == "darwin" {
+		assert.True(t, oss.IsDarwin())
+	} else {
+		assert.False(t, oss.IsDarwin())
+	}
+}

@@ -8,9 +8,8 @@ import (
 	"github.com/xuender/oils/logs"
 )
 
+// nolint: paralleltest
 func TestInfo(t *testing.T) {
-	t.Parallel()
-
 	type args struct {
 		funcName string
 		funcCall func(...interface{})

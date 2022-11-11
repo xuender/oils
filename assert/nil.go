@@ -10,7 +10,7 @@ func Nil(errorf errorfer, value any, msgAndArgs ...any) bool {
 		return true
 	}
 
-	if val := reflect.ValueOf(value); !val.IsValid() && val.IsNil() {
+	if val := reflect.ValueOf(value); val.IsNil() {
 		return true
 	}
 

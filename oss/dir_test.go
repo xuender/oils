@@ -2,6 +2,7 @@ package oss_test
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/xuender/oils/assert"
@@ -23,6 +24,8 @@ func TestMkdirParent(t *testing.T) {
 	path := "/tmp/a/b/c/d"
 
 	os.Remove(path)
+	os.Remove(filepath.Dir(path))
 	oss.MkdirParent(path)
 	assert.True(t, oss.Exist("/tmp/a/b/c"))
+	os.Remove(path)
 }

@@ -17,3 +17,9 @@ func TestStateFile(t *testing.T) {
 	assert.Equal(t, oss.Run, oss.StateByFile(filepath.Join(os.TempDir(), "go-build123", "exe", "main")))
 	assert.Equal(t, oss.Test, oss.StateByFile(filepath.Join(os.TempDir(), "go-build123", "main.test")))
 }
+
+func TestState(t *testing.T) {
+	t.Parallel()
+
+	assert.Equal(t, oss.Test, oss.State())
+}

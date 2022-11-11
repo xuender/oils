@@ -9,9 +9,8 @@ import (
 	"github.com/xuender/oils/oss"
 )
 
+// nolint: paralleltest
 func TestLogName(t *testing.T) {
-	t.Parallel()
-
 	patches := gomonkey.ApplyFuncReturn(oss.IsWindows, false)
 
 	assert.Equal(t, "/var/tmp/logs.log", logs.LogName())

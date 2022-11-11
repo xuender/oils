@@ -9,9 +9,8 @@ import (
 	"github.com/xuender/oils/nets"
 )
 
+// nolint: paralleltest
 func TestGetIP(t *testing.T) {
-	t.Parallel()
-
 	localAddr := nets.GetIP()
 
 	assert.Equal(t, 4, len(localAddr))

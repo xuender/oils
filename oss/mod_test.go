@@ -4,15 +4,19 @@ import (
 	"runtime/debug"
 	"testing"
 
+	"github.com/agiledragon/gomonkey/v2"
+	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/oss"
 )
 
+// nolint: paralleltest
 func TestGetMod(t *testing.T) {
-	t.Parallel()
+	assert.NotNil(t, oss.GetMod("test"))
 
-	if mod := oss.GetMod("test"); mod == nil {
-		t.Errorf("GetMod() return= %v, wantErr %v", mod, nil)
-	}
+	patches := gomonkey.ApplyFuncReturn(debug.ReadBuildInfo, nil, false)
+	defer patches.Reset()
+
+	assert.Nil(t, oss.GetMod("test"))
 }
 
 // nolint: exhaustruct

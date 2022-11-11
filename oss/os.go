@@ -3,17 +3,16 @@ package oss
 import (
 	"os"
 	"os/exec"
-	"runtime"
 )
 
 // Open 打开文件.
 func Open(file string) error {
-	switch runtime.GOOS {
-	case "darwin":
+	switch {
+	case IsDarwin():
 		return exec.Command("open", file).Start()
-	case "windows":
+	case IsWindows():
 		return exec.Command("cmd", "/k", "start", file).Start()
-	case "linux":
+	case IsLinux():
 		return exec.Command("xdg-open", file).Start()
 	default:
 		return ErrNotDefined
@@ -22,10 +21,10 @@ func Open(file string) error {
 
 // Show 在目录中显示.
 func Show(file string) error {
-	switch runtime.GOOS {
-	case "darwin":
+	switch {
+	case IsDarwin():
 		return exec.Command("open", "-R", file).Start()
-	case "windows":
+	case IsWindows():
 		info, err := os.Stat(file)
 		if err != nil {
 			return err
@@ -36,7 +35,7 @@ func Show(file string) error {
 		}
 
 		return exec.Command("cmd", "/k", "explorer", "/select", file).Start()
-	case "linux":
+	case IsLinux():
 		return exec.Command("nautilus", file).Start()
 	default:
 		return ErrNotDefined
