@@ -6,6 +6,7 @@ import (
 	"github.com/xuender/oils/nets"
 )
 
+// nolint: testableexamples
 func ExampleGetIP() {
 	ip := nets.GetIP()
 	fmt.Println(ip)

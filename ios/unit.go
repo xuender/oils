@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	_ = 1 << (10 * iota)
+	_ = 1 << (base.Ten * iota)
 	Kilo
 	Meg
 	Giga

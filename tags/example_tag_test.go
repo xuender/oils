@@ -6,12 +6,6 @@ import (
 	"github.com/xuender/oils/tags"
 )
 
-const (
-	a = 1 << iota
-	b
-	c
-)
-
 func ExampleTag() {
 	var tag tags.Tag
 
@@ -28,8 +22,8 @@ func ExampleTag() {
 
 	fmt.Println(tag.All(3, 4))
 	fmt.Println(tag.All(1, 3))
-	fmt.Println(tag.Any(3, 4))
 	fmt.Println(tag.Any(4, 5))
+	fmt.Println(tag.Any(3, 4))
 
 	// Output:
 	// true
@@ -39,6 +33,6 @@ func ExampleTag() {
 	// 3
 	// false
 	// true
-	// true
 	// false
+	// true
 }

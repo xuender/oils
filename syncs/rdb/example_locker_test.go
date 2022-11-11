@@ -5,6 +5,7 @@ import (
 	"github.com/xuender/oils/syncs/rdb"
 )
 
+// nolint: testableexamples
 func ExampleLocker() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "192.168.1.11:6379",
@@ -13,7 +14,7 @@ func ExampleLocker() {
 	})
 	locker := rdb.NewLocker(client)
 
-	locker.Lock("test", func() error {
+	_ = locker.Lock("test", func() error {
 		// do something
 		return nil
 	})

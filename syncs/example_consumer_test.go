@@ -7,6 +7,7 @@ import (
 	"github.com/xuender/oils/syncs"
 )
 
+// nolint: testableexamples
 func ExampleConsumeFunc() {
 	syncs.ConsumeFunc(10, 3, 3, time.Millisecond, func(produceChan chan int) {
 		for i := 0; i < 100; i++ {

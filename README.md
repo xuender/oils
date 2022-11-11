@@ -19,6 +19,16 @@ Golang 常用工具类库.
 
 基础的集合操作.
 
+### ordered
+
+有序集合.
+
+### treemap
+
+左倾红黑树 Map.
+
+left-leaning red-black tree map.
+
 ## cryptos
 
 加密.
@@ -27,13 +37,25 @@ Golang 常用工具类库.
 
 数据库.
 
-## distributed
+### cache
 
-基于 redis 分布式.
+内存缓存
+
+### gorms
+
+gorm 相关.
+
+### sqls
+
+SQL 相关.
 
 ## gins
 
 gin web 服务.
+
+### tests
+
+gin 测试.
 
 ## hashs
 
@@ -51,6 +73,10 @@ gin web 服务.
 
 使用 uber 的 zap 日志.
 
+## maths
+
+数学.
+
 ## nets
 
 网络服务.
@@ -62,6 +88,18 @@ gin web 服务.
 ## syncs
 
 异步控制.
+
+### maps
+
+协程安全的有序Map.
+
+### rdb
+
+基于 redis 分布式.
+
+## tags
+
+基于 BitMap 的标签.
 
 ## times
 

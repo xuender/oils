@@ -7,5 +7,10 @@ import (
 )
 
 func ExampleRand() {
-	fmt.Println(dbs.Rand())
+	num := dbs.Rand()
+
+	fmt.Println(num > 0)
+
+	// Output:
+	// true
 }

@@ -26,10 +26,11 @@ func TestLimit_Wait1(t *testing.T) {
 	client := rdb_mock.NewMockCmdable(ctrl)
 	limit := rdb.NewLimiter(client, "test", 3)
 	cmd1 := new(redis.BoolCmd)
-	cmd1.SetVal(true)
 	cmd2 := new(redis.IntCmd)
-	cmd2.SetVal(0)
 	cmd3 := new(redis.IntCmd)
+
+	cmd1.SetVal(true)
+	cmd2.SetVal(0)
 	cmd3.SetVal(1)
 
 	client.EXPECT().SetNX(gomock.Any(), "_test_", gomock.Any(), gomock.Any()).Return(cmd1).MinTimes(0).MaxTimes(1)
@@ -46,12 +47,13 @@ func TestLimit_Wait2(t *testing.T) {
 	client := rdb_mock.NewMockCmdable(ctrl)
 	limit := rdb.NewLimiter(client, "test", 10)
 	cmd3 := new(redis.IntCmd)
-	cmd3.SetVal(1)
 	cmd4 := new(redis.BoolCmd)
-	cmd4.SetVal(false)
 	cmd5 := new(redis.IntCmd)
-	cmd5.SetVal(2)
 	cmd6 := new(redis.DurationCmd)
+
+	cmd3.SetVal(1)
+	cmd4.SetVal(false)
+	cmd5.SetVal(2)
 	cmd6.SetVal(2)
 
 	client.EXPECT().SetNX(gomock.Any(), "_test_", gomock.Any(), gomock.Any()).Return(cmd4).MaxTimes(2)
@@ -69,14 +71,15 @@ func TestLimit_Wait3(t *testing.T) {
 	client := rdb_mock.NewMockCmdable(ctrl)
 	limit := rdb.NewLimiter(client, "test", 10)
 	cmd2 := new(redis.IntCmd)
-	cmd2.SetVal(0)
 	cmd3 := new(redis.IntCmd)
-	cmd3.SetVal(1)
 	cmd4 := new(redis.BoolCmd)
-	cmd4.SetVal(false)
 	cmd5 := new(redis.IntCmd)
-	cmd5.SetVal(2)
 	cmd6 := new(redis.DurationCmd)
+
+	cmd2.SetVal(0)
+	cmd3.SetVal(1)
+	cmd4.SetVal(false)
+	cmd5.SetVal(2)
 	cmd6.SetVal(-1)
 
 	client.EXPECT().SetNX(gomock.Any(), "_test_", gomock.Any(), gomock.Any()).Return(cmd4).MaxTimes(2)
@@ -95,17 +98,18 @@ func TestLimit_Try1(t *testing.T) {
 	client := rdb_mock.NewMockCmdable(ctrl)
 	limit := rdb.NewLimiter(client, "test", 3)
 	cmd1 := new(redis.BoolCmd)
-	cmd1.SetVal(true)
 	cmd2 := new(redis.IntCmd)
-	cmd2.SetVal(0)
 	cmd3 := new(redis.IntCmd)
+
+	cmd1.SetVal(true)
+	cmd2.SetVal(0)
 	cmd3.SetVal(1)
 
 	client.EXPECT().SetNX(gomock.Any(), "_test_", gomock.Any(), gomock.Any()).Return(cmd1).MinTimes(0).MaxTimes(1)
 	client.EXPECT().Del(gomock.Any(), "test").Return(cmd2).MinTimes(0).MaxTimes(1)
 	client.EXPECT().Incr(gomock.Any(), "test").Return(cmd3).MinTimes(0).MaxTimes(1)
 
-	limit.Try()
+	_ = limit.Try()
 }
 
 func TestLimit_Try2(t *testing.T) {
@@ -115,12 +119,13 @@ func TestLimit_Try2(t *testing.T) {
 	client := rdb_mock.NewMockCmdable(ctrl)
 	limit := rdb.NewLimiter(client, "test", 10)
 	cmd3 := new(redis.IntCmd)
-	cmd3.SetVal(1)
 	cmd4 := new(redis.BoolCmd)
-	cmd4.SetVal(false)
 	cmd5 := new(redis.IntCmd)
-	cmd5.SetVal(2)
 	cmd6 := new(redis.DurationCmd)
+
+	cmd3.SetVal(1)
+	cmd4.SetVal(false)
+	cmd5.SetVal(2)
 	cmd6.SetVal(2)
 
 	client.EXPECT().SetNX(gomock.Any(), "_test_", gomock.Any(), gomock.Any()).Return(cmd4).MaxTimes(2)
@@ -128,5 +133,5 @@ func TestLimit_Try2(t *testing.T) {
 	client.EXPECT().PTTL(gomock.Any(), "_test_").Return(cmd6).MaxTimes(1)
 	client.EXPECT().Incr(gomock.Any(), "test").Return(cmd3).MaxTimes(1)
 
-	limit.Try()
+	_ = limit.Try()
 }

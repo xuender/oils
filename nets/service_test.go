@@ -48,7 +48,7 @@ func TestService_Handler(t *testing.T) {
 	handler := &testHandler{}
 	service := nets.NewService(handler)
 	hand := service.Handler("api")
-	req := httptest.NewRequest("GET", "/api", bytes.NewReader([]byte("test")))
+	req := httptest.NewRequest(http.MethodGet, "/api", bytes.NewReader([]byte("test")))
 	res := &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
 
 	hand.ServeHTTP(res, req)
@@ -61,13 +61,13 @@ func TestWithNotFound(t *testing.T) {
 
 	handler := &testHandler{}
 	notHandler := nets.WithNotFound("/api", handler)
-	req := httptest.NewRequest("GET", "/", bytes.NewReader([]byte("test")))
+	req := httptest.NewRequest(http.MethodGet, "/", bytes.NewReader([]byte("test")))
 	res := &httptest.ResponseRecorder{}
 
 	notHandler.ServeHTTP(res, req)
 	assert.Equal(t, http.StatusNotFound, res.Code)
 
-	req = httptest.NewRequest("GET", "/api/", bytes.NewReader([]byte("test")))
+	req = httptest.NewRequest(http.MethodGet, "/api/", bytes.NewReader([]byte("test")))
 	res = &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
 
 	notHandler.ServeHTTP(res, req)
@@ -80,7 +80,7 @@ func TestWithLogging(t *testing.T) {
 
 	handler := &testHandler{}
 	logHander := nets.WithLogging(handler)
-	req := httptest.NewRequest("GET", "/", bytes.NewReader([]byte("test")))
+	req := httptest.NewRequest(http.MethodGet, "/", bytes.NewReader([]byte("test")))
 	res := &httptest.ResponseRecorder{}
 
 	logHander.ServeHTTP(res, req)
@@ -95,14 +95,14 @@ func TestWithRecover(t *testing.T) {
 	handler := &testHandler{}
 	recoverHandler := nets.WithRecover(handler)
 
-	req := httptest.NewRequest("POST", "/", bytes.NewReader([]byte("test")))
+	req := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader([]byte("test")))
 	res := &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
 
 	recoverHandler.ServeHTTP(res, req)
 	assert.Equal(t, 500, res.Code)
 	assert.Equal(t, 7, len(res.Body.Bytes()))
 
-	req = httptest.NewRequest("POST", "/", bytes.NewReader([]byte("test")))
+	req = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader([]byte("test")))
 	// req.Header = map[string][]string{}
 	req.Header = http.Header(base.NewMapSameValue([]string{"json"}, nets.ContentType))
 	res = &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
@@ -111,7 +111,7 @@ func TestWithRecover(t *testing.T) {
 	assert.Equal(t, 500, res.Code)
 	assert.Equal(t, 15, len(res.Body.Bytes()))
 
-	req = httptest.NewRequest("GET", "/", bytes.NewReader([]byte("test")))
+	req = httptest.NewRequest(http.MethodGet, "/", bytes.NewReader([]byte("test")))
 	res = &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
 
 	recoverHandler.ServeHTTP(res, req)

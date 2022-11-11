@@ -8,7 +8,8 @@ import (
 	"github.com/xuender/oils/times"
 )
 
-func ExampleLimit() {
+// nolint: testableexamples
+func ExampleLimiter() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "192.168.1.11:6379",
 		Password: "",
@@ -33,6 +34,4 @@ func ExampleLimit() {
 	_ = limit.Try()
 
 	fmt.Println(times.ClockStop(clock))
-	// 1Output:
-	// 4.188548639s
 }
