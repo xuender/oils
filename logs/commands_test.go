@@ -31,6 +31,7 @@ func TestInfo(t *testing.T) {
 			switch arg := args[0].(type) {
 			case int:
 				data = arg
+			default:
 			}
 		})
 
@@ -70,6 +71,7 @@ func TestInfof(t *testing.T) {
 			switch arg := args[0].(type) {
 			case int:
 				data = arg
+			default:
 			}
 		})
 
