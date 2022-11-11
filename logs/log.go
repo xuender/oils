@@ -3,8 +3,8 @@ package logs
 import (
 	"os"
 	"path/filepath"
-	"runtime"
 
+	"github.com/xuender/oils/oss"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	lumberjack "gopkg.in/natefinch/lumberjack.v2"
@@ -68,7 +68,7 @@ func LogName(paths ...string) string {
 		return filepath.Join(filepath.Join(paths...), name)
 	}
 
-	if runtime.GOOS == "windows" {
+	if oss.IsWindows() {
 		return filepath.Join(filepath.Dir(command), name)
 	}
 

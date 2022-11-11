@@ -1,24 +1,26 @@
 package logs_test
 
 import (
-	"os"
-	"path/filepath"
-	"runtime"
 	"testing"
 
+	"github.com/agiledragon/gomonkey/v2"
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/logs"
+	"github.com/xuender/oils/oss"
 )
 
 func TestLogName(t *testing.T) {
 	t.Parallel()
 
-	switch runtime.GOOS {
-	case "window":
-		assert.Equal(t, filepath.Join(filepath.Base(os.Args[0]), "logs.log"), logs.LogName())
-	default:
-		assert.Equal(t, "/var/tmp/logs.log", logs.LogName())
-	}
+	patches := gomonkey.ApplyFuncReturn(oss.IsWindows, false)
+
+	assert.Equal(t, "/var/tmp/logs.log", logs.LogName())
+	patches.Reset()
+
+	patches = gomonkey.ApplyFuncReturn(oss.IsWindows, true)
+
+	assert.NotEqual(t, "/var/tmp/logs.log", logs.LogName())
+	patches.Reset()
 }
 
 func TestRotateLog(t *testing.T) {

@@ -17,7 +17,8 @@ func TestGetIP(t *testing.T) {
 	assert.Equal(t, 4, len(localAddr))
 	assert.NotEqual(t, 0, localAddr[0])
 
-	gomonkey.ApplyFuncReturn(net.Dial, nil, net.ErrClosed)
+	patch := gomonkey.ApplyFuncReturn(net.Dial, nil, net.ErrClosed)
+	defer patch.Reset()
 
 	localAddr = nets.GetIP()
 
