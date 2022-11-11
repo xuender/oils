@@ -26,14 +26,11 @@ func TestInfo(t *testing.T) {
 		{funcName: "Fatal", funcCall: logs.Fatal},
 	} {
 		data := 0
-		patches := gomonkey.ApplyMethodFunc(logs.GetLog(), arg.funcName, func(args interface{}) {
+		patches := gomonkey.ApplyMethodFunc(logs.GetLog(), arg.funcName, func(args ...interface{}) {
 			// nolint
-			switch arg := args.(type) {
-			case []interface{}:
-				switch num := arg[0].(type) {
-				case int:
-					data = num
-				}
+			switch arg := args[0].(type) {
+			case int:
+				data = arg
 			}
 		})
 
@@ -70,13 +67,9 @@ func TestInfof(t *testing.T) {
 	} {
 		data := 0
 		patches := gomonkey.ApplyMethodFunc(logs.GetLog(), arg.funcName, func(str string, args ...interface{}) {
-			// nolint
 			switch arg := args[0].(type) {
-			case []interface{}:
-				switch num := arg[0].(type) {
-				case int:
-					data = num
-				}
+			case int:
+				data = arg
 			}
 		})
 
