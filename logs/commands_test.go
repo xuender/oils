@@ -81,3 +81,25 @@ func TestInfof(t *testing.T) {
 		assert.Equal(t, 1, data)
 	}
 }
+
+func TestSync(t *testing.T) {
+	t.Parallel()
+
+	run := false
+	patches := gomonkey.ApplyMethodFunc(logs.GetLog(), "Sync", func() error {
+		run = true
+
+		return nil
+	})
+
+	defer patches.Reset()
+	logs.Sync()
+
+	assert.True(t, run)
+}
+
+func TestSetInfoLevel(t *testing.T) {
+	t.Parallel()
+
+	logs.SetInfoLevel()
+}
