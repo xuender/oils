@@ -12,7 +12,7 @@ func IsNil(value any) bool {
 	}
 
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	return reflect.ValueOf(value).IsNil()
