@@ -41,9 +41,8 @@ func TestInfo(t *testing.T) {
 	}
 }
 
+// nolint: paralleltest
 func TestInfof(t *testing.T) {
-	t.Parallel()
-
 	type args struct {
 		funcName string
 		funcCall func(string, ...interface{})
@@ -81,9 +80,8 @@ func TestInfof(t *testing.T) {
 	}
 }
 
+// nolint: paralleltest
 func TestSync(t *testing.T) {
-	t.Parallel()
-
 	run := false
 	patches := gomonkey.ApplyMethodFunc(logs.GetLog(), "Sync", func() error {
 		run = true
