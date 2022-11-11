@@ -5,12 +5,22 @@ import (
 	"reflect"
 )
 
-func Nil(errorf errorfer, value any, msgAndArgs ...any) bool {
+// IsNil 判断是否是空.
+func IsNil(value any) bool {
 	if value == nil {
 		return true
 	}
 
-	if val := reflect.ValueOf(value); val.IsNil() {
+	defer func() {
+		recover()
+	}()
+
+	return reflect.ValueOf(value).IsNil()
+}
+
+// Nil 判空.
+func Nil(errorf errorfer, value any, msgAndArgs ...any) bool {
+	if IsNil(value) {
 		return true
 	}
 
@@ -21,6 +31,7 @@ func Nil(errorf errorfer, value any, msgAndArgs ...any) bool {
 	return Fail(errorf, fmt.Sprintf("Expected nil, but got: %#v", value), msgAndArgs...)
 }
 
+// NotNil 非空.
 func NotNil(errorf errorfer, value any, msgAndArgs ...any) bool {
 	if value != nil {
 		return true

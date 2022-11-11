@@ -9,8 +9,14 @@ import (
 func TestNil(t *testing.T) {
 	t.Parallel()
 
-	assert.True(t, assert.Nil(&errorfer{}, nil))
 	assert.False(t, assert.Nil(&errorfer{}, 1))
+	assert.True(t, assert.Nil(&errorfer{}, nil))
+
+	elem := new(errorfer)
+	assert.False(t, assert.Nil(&errorfer{}, elem))
+
+	elem = nil
+	assert.True(t, assert.Nil(&errorfer{}, elem))
 }
 
 func TestNotNil(t *testing.T) {
