@@ -5,9 +5,10 @@ import (
 )
 
 // Encrypt 加密.
-//  txt := cryptos.Encrypt("123", "password", cryptos.AES)
-//  fmt.Println(txt)
-//  // AES(NR501ySw4TYFc0dI8zERfA==)
+//
+//	txt := cryptos.Encrypt("123", "password", cryptos.AES)
+//	fmt.Println(txt)
+//	// AES(NR501ySw4TYFc0dI8zERfA==)
 func Encrypt(str, key string, cipher Cipher) string {
 	var ret []byte
 
@@ -24,9 +25,10 @@ func Encrypt(str, key string, cipher Cipher) string {
 }
 
 // Decrypt 解密.
-//  str, _ := cryptos.Decrypt("AES(NR501ySw4TYFc0dI8zERfA==)", "password")
-//  fmt.Println(str)
-//  // 123
+//
+//	str, _ := cryptos.Decrypt("AES(NR501ySw4TYFc0dI8zERfA==)", "password")
+//	fmt.Println(str)
+//	// 123
 func Decrypt(src, key string) (string, error) {
 	var ret []byte
 

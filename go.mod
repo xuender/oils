@@ -1,6 +1,6 @@
 module github.com/xuender/oils
 
-go 1.18
+go 1.19
 
 require (
 	github.com/BurntSushi/toml v1.2.1
@@ -12,7 +12,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/retailnext/hllpp v1.0.0
 	go.uber.org/zap v1.23.0
-	golang.org/x/exp v0.0.0-20221031165847-c99f073a8326
+	golang.org/x/exp v0.0.0-20221110155412-d0897a79cd37
 	golang.org/x/text v0.4.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
@@ -41,8 +41,8 @@ require (
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/net v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/crypto v0.2.0 // indirect
+	golang.org/x/net v0.2.0 // indirect
+	golang.org/x/sys v0.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
