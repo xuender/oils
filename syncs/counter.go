@@ -25,6 +25,11 @@ func NewCounter[T comparable]() *Counter[T] {
 	}
 }
 
+// Keys 键值.
+func (p *Counter[T]) Keys() []T {
+	return p.keys
+}
+
 // Inc 自增key.
 func (p *Counter[T]) Inc(key T) int64 {
 	return p.Add(key, 1)

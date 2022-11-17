@@ -39,7 +39,7 @@ func (p *InstanceNum) Register(observer modes.Observer[uint64, int]) {
 
 // Run 运行.
 //
-// 使用 redis INCR 命令计算单位时间内增加的数量得出实例数量.
+// 使用 redis INCR 命令计算一秒钟内增加的数量得出实例数量.
 func (p *InstanceNum) Run() {
 	ctx := context.Background()
 	ticker := time.NewTicker(time.Second)

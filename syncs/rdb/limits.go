@@ -20,6 +20,17 @@ func NewLimits() *Limits {
 	}
 }
 
+// Keys 键值.
+func (p *Limits) Keys() []string {
+	keys := make([]string, 0, len(p.limits))
+
+	for k := range p.limits {
+		keys = append(keys, k)
+	}
+
+	return keys
+}
+
 func (p *Limits) Update(num uint64) {
 	p.num = num
 
@@ -54,4 +65,8 @@ func (p *Limits) GetQPS() map[string]uint {
 	}
 
 	return res
+}
+
+func (p *Limits) Get(key string) uint64 {
+	return p.qps[key] / p.num
 }
