@@ -2,22 +2,29 @@ package rdb_test
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 	"github.com/xuender/oils/syncs/rdb"
-	"github.com/xuender/oils/times"
 )
 
 // nolint: testableexamples
-func ExampleLimiter() {
+func ExampleLimits() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "192.168.1.11:6379",
 		Password: "",
 		DB:       0,
 	})
 
-	limit := rdb.NewLimiter(client, "limit", 1000)
-	clock := times.ClockStart()
+	ins := rdb.NewInstanceNum(client)
+	limits := rdb.NewLimits()
+
+	ins.Register(limits)
+
+	go ins.Run()
+
+	start := time.Now()
+	limit := limits.QPS("test", 1000)
 
 	for f := 0; f < 4; f++ {
 		go func() {
@@ -33,5 +40,5 @@ func ExampleLimiter() {
 
 	_ = limit.Try()
 
-	fmt.Println(times.ClockStop(clock))
+	fmt.Println(time.Since(start))
 }

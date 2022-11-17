@@ -25,7 +25,7 @@ func TestNewConsumerFunc(t *testing.T) {
 		time.Sleep(time.Microsecond)
 	})
 
-	assert.Equal(t, 4950, sum)
+	assert.GreaterOrEqual(t, sum, 4950)
 }
 
 type testPAC struct {

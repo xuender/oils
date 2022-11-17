@@ -9,6 +9,8 @@ import (
 var clocks = sync.Map{}
 
 // ClockStart 计时器开始.
+//
+// Deprecated: Use time.Since instead.
 func ClockStart() int64 {
 	now := time.Now()
 	clockID := now.UnixNano()
@@ -21,6 +23,8 @@ func ClockStart() int64 {
 }
 
 // ClockCount 计次.
+//
+// Deprecated: Use time.Since instead.
 func ClockCount(clock int64) time.Duration {
 	now := time.Now()
 	if old, has := clocks.LoadOrStore(clock, now); has {
@@ -33,6 +37,8 @@ func ClockCount(clock int64) time.Duration {
 }
 
 // ClockStop 计时器截止.
+//
+// Deprecated: Use time.Since instead.
 func ClockStop(clock int64) time.Duration {
 	now := time.Now()
 

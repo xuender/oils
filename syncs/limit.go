@@ -21,6 +21,11 @@ func NewLimit(qps uint) *Limit {
 	}
 }
 
+// QPS 设置qps.
+func (p *Limit) QPS(qps uint) {
+	p.interval = time.Second / time.Duration(qps)
+}
+
 // Wait 等待执行.
 func (p *Limit) Wait() {
 	p.mutex.Lock()

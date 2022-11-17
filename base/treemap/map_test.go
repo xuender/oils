@@ -5,7 +5,7 @@ import (
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base/treemap"
-	"github.com/xuender/oils/dbs"
+	"github.com/xuender/oils/maths"
 )
 
 func TestNew(t *testing.T) {
@@ -93,11 +93,11 @@ func TestTreeMap_Del1(t *testing.T) {
 	tmap := treemap.New(uint64(0), -1)
 
 	for num := 0; num < 100000; num++ {
-		if dbs.Rand()%7 > 0 {
-			key := dbs.Rand() / 100
+		if maths.Rand()%7 > 0 {
+			key := maths.Rand() / 100
 			tmap.Del(key)
 		} else {
-			key := dbs.Rand() / 100
+			key := maths.Rand() / 100
 			tmap.Set(key, num)
 		}
 	}

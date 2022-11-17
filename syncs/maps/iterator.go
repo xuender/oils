@@ -114,17 +114,6 @@ func (p *Maps[K, V]) LessThan(iterator Iterator[K, V], lessThan K) {
 	)
 }
 
-// Prefix 字符串前缀.
-// func (p *Maps[K, V]) Prefix(iterator Iterator[K, V], prefix string) {
-// 	p.each(
-// 		iterator,
-// 		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
-// 			t.Prefix(ii, prefix)
-// 		},
-// 		aes[K, V],
-// 	)
-// }
-
 // EachDesc 倒叙遍历.
 func (p *Maps[K, V]) EachDesc(iterator Iterator[K, V]) {
 	p.each(
@@ -168,14 +157,3 @@ func (p *Maps[K, V]) LessThanDesc(iterator Iterator[K, V], lessThan K) {
 		desc[K, V],
 	)
 }
-
-// PrefixDesc 倒叙字符串前缀.
-// func (p *Maps[K, V]) PrefixDesc(iterator Iterator[K, V], prefix string) {
-// 	p.each(
-// 		iterator,
-// 		func(t *treemap.TreeMap[K, V], ii treemap.ItemIterator[K, V]) {
-// 			t.PrefixDesc(ii, prefix)
-// 		},
-// 		desc[K, V],
-// 	)
-// }

@@ -1,13 +1,13 @@
-package dbs_test
+package maths_test
 
 import (
 	"fmt"
 
-	"github.com/xuender/oils/dbs"
+	"github.com/xuender/oils/maths"
 )
 
 func ExampleRand() {
-	num := dbs.Rand()
+	num := maths.Rand()
 
 	fmt.Println(num > 0)
 

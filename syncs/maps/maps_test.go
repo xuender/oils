@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/xuender/oils/assert"
-	"github.com/xuender/oils/dbs"
+	"github.com/xuender/oils/maths"
 	"github.com/xuender/oils/syncs/maps"
 )
 
@@ -92,11 +92,11 @@ func TestMaps_Del1(t *testing.T) {
 	tmap := maps.New(uint64(0), -1)
 
 	for index := 0; index < 100000; index++ {
-		if dbs.Rand()%7 > 0 {
-			key := dbs.Rand() / 100
+		if maths.Rand()%7 > 0 {
+			key := maths.Rand() / 100
 			tmap.Del(key)
 		} else {
-			key := dbs.Rand() / 100
+			key := maths.Rand() / 100
 			tmap.Set(key, index)
 		}
 	}
