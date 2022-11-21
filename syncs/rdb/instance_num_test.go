@@ -41,12 +41,12 @@ func TestInstanceNum(t *testing.T) {
 	client.EXPECT().Incr(gomock.Any(), "ins_num").Return(cmd1).MinTimes(0).MaxTimes(1)
 	client.EXPECT().Incr(gomock.Any(), "ins_num").Return(cmd2).MinTimes(1).MaxTimes(20)
 
-	assert.Equal(t, 1, ins.Count())
+	assert.Equal(t, 1, ins.Num())
 
 	go ins.Run()
 
 	time.Sleep(time.Second * 2)
-	assert.Equal(t, 1, ins.Count())
+	assert.Equal(t, 1, ins.Num())
 }
 
 func TestInstanceNumError(t *testing.T) {
@@ -66,7 +66,7 @@ func TestInstanceNumError(t *testing.T) {
 	cmd2.SetVal(1)
 	client.EXPECT().Incr(gomock.Any(), "ins_num").Return(cmd2).MinTimes(1).MaxTimes(30)
 
-	assert.Equal(t, 1, ins.Count())
+	assert.Equal(t, 1, ins.Num())
 
 	go ins.Run()
 

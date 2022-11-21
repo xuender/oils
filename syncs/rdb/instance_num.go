@@ -11,11 +11,11 @@ import (
 
 // InstanceNum 实例数量.
 type InstanceNum struct {
-	client redis.Cmdable
-	count  uint64
-	old    uint64
-	sub    *modes.Subject[uint64, int]
-	key    string
+	client  redis.Cmdable
+	num     uint64
+	old     uint64
+	subject *modes.Subject[uint64, int]
+	key     string
 }
 
 // NewInstanceNum 新建实例数量.
@@ -25,16 +25,16 @@ func NewInstanceNum(client redis.Cmdable) *InstanceNum {
 
 func NewInstanceNumByKey(client redis.Cmdable, key string) *InstanceNum {
 	return &InstanceNum{
-		client: client,
-		sub:    &modes.Subject[uint64, int]{},
-		key:    key,
-		count:  1,
+		client:  client,
+		subject: &modes.Subject[uint64, int]{},
+		key:     key,
+		num:     1,
 	}
 }
 
 // Register 订阅主题.
 func (p *InstanceNum) Register(observer modes.Observer[uint64, int]) {
-	p.sub.Register(observer)
+	p.subject.Register(observer)
 }
 
 // Run 运行.
@@ -52,25 +52,25 @@ func (p *InstanceNum) Run() {
 			num = base.Must1(p.client.Incr(ctx, p.key).Result())
 		}
 
-		old := p.count
+		old := p.num
 
 		if p.old > 0 {
-			p.count = uint64(num) - p.old
+			p.num = uint64(num) - p.old
 
-			if p.count <= 0 {
-				p.count = 1
+			if p.num <= 0 {
+				p.num = 1
 			}
 		}
 
-		if old != p.count || p.old == 0 {
-			p.sub.NotifyAll(p.count)
+		if old != p.num || p.old == 0 {
+			p.subject.NotifyAll(p.num)
 		}
 
 		p.old = uint64(num)
 	}
 }
 
-// Count 数量统计.
-func (p *InstanceNum) Count() int {
-	return int(p.count)
+// Num 实例数量.
+func (p *InstanceNum) Num() int {
+	return int(p.num)
 }

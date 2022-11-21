@@ -15,7 +15,7 @@ func TestLimits(t *testing.T) {
 	limits := rdb.NewLimits()
 
 	limits.QPS("test", 100)
-	assert.Equal(t, 100, limits.GetQPS()["test"])
+	assert.Equal(t, 100, limits.Get("test"))
 
 	limit := limits.Limit("test")
 	start := time.Now()
@@ -41,7 +41,7 @@ func TestLimits_Update(t *testing.T) {
 	limits := rdb.NewLimits()
 
 	limits.QPS("test", 100)
-	assert.Equal(t, 100, limits.GetQPS()["test"])
+	assert.Equal(t, 100, limits.Get("test"))
 
 	limit := limits.Limit("test")
 	start := time.Now()
@@ -65,7 +65,7 @@ func TestLimits_Update(t *testing.T) {
 
 	limits.Update(2)
 
-	assert.Equal(t, 50, limits.GetQPS()["test"])
+	assert.Equal(t, 50, limits.GetAll()["test"])
 
 	for i := 0; i < 100; i++ {
 		limit.Wait()

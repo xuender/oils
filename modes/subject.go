@@ -1,29 +1,29 @@
 package modes
 
 // Subject 主题.
-type Subject[T any, I comparable] struct {
-	observers []Observer[T, I]
+type Subject[OBJ any, ID comparable] struct {
+	observers []Observer[OBJ, ID]
 }
 
 // Register 注册.
-func (p *Subject[T, I]) Register(o Observer[T, I]) {
-	p.observers = append(p.observers, o)
+func (p *Subject[OBJ, ID]) Register(observer Observer[OBJ, ID]) {
+	p.observers = append(p.observers, observer)
 }
 
 // Deregister 取消注册者.
-func (p *Subject[T, I]) Deregister(o Observer[T, I]) {
-	p.observers = removeObserver(p.observers, o)
+func (p *Subject[OBJ, ID]) Deregister(observer Observer[OBJ, ID]) {
+	p.observers = removeObserver(p.observers, observer)
 }
 
 // NotifyAll 通知所有.
-func (p *Subject[T, I]) NotifyAll(obj T) {
+func (p *Subject[OBJ, ID]) NotifyAll(obj OBJ) {
 	for _, observer := range p.observers {
 		observer.Update(obj)
 	}
 }
 
 // Notify 通知.
-func (p *Subject[T, I]) Notify(obj T, ids ...I) {
+func (p *Subject[OBJ, ID]) Notify(obj OBJ, ids ...ID) {
 	for _, id := range ids {
 		for _, observer := range p.observers {
 			if observer.ID() == id {
@@ -33,7 +33,7 @@ func (p *Subject[T, I]) Notify(obj T, ids ...I) {
 	}
 }
 
-func removeObserver[T any, I comparable](observers []Observer[T, I], elem Observer[T, I]) []Observer[T, I] {
+func removeObserver[OBJ any, ID comparable](observers []Observer[OBJ, ID], elem Observer[OBJ, ID]) []Observer[OBJ, ID] {
 	length := len(observers)
 
 	for i, observer := range observers {

@@ -56,8 +56,8 @@ func (p *Limits) Limit(key string) syncs.Limiter {
 	return p.limits[key]
 }
 
-// GetQPS 获取所有限速的QPS.
-func (p *Limits) GetQPS() map[string]uint {
+// GetAll 获取所有限速的QPS.
+func (p *Limits) GetAll() map[string]uint {
 	res := map[string]uint{}
 
 	for key, qps := range p.qps {
