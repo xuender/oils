@@ -21,7 +21,7 @@ func JSNumber[Num constraints.Integer | constraints.Float](num Num) Num {
 	return Num(uint64(h&b16)*0x100000000 + uint64(l))
 }
 
-// Max 最大值.
+// Deprecated: Use maths.Max instead.
 func Max[Num constraints.Ordered](nums ...Num) Num {
 	var max Num
 	if len(nums) > 0 {
@@ -37,7 +37,7 @@ func Max[Num constraints.Ordered](nums ...Num) Num {
 	return max
 }
 
-// Min 最小值.
+// Deprecated: Use maths.Min instead.
 func Min[Num constraints.Ordered](nums ...Num) Num {
 	var min Num
 	if len(nums) > 0 {

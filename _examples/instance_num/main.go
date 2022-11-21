@@ -27,11 +27,11 @@ func main() {
 		DB:       0,
 	})
 	ins := rdb.NewInstanceNum(client)
-	sub := ins.Subject()
-	sub.Register(&Sub{id: 1})
-	sub.Register(&Sub{id: 2})
+
+	ins.Register(&Sub{id: 1})
+	ins.Register(&Sub{id: 2})
 
 	go ins.Run()
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(time.Minute)
 }
