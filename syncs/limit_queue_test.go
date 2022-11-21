@@ -15,8 +15,10 @@ func TestNewLimitQueue(t *testing.T) {
 	count := 0
 	limit := syncs.NewLimitQueue(100, time.Second*3, func(i int) { count++ })
 
-	limit.Update(100)
-	limit.ID()
+	limit.SetQPS(100)
+	limit.SetTimeOut(time.Second * 3)
+	assert.Equal(t, 100, limit.QPS())
+	assert.Equal(t, time.Second*3, limit.TimeOut())
 
 	group := sync.WaitGroup{}
 	group.Add(4)
@@ -47,20 +49,22 @@ func TestNewLimitQueueAdd(t *testing.T) {
 	t.Parallel()
 
 	count := 0
-	limit := syncs.NewLimitQueue(10, time.Second*3, func(i int) {
-		count++
+	limit := syncs.NewLimitQueue(10, time.Second*2, func(i int) {
+		count += i
 	})
 
-	for i := 0; i < 30; i++ {
-		_ = limit.Add(i)
+	for i := 0; i < 20; i++ {
+		assert.Nil(t, limit.Add(1000))
 	}
 
-	limit.Update(100)
+	time.Sleep(time.Millisecond)
 
-	for i := 0; i < 300; i++ {
-		_ = limit.Add(i)
+	limit.SetQPS(100)
+
+	for i := 0; i < 200; i++ {
+		assert.Nil(t, limit.Add(1))
 	}
 
-	time.Sleep(time.Second * 4)
-	assert.Equal(t, count, 330)
+	time.Sleep(time.Second * 3)
+	assert.Equal(t, count, 20200)
 }

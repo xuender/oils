@@ -2,8 +2,6 @@ package syncs
 
 import (
 	"time"
-
-	"github.com/xuender/oils/oss"
 )
 
 // LimitQueue 限频队列.
@@ -12,7 +10,7 @@ type LimitQueue[T any] struct {
 	queue   *Queue[T]
 	call    func(T)
 	timeOut time.Duration
-	id      int
+	qps     uint
 }
 
 // NewLimitQueue 新建限频队列.
@@ -22,7 +20,7 @@ func NewLimitQueue[T any](qps uint, timeOut time.Duration, call func(T)) *LimitQ
 		limit:   limit,
 		call:    call,
 		timeOut: timeOut,
-		id:      oss.UniqueID(),
+		qps:     qps,
 	}
 
 	res.queue = NewQueue(qps*uint(timeOut/time.Second), res.consume)
@@ -33,21 +31,30 @@ func NewLimitQueue[T any](qps uint, timeOut time.Duration, call func(T)) *LimitQ
 }
 
 func (p *LimitQueue[T]) consume(elem T) {
-	p.limit.Wait()
 	p.call(elem)
+	p.limit.Wait()
 }
 
 func (p *LimitQueue[T]) Add(elem T) error {
 	return p.queue.Add(elem)
 }
 
-// Update 修改QPS.
-func (p *LimitQueue[T]) Update(qps uint64) {
+// SetQPS 修改QPS.
+func (p *LimitQueue[T]) SetQPS(qps uint64) {
 	p.limit.QPS(uint(qps))
 	p.queue.SetSize(uint(qps) * uint(p.timeOut/time.Second))
 }
 
-// ID 观察者主键.
-func (p *LimitQueue[T]) ID() int {
-	return p.id
+// QPS 当前.
+func (p *LimitQueue[T]) QPS() uint {
+	return p.qps
+}
+
+func (p *LimitQueue[T]) SetTimeOut(timeOut time.Duration) {
+	p.timeOut = timeOut
+	p.queue.SetSize(p.qps * uint(p.timeOut/time.Second))
+}
+
+func (p *LimitQueue[T]) TimeOut() time.Duration {
+	return p.timeOut
 }
