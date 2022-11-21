@@ -19,6 +19,16 @@ func TestQueue(t *testing.T) {
 	assert.NotNil(t, que.Add(3))
 }
 
+func TestQueueSize2(t *testing.T) {
+	t.Parallel()
+
+	que := syncs.NewQueue(0, func(i int) {})
+
+	assert.Equal(t, 1, que.Size())
+	que.SetSize(0)
+	assert.Equal(t, 1, que.Size())
+}
+
 func TestQueueConsum(t *testing.T) {
 	t.Parallel()
 
