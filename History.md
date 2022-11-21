@@ -1,4 +1,14 @@
 
+0.5.41 / 2022-11-21
+==================
+
+* feat: 队列及限频队列
+* feat: oss 唯一ID
+* feat: maths 最大最小
+* feat: 生成序列
+* doc: InstanceNum
+* feat: syncs.Limits 增加 Keys
+
 0.5.40 / 2022-11-10
 ==================
 
