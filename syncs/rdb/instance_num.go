@@ -37,6 +37,11 @@ func (p *InstanceNum) Register(observer modes.Observer[uint64, int]) {
 	p.subject.Register(observer)
 }
 
+// Deregister 取消订阅.
+func (p *InstanceNum) Deregister(observer modes.Observer[uint64, int]) {
+	p.subject.Deregister(observer)
+}
+
 // Run 运行.
 //
 // 使用 redis INCR 命令计算一秒内增加的数量得出实例数量.
