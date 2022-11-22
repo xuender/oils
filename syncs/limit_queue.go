@@ -6,21 +6,22 @@ import (
 
 // LimitQueue 限频队列.
 type LimitQueue[T any] struct {
-	limit   *Limit
-	queue   *Queue[T]
-	call    func(T)
-	timeOut time.Duration
-	qps     uint
+	interval time.Duration
+	last     time.Time
+	queue    *Queue[T]
+	call     func(T)
+	timeOut  time.Duration
+	qps      uint
 }
 
 // NewLimitQueue 新建限频队列.
 func NewLimitQueue[T any](qps uint, timeOut time.Duration, call func(T)) *LimitQueue[T] {
-	limit := NewLimit(qps)
 	res := &LimitQueue[T]{
-		limit:   limit,
-		call:    call,
-		timeOut: timeOut,
-		qps:     qps,
+		call:     call,
+		timeOut:  timeOut,
+		qps:      qps,
+		interval: time.Second / time.Duration(qps),
+		last:     time.Now(),
 	}
 
 	res.queue = NewQueue(qps*uint(timeOut/time.Second), res.consume)
@@ -30,9 +31,20 @@ func NewLimitQueue[T any](qps uint, timeOut time.Duration, call func(T)) *LimitQ
 	return res
 }
 
+func (p *LimitQueue[T]) Len() int {
+	return len(p.queue.elems)
+}
+
 func (p *LimitQueue[T]) consume(elem T) {
+	now := time.Now()
+
+	if sleep := p.interval - now.Sub(p.last); sleep > 0 {
+		time.Sleep(sleep)
+		now = time.Now()
+	}
+
+	p.last = now
 	p.call(elem)
-	p.limit.Wait()
 }
 
 func (p *LimitQueue[T]) Add(elem T) error {
@@ -41,7 +53,7 @@ func (p *LimitQueue[T]) Add(elem T) error {
 
 // SetQPS 修改QPS.
 func (p *LimitQueue[T]) SetQPS(qps uint64) {
-	p.limit.QPS(uint(qps))
+	p.interval = time.Second / time.Duration(qps)
 	p.queue.SetSize(uint(qps) * uint(p.timeOut/time.Second))
 }
 

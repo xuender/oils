@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+const timeOut = time.Microsecond * 100
+
 // Queue 队列.
 type Queue[T any] struct {
 	elems chan T
@@ -58,7 +60,7 @@ func (p *Queue[T]) Add(elem T) error {
 	select {
 	case p.elems <- elem:
 		return nil
-	case <-time.After(time.Millisecond):
+	case <-time.After(timeOut):
 		return ErrFull
 	}
 }

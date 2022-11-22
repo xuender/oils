@@ -36,6 +36,7 @@ func TestQueueConsum(t *testing.T) {
 
 	go que.Consume()
 
+	time.Sleep(time.Millisecond)
 	assert.Nil(t, que.Add(1))
 	assert.Nil(t, que.Add(2))
 	assert.Nil(t, que.Add(3))
@@ -48,6 +49,7 @@ func TestQueuePush(t *testing.T) {
 
 	go que.Consume()
 
+	time.Sleep(time.Millisecond)
 	assert.Nil(t, que.Add(1))
 	assert.Nil(t, que.Add(2))
 	assert.Nil(t, que.Add(3))
@@ -67,6 +69,7 @@ func TestQueueSize(t *testing.T) {
 
 	go que.Consume()
 
+	time.Sleep(time.Millisecond)
 	assert.Nil(t, que.Add(1))
 	assert.Nil(t, que.Add(2))
 	assert.Nil(t, que.Add(3))
