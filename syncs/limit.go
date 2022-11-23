@@ -33,21 +33,21 @@ func (p *Limit) Wait() {
 
 	if wait := p.waiting(); wait > 0 {
 		time.Sleep(wait)
-		p.last = time.Now()
+
+		p.last = p.last.Add(p.interval)
 	}
 }
 
 func (p *Limit) waiting() time.Duration {
-	now := time.Now()
-	sleep := p.interval - now.Sub(p.last)
+	dru := time.Since(p.last)
 
-	if sleep <= 0 {
-		p.last = now
-
-		return 0
+	if sleep := p.interval - dru; sleep > 0 {
+		return sleep
 	}
 
-	return sleep
+	p.last = p.last.Add(dru)
+
+	return 0
 }
 
 // Try 尝试执行.

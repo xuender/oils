@@ -36,14 +36,16 @@ func (p *LimitQueue[T]) Len() int {
 }
 
 func (p *LimitQueue[T]) consume(elem T) {
-	now := time.Now()
+	dur := time.Since(p.last)
 
-	if sleep := p.interval - now.Sub(p.last); sleep > 0 {
+	if sleep := p.interval - dur; sleep > 0 {
 		time.Sleep(sleep)
-		now = time.Now()
+
+		p.last = p.last.Add(p.interval)
+	} else {
+		p.last = p.last.Add(dur)
 	}
 
-	p.last = now
 	p.call(elem)
 }
 
