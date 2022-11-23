@@ -3,6 +3,8 @@ package base
 import (
 	"errors"
 	"strings"
+
+	"github.com/samber/lo"
 )
 
 var (
@@ -18,7 +20,7 @@ func Errors(errs ...error) error {
 		return nil
 	}
 
-	ret := Filter(errs, func(err error) bool { return err != nil })
+	ret := lo.Filter(errs, func(err error, _ int) bool { return err != nil })
 
 	switch len(ret) {
 	case 0:

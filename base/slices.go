@@ -2,9 +2,9 @@ package base
 
 import (
 	"fmt"
-	"math/rand"
 	"strings"
 
+	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 )
 
@@ -16,6 +16,8 @@ func Has[E comparable](elems []E, elem E) bool {
 }
 
 // Count 统计元素数量.
+//
+// Deprecated: Use github.com/samber/lo.Count instead.
 func Count[E comparable](elems []E, elem E) int {
 	count := 0
 
@@ -53,6 +55,9 @@ func Index[T comparable](slices, sub []T) int {
 	return -1
 }
 
+// Filter 过滤.
+//
+// Deprecated: Use github.com/samber/lo.Filter instead.
 func Filter[T any](elems []T, condition func(T) bool) []T {
 	ret := []T{}
 
@@ -85,14 +90,10 @@ func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
 }
 
 // SliceMap 切片转换.
+//
+// Deprecated: Use github.com/samber/lo.Map instead.
 func SliceMap[S, T any](elems []S, change func(S) T) []T {
-	ret := make([]T, len(elems))
-
-	for index, elem := range elems {
-		ret[index] = change(elem)
-	}
-
-	return ret
+	return lo.Map(elems, func(elem S, index int) T { return change(elem) })
 }
 
 // Sub 切片截取.
@@ -133,6 +134,8 @@ func Sub[Elem any](slice []Elem, startAndEnd ...int) []Elem {
 }
 
 // Chunk 切片分块.
+//
+// Deprecated: Use github.com/samber/lo.Chunk instead.
 func Chunk[Elem any](slice []Elem, size int) [][]Elem {
 	if len(slice) == 0 || size < 1 {
 		return [][]Elem{}
@@ -161,6 +164,8 @@ func Chunk[Elem any](slice []Elem, size int) [][]Elem {
 }
 
 // Unique 去重.
+//
+// Deprecated: Use github.com/samber/lo.Uniq instead.
 func Unique[E comparable](slice []E) []E {
 	unique := []E{}
 
@@ -235,14 +240,10 @@ func DelAll[E comparable](slice []E, elems ...E) []E {
 }
 
 // Reverse 反转切片.
+//
+// Deprecated: Use github.com/samber/lo.Reverse instead.
 func Reverse[E any](slice []E) {
-	if len(slice) <= 1 {
-		return
-	}
-
-	for start, end := 0, len(slice)-1; start < end; start, end = start+1, end-1 {
-		slice[start], slice[end] = slice[end], slice[start]
-	}
+	lo.Reverse(slice)
 }
 
 func Counts[E comparable](slice, sub []E) int {
@@ -326,31 +327,15 @@ func ReplaceAll[E comparable](slice, sub, newSub []E) []E {
 }
 
 // Sample 获得一个随机元素.
+//
+// Deprecated: Use github.com/samber/lo.Sample instead.
 func Sample[E any](slice []E) E {
-	if len(slice) == 0 {
-		panic(ErrEmpty)
-	}
-	// nolint
-	return slice[rand.Intn(len(slice))]
+	return lo.Sample(slice)
 }
 
 // Shuffle 打乱切片.
+//
+// Deprecated: Use github.com/samber/lo.Shuffle instead.
 func Shuffle[E any](slice []E) []E { // nolint
-	length := len(slice)
-
-	if length <= 1 {
-		return slice
-	}
-
-	ret := append([]E{}, slice...)
-
-	length--
-
-	for i := 0; i < length; i++ {
-		// nolint
-		num := rand.Intn(length - i)
-		ret[i], ret[length-num] = ret[length-num], ret[i]
-	}
-
-	return ret
+	return lo.Shuffle(slice)
 }

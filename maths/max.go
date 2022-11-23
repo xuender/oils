@@ -5,6 +5,8 @@ import (
 )
 
 // Max 最大值.
+//
+// Deprecated: Use github.com/samber/lo.Max instead.
 func Max[Num constraints.Ordered](nums ...Num) Num {
 	var max Num
 	if len(nums) > 0 {

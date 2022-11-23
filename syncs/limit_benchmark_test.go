@@ -1,17 +1,24 @@
 package syncs_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/xuender/oils/base"
+)
 
 func BenchmarkIfElse(b *testing.B) {
-	call := func(i int) {
-		var n int
-		a := 100
+	call := func(index int) {
+		var num int
 
-		if i < 10000 {
-			n += i
+		hund := base.Hundred
+
+		if index < base.Ten {
+			num += index
 		} else {
-			n += a
+			num += hund
 		}
+
+		base.Pass1(num, nil)
 	}
 
 	b.ResetTimer()
@@ -22,15 +29,18 @@ func BenchmarkIfElse(b *testing.B) {
 }
 
 func BenchmarkIf(b *testing.B) {
-	call := func(i int) {
-		var n int
-		a := 100
+	call := func(index int) {
+		var num int
 
-		if i < 10000 {
-			a = i
+		hund := base.Hundred
+
+		if index < base.Ten {
+			hund = index
 		}
 
-		n += a
+		num += hund
+
+		base.Pass1(num, nil)
 	}
 
 	b.ResetTimer()

@@ -48,16 +48,16 @@ func (p *Maps[K, V]) each(
 	}
 
 	for group := 0; group < p.group; group++ {
-		go func(index int) {
+		go func(index int, chans []chan bool) {
 			run(p.maps[index], func(key K, value V) bool {
 				ins[index] <- &item[K, V]{key: key, value: value, index: index}
 
-				return <-outs[index]
+				return <-chans[index]
 			})
 			close(ins[index])
-			close(outs[index])
-			outs[index] = nil
-		}(group)
+			close(chans[index])
+			chans[index] = nil
+		}(group, outs)
 	}
 
 	for elem := range syncs.Merge(less, ins...) {

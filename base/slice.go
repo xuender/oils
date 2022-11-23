@@ -1,6 +1,7 @@
 package base
 
 import (
+	"github.com/samber/lo"
 	"golang.org/x/exp/constraints"
 	"golang.org/x/exp/slices"
 )
@@ -74,9 +75,9 @@ func (p *Slice[T]) Replace(oldSlice, newSlice []T, num int) Slice[T] {
 
 // Unique 唯一.
 //
-// Deprecated: 使用 Unique.
+// Deprecated: Use github.com/samber/lo.Uniq instead.
 func (p *Slice[T]) Unique() {
-	*p = Unique(*p)
+	*p = lo.Uniq(*p)
 }
 
 // All 全部包含.
@@ -96,8 +97,8 @@ func (p Slice[T]) Clone() Slice[T] { return slices.Clone(p) }
 
 // Count 包含元素数量.
 //
-// Deprecated: 使用 Count.
-func (p Slice[T]) Count(elem T) int { return Count(p, elem) }
+// Deprecated: Use github.com/samber/lo.Count instead.
+func (p Slice[T]) Count(elem T) int { return lo.Count(p, elem) }
 
 // Compare 比较.
 //

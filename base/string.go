@@ -60,7 +60,7 @@ func Split(str string, seps ...rune) []string {
 
 	ret := []string{}
 	slice := NewSlice[rune]()
-	hasSepInitialisms := Has(seps, SepInitialisms)
+	hasSepInitialisms := slices.Contains(seps, SepInitialisms)
 	isLower := false
 
 	for index, elem := range str {

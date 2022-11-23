@@ -5,6 +5,8 @@ import (
 )
 
 // Min 最小值.
+//
+// Deprecated: Use github.com/samber/lo.Min instead.
 func Min[Num constraints.Ordered](nums ...Num) Num {
 	var min Num
 	if len(nums) > 0 {

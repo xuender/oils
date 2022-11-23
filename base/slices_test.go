@@ -1,34 +1,12 @@
 package base_test
 
 import (
-	"sort"
 	"strings"
 	"testing"
 
 	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base"
-	"golang.org/x/exp/slices"
 )
-
-func TestFilter(t *testing.T) {
-	t.Parallel()
-
-	slices := []int{1, 2, 3}
-	filter := base.Filter(slices, func(elem int) bool {
-		return elem > 1
-	})
-
-	assert.Equals(t, []int{2, 3}, filter)
-}
-
-func TestHas(t *testing.T) {
-	t.Parallel()
-
-	slices := []int{1, 2, 3}
-
-	assert.True(t, base.Has(slices, 2))
-	assert.False(t, base.Has(slices, 4))
-}
 
 func TestAppend(t *testing.T) {
 	t.Parallel()
@@ -78,47 +56,11 @@ func FuzzAppend(f *testing.F) {
 	})
 }
 
-func TestCount(t *testing.T) {
-	t.Parallel()
-
-	slice := []int{1, 2, 1}
-	assert.Equal(t, 2, base.Count(slice, 1))
-}
-
 func TestIndex(t *testing.T) {
 	t.Parallel()
 
 	slice := []int{1, 2, 1}
 	assert.Equal(t, 1, base.Index(slice, []int{2, 1}))
-}
-
-func TestSliceMap(t *testing.T) {
-	t.Parallel()
-
-	assert.Equals(t, []string{"1", "2"}, base.SliceMap([]int{1, 2}, base.Itoa[int]))
-}
-
-func TestChunk(t *testing.T) {
-	t.Parallel()
-
-	array := []int{1, 2, 3, 4, 5}
-	group := base.Chunk(array, 3)
-
-	assert.Equal(t, 2, len(group))
-	assert.Equals(t, []int{1, 2, 3}, group[0])
-	assert.Equals(t, []int{4, 5}, group[1])
-
-	array = []int{}
-	group = base.Chunk(array, 3)
-
-	assert.Equal(t, 0, len(group))
-
-	array = []int{1, 2, 3, 4}
-	group = base.Chunk(array, 2)
-
-	assert.Equal(t, 2, len(group))
-	assert.Equals(t, []int{1, 2}, group[0])
-	assert.Equals(t, []int{3, 4}, group[1])
 }
 
 func TestSub(t *testing.T) {
@@ -134,16 +76,6 @@ func TestSub(t *testing.T) {
 	assert.Equals(t, []int{1, 2}, base.Sub([]int{1, 2, 3}, -10, -1))
 }
 
-func BenchmarkChunk(b *testing.B) {
-	array := []rune(strings.Repeat("ender", 100))
-
-	b.ResetTimer()
-
-	for n := 0; n < b.N; n++ {
-		base.Chunk(array, 3)
-	}
-}
-
 func BenchmarkDel(b *testing.B) {
 	array := []rune(strings.Repeat("ender", 100))
 
@@ -152,46 +84,6 @@ func BenchmarkDel(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		base.Del(array, 'd', 'e')
 	}
-}
-
-func TestReverse(t *testing.T) {
-	t.Parallel()
-
-	slice := []int{1, 2, 3}
-	base.Reverse(slice)
-	assert.Equals(t, []int{3, 2, 1}, slice)
-
-	slice = []int{1}
-	base.Reverse(slice)
-	assert.Equals(t, []int{1}, slice)
-}
-
-func TestSample(t *testing.T) {
-	t.Parallel()
-
-	slice := []int{1, 3, 4}
-	assert.True(t, slices.Contains(slice, base.Sample(slice)))
-
-	assert.Panics(t, func() {
-		base.Sample([]int{})
-	})
-}
-
-func TestShuffle(t *testing.T) {
-	t.Parallel()
-
-	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	shuffle := base.Shuffle(slice)
-	assert.False(t, slices.Equal(shuffle, slice))
-
-	sort.Ints(shuffle)
-	sort.Ints(slice)
-
-	assert.True(t, slices.Equal(shuffle, slice))
-
-	slice = []int{1}
-	shuffle = base.Shuffle(slice)
-	assert.True(t, slices.Equal(shuffle, slice))
 }
 
 func TestReplace(t *testing.T) {

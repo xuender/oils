@@ -14,10 +14,3 @@ func ExampleSub() {
 	// [3]
 	// [2 3]
 }
-
-func ExampleShuffle() {
-	fmt.Println(len(base.Shuffle([]int{1, 2, 3, 4, 5, 6})))
-
-	// Output:
-	// 6
-}

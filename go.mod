@@ -11,6 +11,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/mock v1.6.0
 	github.com/retailnext/hllpp v1.0.0
+	github.com/samber/lo v1.35.0
 	go.uber.org/zap v1.23.0
 	golang.org/x/exp v0.0.0-20221110155412-d0897a79cd37
 	golang.org/x/text v0.4.0

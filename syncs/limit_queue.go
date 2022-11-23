@@ -39,8 +39,9 @@ func (p *LimitQueue[T]) consume(elem T) {
 	dur := time.Since(p.last)
 
 	if sleep := p.interval - dur; sleep > 0 {
-		time.Sleep(sleep)
 		dur = p.interval
+
+		time.Sleep(sleep)
 	}
 
 	p.last = p.last.Add(dur)
