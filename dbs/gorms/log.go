@@ -67,7 +67,7 @@ func (p *gormLogger) Error(ctx context.Context, str string, args ...interface{})
 func (p *gormLogger) Trace(
 	ctx context.Context,
 	begin time.Time,
-	call func() (sql string, rowsAffected int64),
+	yield func() (sql string, rowsAffected int64),
 	err error,
 ) {
 	if p.level <= 0 {
@@ -79,7 +79,7 @@ func (p *gormLogger) Trace(
 	switch {
 	case err != nil && p.level >= logger.Error &&
 		(!p.IgnoreRecordNotFoundError || !errors.Is(err, gorm.ErrRecordNotFound)):
-		sql, rows := call()
+		sql, rows := yield()
 		p.logger().Errorw(
 			"trace",
 			"err", err,
@@ -88,10 +88,10 @@ func (p *gormLogger) Trace(
 			"sql", sql,
 		)
 	case p.SlowThreshold != 0 && elapsed > p.SlowThreshold && p.level >= logger.Warn:
-		sql, rows := call()
+		sql, rows := yield()
 		p.logger().Warnw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
 	case p.level >= logger.Info:
-		sql, rows := call()
+		sql, rows := yield()
 		p.logger().Debugw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
 	}
 }

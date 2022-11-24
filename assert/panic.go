@@ -4,8 +4,8 @@ import "fmt"
 
 type panicFunc func()
 
-func Panics(errorf errorfer, call panicFunc, msgAndArgs ...any) bool {
-	ret := panics(call)
+func Panics(errorf errorfer, yield panicFunc, msgAndArgs ...any) bool {
+	ret := panics(yield)
 	if ret != nil {
 		return true
 	}
@@ -14,11 +14,11 @@ func Panics(errorf errorfer, call panicFunc, msgAndArgs ...any) bool {
 		h.Helper()
 	}
 
-	return Fail(errorf, fmt.Sprintf("func %#v should panic\n\tPanic value:\t%#v", call, ret), msgAndArgs...)
+	return Fail(errorf, fmt.Sprintf("func %#v should panic\n\tPanic value:\t%#v", yield, ret), msgAndArgs...)
 }
 
-func PanicsWithError(errorf errorfer, errString string, call panicFunc, msgAndArgs ...any) bool {
-	ret := panics(call)
+func PanicsWithError(errorf errorfer, errString string, yield panicFunc, msgAndArgs ...any) bool {
+	ret := panics(yield)
 	switch obj := ret.(type) {
 	case string:
 		if obj == errString {
@@ -39,18 +39,18 @@ func PanicsWithError(errorf errorfer, errString string, call panicFunc, msgAndAr
 	}
 
 	return Fail(errorf,
-		fmt.Sprintf("func %#v should panic\n\tPanic value:\t%#v not %#v", call, ret, errString),
+		fmt.Sprintf("func %#v should panic\n\tPanic value:\t%#v not %#v", yield, ret, errString),
 		msgAndArgs...,
 	)
 }
 
 // nolint: nonamedreturns
-func panics(call panicFunc) (ret any) {
+func panics(yield panicFunc) (ret any) {
 	defer func() {
 		ret = recover()
 	}()
 
-	call()
+	yield()
 
 	return
 }

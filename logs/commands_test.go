@@ -12,17 +12,17 @@ import (
 func TestInfo(t *testing.T) {
 	type args struct {
 		funcName string
-		funcCall func(...interface{})
+		yield    func(...interface{})
 	}
 
 	for _, arg := range []args{
-		{funcName: "Info", funcCall: logs.Info},
-		{funcName: "Debug", funcCall: logs.Debug},
-		{funcName: "Warn", funcCall: logs.Warn},
-		{funcName: "Error", funcCall: logs.Error},
-		{funcName: "DPanic", funcCall: logs.DPanic},
-		{funcName: "Panic", funcCall: logs.Panic},
-		{funcName: "Fatal", funcCall: logs.Fatal},
+		{funcName: "Info", yield: logs.Info},
+		{funcName: "Debug", yield: logs.Debug},
+		{funcName: "Warn", yield: logs.Warn},
+		{funcName: "Error", yield: logs.Error},
+		{funcName: "DPanic", yield: logs.DPanic},
+		{funcName: "Panic", yield: logs.Panic},
+		{funcName: "Fatal", yield: logs.Fatal},
 	} {
 		data := 0
 		patches := gomonkey.ApplyMethodFunc(logs.GetLog(), arg.funcName, func(args ...interface{}) {
@@ -36,7 +36,7 @@ func TestInfo(t *testing.T) {
 
 		defer patches.Reset()
 
-		arg.funcCall(1)
+		arg.yield(1)
 		assert.Equal(t, 1, data)
 	}
 }
@@ -45,24 +45,24 @@ func TestInfo(t *testing.T) {
 func TestInfof(t *testing.T) {
 	type args struct {
 		funcName string
-		funcCall func(string, ...interface{})
+		yield    func(string, ...interface{})
 	}
 
 	for _, arg := range []args{
-		{funcName: "Infof", funcCall: logs.Infof},
-		{funcName: "Debugf", funcCall: logs.Debugf},
-		{funcName: "Warnf", funcCall: logs.Warnf},
-		{funcName: "Errorf", funcCall: logs.Errorf},
-		{funcName: "DPanicf", funcCall: logs.DPanicf},
-		{funcName: "Panicf", funcCall: logs.Panicf},
-		{funcName: "Fatalf", funcCall: logs.Fatalf},
-		{funcName: "Infow", funcCall: logs.Infow},
-		{funcName: "Debugw", funcCall: logs.Debugw},
-		{funcName: "Warnw", funcCall: logs.Warnw},
-		{funcName: "Errorw", funcCall: logs.Errorw},
-		{funcName: "DPanicw", funcCall: logs.DPanicw},
-		{funcName: "Panicw", funcCall: logs.Panicw},
-		{funcName: "Fatalw", funcCall: logs.Fatalw},
+		{funcName: "Infof", yield: logs.Infof},
+		{funcName: "Debugf", yield: logs.Debugf},
+		{funcName: "Warnf", yield: logs.Warnf},
+		{funcName: "Errorf", yield: logs.Errorf},
+		{funcName: "DPanicf", yield: logs.DPanicf},
+		{funcName: "Panicf", yield: logs.Panicf},
+		{funcName: "Fatalf", yield: logs.Fatalf},
+		{funcName: "Infow", yield: logs.Infow},
+		{funcName: "Debugw", yield: logs.Debugw},
+		{funcName: "Warnw", yield: logs.Warnw},
+		{funcName: "Errorw", yield: logs.Errorw},
+		{funcName: "DPanicw", yield: logs.DPanicw},
+		{funcName: "Panicw", yield: logs.Panicw},
+		{funcName: "Fatalw", yield: logs.Fatalw},
 	} {
 		data := 0
 		patches := gomonkey.ApplyMethodFunc(logs.GetLog(), arg.funcName, func(str string, args ...interface{}) {
@@ -75,7 +75,7 @@ func TestInfof(t *testing.T) {
 
 		defer patches.Reset()
 
-		arg.funcCall("", 1)
+		arg.yield("", 1)
 		assert.Equal(t, 1, data)
 	}
 }

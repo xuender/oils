@@ -9,15 +9,15 @@ type LimitQueue[T any] struct {
 	interval time.Duration
 	last     time.Time
 	queue    *Queue[T]
-	call     func(T)
+	yield    func(T)
 	timeOut  time.Duration
 	qps      uint
 }
 
 // NewLimitQueue 新建限频队列.
-func NewLimitQueue[T any](qps uint, timeOut time.Duration, call func(T)) *LimitQueue[T] {
+func NewLimitQueue[T any](qps uint, timeOut time.Duration, yield func(T)) *LimitQueue[T] {
 	res := &LimitQueue[T]{
-		call:     call,
+		yield:    yield,
 		timeOut:  timeOut,
 		qps:      qps,
 		interval: time.Second / time.Duration(qps),
@@ -46,7 +46,7 @@ func (p *LimitQueue[T]) consume(elem T) {
 
 	p.last = p.last.Add(dur)
 
-	p.call(elem)
+	p.yield(elem)
 }
 
 func (p *LimitQueue[T]) Add(elem T) error {

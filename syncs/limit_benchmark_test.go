@@ -7,7 +7,7 @@ import (
 )
 
 func BenchmarkIfElse(b *testing.B) {
-	call := func(index int) {
+	yield := func(index int) {
 		var num int
 
 		hund := base.Hundred
@@ -24,12 +24,12 @@ func BenchmarkIfElse(b *testing.B) {
 	b.ResetTimer()
 
 	for n := 0; n < b.N; n++ {
-		call(n)
+		yield(n)
 	}
 }
 
 func BenchmarkIf(b *testing.B) {
-	call := func(index int) {
+	yield := func(index int) {
 		var num int
 
 		hund := base.Hundred
@@ -46,6 +46,6 @@ func BenchmarkIf(b *testing.B) {
 	b.ResetTimer()
 
 	for n := 0; n < b.N; n++ {
-		call(n)
+		yield(n)
 	}
 }

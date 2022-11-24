@@ -46,7 +46,7 @@ func NewLocker(client redis.Cmdable, times ...time.Duration) *Locker {
 }
 
 // Lock 锁成功则执行，执行完毕解锁.
-func (p *Locker) Lock(key string, call func() error) error {
+func (p *Locker) Lock(key string, yield func() error) error {
 	key = fmt.Sprintf("oils-%s-LOCK", key)
 	ctx := context.Background()
 	res, err := p.client.SetNX(ctx, key, true, p.lockTime).Result()
@@ -56,7 +56,7 @@ func (p *Locker) Lock(key string, call func() error) error {
 			p.keys.Store(key, true)
 			defer p.keys.Delete(key)
 
-			return base.Errors(call(), p.client.Del(ctx, key).Err())
+			return base.Errors(yield(), p.client.Del(ctx, key).Err())
 		}
 
 		return ErrLock

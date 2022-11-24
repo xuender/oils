@@ -10,11 +10,11 @@ const timeOut = time.Microsecond * 100
 type Queue[T any] struct {
 	elems chan T
 	size  uint
-	call  func(T)
+	yield func(T)
 }
 
 // NewQueue 新建队列.
-func NewQueue[T any](size uint, call func(T)) *Queue[T] {
+func NewQueue[T any](size uint, yield func(T)) *Queue[T] {
 	if size < 1 {
 		size = 1
 	}
@@ -22,7 +22,7 @@ func NewQueue[T any](size uint, call func(T)) *Queue[T] {
 	return &Queue[T]{
 		elems: make(chan T, size),
 		size:  size,
-		call:  call,
+		yield: yield,
 	}
 }
 
@@ -30,7 +30,7 @@ func NewQueue[T any](size uint, call func(T)) *Queue[T] {
 func (p *Queue[T]) Consume() {
 	elems := p.elems
 	for elem := range elems {
-		p.call(elem)
+		p.yield(elem)
 	}
 }
 

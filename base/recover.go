@@ -5,14 +5,14 @@ import (
 )
 
 // Recover 异常捕捉.
-func Recover(call func(error)) {
+func Recover(yield func(error)) {
 	if rec := recover(); rec != nil {
 		switch err := rec.(type) {
 		case error:
-			call(err)
+			yield(err)
 		default:
 			// nolint
-			call(fmt.Errorf("%v", err))
+			yield(fmt.Errorf("%v", err))
 		}
 	}
 }
