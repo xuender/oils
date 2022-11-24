@@ -74,3 +74,13 @@ func TestLimits_Update(t *testing.T) {
 	assert.GreaterOrEqual(t, time.Since(start), time.Second*4)
 	assert.Less(t, time.Since(start), time.Second*5)
 }
+
+func TestLimits_Keys(t *testing.T) {
+	t.Parallel()
+
+	limits := rdb.NewLimits()
+
+	limits.QPS("a", 1000)
+	assert.Equals(t, []string{"a"}, limits.Keys())
+	assert.Equal(t, 1, limits.ID())
+}

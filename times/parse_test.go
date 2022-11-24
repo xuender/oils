@@ -24,6 +24,9 @@ func TestParse(t *testing.T) {
 		want := base.Must1(time.Parse(tt[1], tt[0]))
 		assert.Equal(t, day, want)
 	}
+
+	_, err := times.Parse("11")
+	assert.NotNil(t, err)
 }
 
 func TestParse_Error(t *testing.T) {

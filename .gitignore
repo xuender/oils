@@ -14,19 +14,9 @@ UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
 *.log
-log.txt
-npm-debug.log*
 
-/.angular
-/.idea
-/.ionic
-/.sass-cache
-/.sourcemaps
-/.versions
+go.work
+/vendor/
 /.vscode
-/coverage
-/dist
-/node_modules
-/platforms
-/plugins
-/www
+cover.out
+cover.html

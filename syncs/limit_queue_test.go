@@ -43,6 +43,7 @@ func TestNewLimitQueue(t *testing.T) {
 
 	time.Sleep(time.Second * 3)
 	assert.Equal(t, 400, count)
+	assert.Equal(t, 0, limit.Len())
 }
 
 func TestNewLimitQueueAdd(t *testing.T) {

@@ -5,7 +5,9 @@ dockerLint:
 	docker run --rm -v ${PWD}:/app -w /app golangci/golangci-lint:v1.50.1 golangci-lint run -v --out-format=github-actions --path-prefix=. --timeout=5m
 
 lint:
-	golangci-lint run
+	golangci-lint run --timeout 60s --max-same-issues 50 ./...
+lint-fix:
+	golangci-lint run --timeout 60s --max-same-issues 50 --fix ./...
 
 test:
 	go test -race -v ./... -gcflags=all=-l
@@ -34,5 +36,5 @@ audit: tools
 	go list -json -m all | nancy sleuth
 
 coverage:
-	go test -v -coverprofile=cover.out -covermode=atomic .
+	go test -v -gcflags=all=-l -coverprofile=cover.out -covermode=atomic ./...
 	go tool cover -html=cover.out -o cover.html

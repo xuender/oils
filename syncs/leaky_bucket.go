@@ -4,10 +4,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/xuender/oils/base"
+	"github.com/samber/lo"
 )
 
 // LeakyBucket 漏桶算法.
+//
+// Deprecated: Use LimitQueue instead.
 type LeakyBucket struct {
 	capacity     int
 	leakInterval time.Duration
@@ -64,15 +66,14 @@ func (p *LeakyBucket) Consume(drop uint) {
 }
 
 func (p *LeakyBucket) leak() time.Duration {
-	now := time.Now()
-	sub := now.Sub(p.lastLeak)
+	sub := time.Since(p.lastLeak)
 	// 不到漏水时间，返回时间差
 	if p.leakInterval > sub {
 		return p.leakInterval - sub
 	}
 	// 泄漏一个桶的容量或者根据时间间隔泄漏
-	p.used -= base.Max(p.capacity, int(sub/p.leakInterval)*p.capacity)
-	p.lastLeak = now
+	p.used -= lo.Max([]int{p.capacity, int(sub/p.leakInterval) * p.capacity})
+	p.lastLeak = p.lastLeak.Add(sub)
 	// 如果桶内余额大于桶的容量，返回足够的间隔时间
 	if p.used > p.capacity {
 		return p.leakInterval * time.Duration(p.used/p.capacity)

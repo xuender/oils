@@ -21,7 +21,7 @@ func (p *Customer) ID() int {
 	return p.id
 }
 
-func (p *Customer) Update(data int64) {
+func (p *Customer) Update(data uint64) {
 	// nolint
 	fmt.Println(p.id, data)
 }
@@ -47,6 +47,8 @@ func TestInstanceNum(t *testing.T) {
 
 	time.Sleep(time.Second * 2)
 	assert.Equal(t, 1, ins.Num())
+	ins.Register(&Customer{id: 1})
+	ins.Deregister(&Customer{id: 1})
 }
 
 func TestInstanceNumError(t *testing.T) {
