@@ -157,7 +157,7 @@ func (t BitMap[T]) Slice() []T {
 		ret.Add(Byte2Ints(T(n), b)...)
 	}
 
-	sort.Sort(ret)
+	sort.Slice(ret, func(i, j int) bool { return ret[i] < ret[j] })
 
 	return ret
 }

@@ -4,9 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
-	"golang.org/x/exp/slices"
 )
 
 func TestNewMap(t *testing.T) {
@@ -66,18 +65,6 @@ func TestMapDel(t *testing.T) {
 
 	assert.Equal(t, 1, len(map1))
 	assert.True(t, map1.Has(3))
-}
-
-func TestMapKeys(t *testing.T) {
-	t.Parallel()
-
-	map1 := base.NewMap[int, int]()
-
-	map1[1] = 1
-	map1[2] = 1
-	map1[3] = 1
-
-	assert.Equal(t, 3, len(map1.Keys()))
 }
 
 func TestMapPut(t *testing.T) {
@@ -153,38 +140,6 @@ func TestMap_All(t *testing.T) {
 	assert.False(t, map1.All(4, 1))
 }
 
-func TestMap_Clear(t *testing.T) {
-	t.Parallel()
-
-	map1 := base.NewMapSameValue(true, 1, 2, 3)
-	assert.Equal(t, 3, len(map1))
-	map1.Clear()
-	assert.Equal(t, 0, len(map1))
-}
-
-func TestMap_Clone(t *testing.T) {
-	t.Parallel()
-
-	map1 := base.NewMapSameValue(true, 1, 2, 3)
-	map2 := map1.Clone()
-	keys1 := map1.Keys()
-	keys2 := map2.Keys()
-
-	slices.Sort(keys1)
-	slices.Sort(keys2)
-	assert.Equals(t, keys1, keys2)
-}
-
-func TestMap_Copy(t *testing.T) {
-	t.Parallel()
-
-	map1 := base.NewMapSameValue(true, 1, 2, 3)
-	map2 := base.NewMapSameValue(false, 4, 5)
-
-	map1.Copy(map2)
-	assert.Equal(t, 5, len(map2))
-}
-
 func TestMap_Del(t *testing.T) {
 	t.Parallel()
 
@@ -200,20 +155,6 @@ func TestMap_DelMap(t *testing.T) {
 	map2 := base.NewMapSameValue(false, 1, 5)
 	map1.DelMap(map2)
 	assert.Equal(t, 2, len(map1))
-}
-
-func TestMap_Keys(t *testing.T) {
-	t.Parallel()
-
-	keys := base.NewMapSameValue(true, 1, 2, 3).Keys()
-	slices.Sort(keys)
-	assert.Equals(t, []int{1, 2, 3}, keys)
-}
-
-func TestMap_Values(t *testing.T) {
-	t.Parallel()
-
-	assert.Equals(t, []bool{true, true, true}, base.NewMapSameValue(true, 1, 2, 3).Values())
 }
 
 func TestMap_Put(t *testing.T) {
@@ -240,6 +181,6 @@ func TestMap_ValuesByKeys(t *testing.T) {
 	testMap := base.NewMap[int, int]()
 	testMap[3] = 1
 	testMap[4] = 6
-	assert.Equals(t, []int{6, 1}, testMap.ValuesByKeys([]int{4, 3}))
-	assert.Equals(t, []int{6, 0}, testMap.ValuesByKeys([]int{4, 2}))
+	assert.Equal(t, []int{6, 1}, testMap.ValuesByKeys([]int{4, 3}))
+	assert.Equal(t, []int{6, 0}, testMap.ValuesByKeys([]int{4, 2}))
 }

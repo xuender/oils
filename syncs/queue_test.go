@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs"
 )
 
@@ -13,7 +13,7 @@ func TestQueue(t *testing.T) {
 
 	que := syncs.NewQueue(2, func(i int) {})
 
-	assert.Equal(t, 2, que.Size())
+	assert.Equal(t, uint(2), que.Size())
 	assert.Nil(t, que.Add(1))
 	assert.Nil(t, que.Add(2))
 	assert.NotNil(t, que.Add(3))
@@ -24,9 +24,9 @@ func TestQueueSize2(t *testing.T) {
 
 	que := syncs.NewQueue(0, func(i int) {})
 
-	assert.Equal(t, 1, que.Size())
+	assert.Equal(t, uint(1), que.Size())
 	que.SetSize(0)
-	assert.Equal(t, 1, que.Size())
+	assert.Equal(t, uint(1), que.Size())
 }
 
 func TestQueueConsum(t *testing.T) {

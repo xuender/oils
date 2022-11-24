@@ -7,25 +7,11 @@ func Must(err error) {
 	}
 }
 
-// Panic error引发恐慌.
-//
-// Deprecated: 使用Must.
-func Panic(err error) {
-	Must(err)
-}
-
 // Must1 1个返回值，error 必须是nil.
 func Must1[T any](t T, err error) T {
 	Must(err)
 
 	return t
-}
-
-// Panic1 恐慌1.
-//
-// Deprecated: 使用Must1.
-func Panic1[T any](t T, err error) T {
-	return Must1(t, err)
 }
 
 // Must2 2个返回值, error 必须是nil.

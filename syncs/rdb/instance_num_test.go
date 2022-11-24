@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	gomock "github.com/golang/mock/gomock"
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs/rdb"
 	rdb_mock "github.com/xuender/oils/syncs/rdb/mock"
 )

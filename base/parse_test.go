@@ -3,7 +3,7 @@ package base_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 )
 

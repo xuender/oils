@@ -3,7 +3,7 @@ package i18n_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/i18n"
 	"golang.org/x/text/language"
 )

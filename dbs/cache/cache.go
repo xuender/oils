@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/samber/lo"
 	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/dbs"
 )
@@ -176,7 +177,7 @@ func (p *Cache[K, V]) Keys() []K {
 	p.lock.RLock()
 	defer p.lock.RUnlock()
 
-	return p.data.Keys()
+	return lo.Keys(p.data)
 }
 
 // Del key.

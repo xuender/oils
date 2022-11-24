@@ -3,7 +3,7 @@ package cryptos_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/cryptos"
 )
 
@@ -13,7 +13,7 @@ func TestParse(t *testing.T) {
 	src, cip, err := cryptos.Parse("AES(MTIz)")
 
 	assert.Nil(t, err)
-	assert.Equals(t, []byte("123"), src)
+	assert.Equal(t, []byte("123"), src)
 	assert.Equal(t, cryptos.AES, cip)
 
 	_, _, err = cryptos.Parse("AES(123")

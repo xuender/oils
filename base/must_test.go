@@ -6,21 +6,15 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 )
 
 func TestMust(t *testing.T) {
 	t.Parallel()
+
 	assert.Panics(t, func() {
 		base.Must(io.ErrClosedPipe)
-	})
-}
-
-func TestPanic(t *testing.T) {
-	t.Parallel()
-	assert.Panics(t, func() {
-		base.Panic(io.ErrClosedPipe)
 	})
 }
 
@@ -34,19 +28,6 @@ func TestMust1(t *testing.T) {
 	})
 	assert.Panics(t, func() {
 		base.Must1(strconv.ParseInt("a", 10, 64))
-	})
-}
-
-func TestPanic1(t *testing.T) {
-	t.Parallel()
-
-	assert.Panics(t, func() {
-		base.Panic1(func() (bool, error) {
-			return false, os.ErrExist
-		}())
-	})
-	assert.Panics(t, func() {
-		base.Panic1(strconv.ParseInt("a", 10, 64))
 	})
 }
 

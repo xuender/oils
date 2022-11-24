@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs"
 )
 
@@ -53,5 +53,5 @@ func TestNewConsumer(t *testing.T) {
 	count := syncs.Consume[int](10, 3, 3, time.Millisecond, pac)
 
 	assert.Equal(t, 4950, pac.sum)
-	assert.Equal(t, 100, count)
+	assert.Equal(t, int64(100), count)
 }

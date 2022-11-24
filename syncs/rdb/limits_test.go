@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs/rdb"
 )
 
@@ -15,7 +15,7 @@ func TestLimits(t *testing.T) {
 	limits := rdb.NewLimits()
 
 	limits.QPS("test", 100)
-	assert.Equal(t, 100, limits.Get("test"))
+	assert.Equal(t, uint64(100), limits.Get("test"))
 
 	limit := limits.Limit("test")
 	start := time.Now()
@@ -41,7 +41,7 @@ func TestLimits_Update(t *testing.T) {
 	limits := rdb.NewLimits()
 
 	limits.QPS("test", 100)
-	assert.Equal(t, 100, limits.Get("test"))
+	assert.Equal(t, uint64(100), limits.Get("test"))
 
 	limit := limits.Limit("test")
 	start := time.Now()
@@ -65,7 +65,7 @@ func TestLimits_Update(t *testing.T) {
 
 	limits.Update(2)
 
-	assert.Equal(t, 50, limits.GetAll()["test"])
+	assert.Equal(t, uint(50), limits.GetAll()["test"])
 
 	for i := 0; i < 100; i++ {
 		limit.Wait()
@@ -81,6 +81,6 @@ func TestLimits_Keys(t *testing.T) {
 	limits := rdb.NewLimits()
 
 	limits.QPS("a", 1000)
-	assert.Equals(t, []string{"a"}, limits.Keys())
+	assert.Equal(t, []string{"a"}, limits.Keys())
 	assert.Equal(t, 1, limits.ID())
 }

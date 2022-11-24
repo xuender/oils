@@ -3,7 +3,7 @@ package sqls_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/dbs/sqls"
 )
 
@@ -39,9 +39,9 @@ func TestCount(t *testing.T) {
 func TestOffset(t *testing.T) {
 	t.Parallel()
 
-	assert.Equals(t, []int{}, sqls.Offset(0, 100))
-	assert.Equals(t, []int{0}, sqls.Offset(10, 100))
-	assert.Equals(t, []int{8, 4, 0}, sqls.Offset(10, 4))
-	assert.Equals(t, []int{5, 0}, sqls.Offset(10, 5))
-	assert.Equals(t, []int{9, 6, 3, 0}, sqls.Offset(10, 3))
+	assert.Equal(t, []int{}, sqls.Offset(0, 100))
+	assert.Equal(t, []int{0}, sqls.Offset(10, 100))
+	assert.Equal(t, []int{8, 4, 0}, sqls.Offset(10, 4))
+	assert.Equal(t, []int{5, 0}, sqls.Offset(10, 5))
+	assert.Equal(t, []int{9, 6, 3, 0}, sqls.Offset(10, 3))
 }

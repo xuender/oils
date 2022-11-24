@@ -3,6 +3,7 @@ package base
 import (
 	"unicode"
 
+	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 )
 
@@ -158,11 +159,11 @@ func LevenshteinDistance(str1, str2 string) int {
 				sub = 1
 			}
 
-			column[index1] = Min(
-				column[index1]+1,   // 插入
-				column[index1-1]+1, // 删除
-				lastkey+sub,        // 修改
-			)
+			column[index1] = lo.Min([]int{
+				column[index1] + 1,   // 插入
+				column[index1-1] + 1, // 删除
+				lastkey + sub,        // 修改
+			})
 			lastkey = oldkey
 		}
 	}

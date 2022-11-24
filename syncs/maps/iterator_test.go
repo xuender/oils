@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs/maps"
 )
 
@@ -288,7 +288,7 @@ func TestMaps_Each_float32(t *testing.T) {
 		return true
 	})
 
-	assert.Equals(t, []int{1, 2, 3, 4, 5}, list)
+	assert.Equal(t, []int{1, 2, 3, 4, 5}, list)
 }
 
 func TestTreeMap_Each_sync(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agiledragon/gomonkey/v2"
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/nets"
 )
 
@@ -14,5 +14,5 @@ func TestListenAndServe(t *testing.T) {
 	patches := gomonkey.ApplyMethodReturn(&http.Server{}, "ListenAndServe", nil)
 	defer patches.Reset()
 
-	assert.Nil(t, nets.ListenAndServe(":8080", nil))
+	assert.Nil(t, nets.ListenAndServe(":8081", nil))
 }

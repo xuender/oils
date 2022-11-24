@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/nets"
 )
@@ -58,7 +58,7 @@ func TestDirs_Size(t *testing.T) {
 	t.Parallel()
 
 	dirs := nets.Dirs([]string{"../nets", "../oss"})
-	assert.Equal(t, 0, dirs.Size())
+	assert.Equal(t, int64(0), dirs.Size())
 }
 
 func TestDirs_Mode(t *testing.T) {

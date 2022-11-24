@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/syncs"
 )
 
@@ -17,7 +17,7 @@ func TestNewLimitQueue(t *testing.T) {
 
 	limit.SetQPS(100)
 	limit.SetTimeOut(time.Second * 3)
-	assert.Equal(t, 100, limit.QPS())
+	assert.Equal(t, uint(100), limit.QPS())
 	assert.Equal(t, time.Second*3, limit.TimeOut())
 
 	group := sync.WaitGroup{}

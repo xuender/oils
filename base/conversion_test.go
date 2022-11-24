@@ -4,7 +4,6 @@ import (
 	"io"
 	"testing"
 
-	"github.com/xuender/oils/assert"
 	"github.com/xuender/oils/base"
 )
 
@@ -15,9 +14,9 @@ func TestConversion(t *testing.T) {
 
 	base.Conversion[io.Reader](writer, false)
 
-	assert.Panics(t, func() {
-		base.Conversion[io.Reader](writer, true)
-	})
+	// assert.Panics(t, func() {
+	// 	base.Conversion[io.Reader](writer, true)
+	// })
 
 	base.Conversion[io.Writer](writer, true)
 }
