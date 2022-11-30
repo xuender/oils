@@ -22,19 +22,17 @@ func NewRoutineGroup(size uint) *RoutineGroup {
 
 // Inc 加1.
 func (p *RoutineGroup) Inc() {
-	p.ch <- struct{}{}
 	p.wg.Add(1)
+	p.ch <- struct{}{}
 }
 
 // Add 增加协程.
-//
-// Deprecated: Use Inc instead.
 func (p *RoutineGroup) Add(delta uint) {
+	p.wg.Add(int(delta))
+
 	for i := uint(0); i < delta; i++ {
 		p.ch <- struct{}{}
 	}
-
-	p.wg.Add(int(delta))
 }
 
 // Done 协程完成.
