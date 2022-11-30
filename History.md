@@ -1,4 +1,13 @@
 
+0.5.47 / 2022-11-30
+==================
+
+* fix: RoutineGroup Add order error
+* test: times
+* refactor: yield
+* feat: syncs.RoutineGroup 增加 Inc 方法
+* refactor: 使用 lo
+
 0.5.46 / 2022-11-23
 ==================
 
