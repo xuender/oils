@@ -19,7 +19,20 @@ func RotateLog(paths ...string) {
 
 	log.Info(filename)
 	// nolint: exhaustruct
-	log = NewRotate(&lumberjack.Logger{
+	log = NewConsoleRotate(&lumberjack.Logger{
+		Filename: filename,
+		Compress: true,
+		MaxAge:   week,
+	}).WithOptions(zap.AddCallerSkip(1)).Sugar()
+}
+
+func RotateJSONLog(paths ...string) {
+	week := 7
+	filename := LogName(paths...)
+
+	log.Info(filename)
+	// nolint: exhaustruct
+	log = NewJSONRotate(&lumberjack.Logger{
 		Filename: filename,
 		Compress: true,
 		MaxAge:   week,
