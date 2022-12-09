@@ -3,7 +3,7 @@ package dbs_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 	"github.com/xuender/oils/dbs"
 )
@@ -44,19 +44,13 @@ func BenchmarkNewID(b *testing.B) {
 	}
 }
 
-// func BenchmarkID2(b *testing.B) {
-// 	for i := 0; i < b.N; i++ {
-// 		u64.ID2()
-// 	}
-// }
-
 func TestDecodeID(t *testing.T) {
 	t.Parallel()
 
 	id := dbs.ID()
 	ts, serial, machine := dbs.DecodeID(id)
 
-	assert.Greater(t, ts, 100, "ts")
-	assert.GreaterOrEqual(t, serial, 0, "serial")
-	assert.GreaterOrEqual(t, machine, 0, "machine")
+	assert.Greater(t, ts, uint64(100), "ts")
+	assert.GreaterOrEqual(t, serial, uint64(0), "serial")
+	assert.GreaterOrEqual(t, machine, uint64(0), "machine")
 }

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/agiledragon/gomonkey/v2"
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/logs"
 	"github.com/xuender/oils/oss"
 )
@@ -38,10 +38,7 @@ func TestNewDebug(t *testing.T) {
 	t.Parallel()
 
 	old := logs.Desugar()
-
-	logs.NewDebug()
-
-	newLog := logs.Desugar()
+	newLog := logs.NewDebug()
 
 	assert.NotEqual(t, old, newLog)
 }
@@ -50,10 +47,7 @@ func TestNewInfo(t *testing.T) {
 	t.Parallel()
 
 	old := logs.Desugar()
-
-	logs.NewInfo()
-
-	newLog := logs.Desugar()
+	newLog := logs.NewInfo()
 
 	assert.NotEqual(t, old, newLog)
 }

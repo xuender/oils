@@ -1,11 +1,11 @@
 package treemap_test
 
 import (
+	"math/rand"
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base/treemap"
-	"github.com/xuender/oils/maths"
 )
 
 func TestNew(t *testing.T) {
@@ -87,17 +87,18 @@ func TestTreeMap_Del(t *testing.T) {
 	assert.False(t, has)
 }
 
+// nolint: gosec
 func TestTreeMap_Del1(t *testing.T) {
 	t.Parallel()
 
 	tmap := treemap.New(uint64(0), -1)
 
 	for num := 0; num < 100000; num++ {
-		if maths.Rand()%7 > 0 {
-			key := maths.Rand() / 100
+		if rand.Int()%7 > 0 {
+			key := uint64(rand.Int() / 100)
 			tmap.Del(key)
 		} else {
-			key := maths.Rand() / 100
+			key := uint64(rand.Int() / 100)
 			tmap.Set(key, num)
 		}
 	}

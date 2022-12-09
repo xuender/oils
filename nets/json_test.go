@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/nets"
 )
 

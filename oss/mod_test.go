@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agiledragon/gomonkey/v2"
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/oss"
 )
 

@@ -1,4 +1,18 @@
 
+1.0.50 / 2022-12-09
+==================
+
+* feat: EventBus
+* feat: go style ob
+* feat: log console
+* fix: RoutineGroup Add order error
+
+1.0.49 / 2022-12-09
+==================
+
+* feat: remove map, slice等
+* test: 更换 assert
+
 0.5.48 / 2022-12-04
 ==================
 

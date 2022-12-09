@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/agiledragon/gomonkey/v2"
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/nets"
 )
 
@@ -21,5 +21,5 @@ func TestGetIP(t *testing.T) {
 
 	localAddr = nets.GetIP()
 
-	assert.Equal(t, 0, localAddr[0])
+	assert.Equal(t, byte(0), localAddr[0])
 }

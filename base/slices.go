@@ -4,31 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 )
-
-// Has 包含.
-//
-// Deprecated: 使用 slices.Contains.
-func Has[E comparable](elems []E, elem E) bool {
-	return slices.Index(elems, elem) > -1
-}
-
-// Count 统计元素数量.
-//
-// Deprecated: Use github.com/samber/lo.Count instead.
-func Count[E comparable](elems []E, elem E) int {
-	count := 0
-
-	for _, value := range elems {
-		if value == elem {
-			count++
-		}
-	}
-
-	return count
-}
 
 // Index 索引.
 func Index[T comparable](slices, sub []T) int {
@@ -55,21 +32,6 @@ func Index[T comparable](slices, sub []T) int {
 	return -1
 }
 
-// Filter 过滤.
-//
-// Deprecated: Use github.com/samber/lo.Filter instead.
-func Filter[T any](elems []T, condition func(T) bool) []T {
-	ret := []T{}
-
-	for _, elem := range elems {
-		if condition(elem) {
-			ret = append(ret, elem)
-		}
-	}
-
-	return ret
-}
-
 // Append 追加，max最大尺寸,max小于0不限制尺寸.
 func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
 	size := len(slice) + len(elems)
@@ -87,13 +49,6 @@ func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
 	}
 
 	return append(slice[size-max:], elems...)
-}
-
-// SliceMap 切片转换.
-//
-// Deprecated: Use github.com/samber/lo.Map instead.
-func SliceMap[S, T any](elems []S, change func(S) T) []T {
-	return lo.Map(elems, func(elem S, index int) T { return change(elem) })
 }
 
 // Sub 切片截取.
@@ -131,53 +86,6 @@ func Sub[Elem any](slice []Elem, startAndEnd ...int) []Elem {
 	}
 
 	return slice[start:end]
-}
-
-// Chunk 切片分块.
-//
-// Deprecated: Use github.com/samber/lo.Chunk instead.
-func Chunk[Elem any](slice []Elem, size int) [][]Elem {
-	if len(slice) == 0 || size < 1 {
-		return [][]Elem{}
-	}
-
-	length := len(slice)
-	retLen := length / size
-
-	if length%size > 0 {
-		retLen++
-	}
-
-	ret := make([][]Elem, retLen)
-
-	for index := 0; index < retLen; index++ {
-		end := index*size + size
-
-		if end > length {
-			end = length
-		}
-
-		ret[index] = slice[index*size : end]
-	}
-
-	return ret
-}
-
-// Unique 去重.
-//
-// Deprecated: Use github.com/samber/lo.Uniq instead.
-func Unique[E comparable](slice []E) []E {
-	unique := []E{}
-
-	for _, elem := range slice {
-		if slices.Index(unique, elem) > -1 {
-			continue
-		}
-
-		unique = append(unique, elem)
-	}
-
-	return unique
 }
 
 // Join 集合连接.
@@ -237,13 +145,6 @@ func DelAll[E comparable](slice []E, elems ...E) []E {
 	}
 
 	return slice
-}
-
-// Reverse 反转切片.
-//
-// Deprecated: Use github.com/samber/lo.Reverse instead.
-func Reverse[E any](slice []E) {
-	lo.Reverse(slice)
 }
 
 func Counts[E comparable](slice, sub []E) int {
@@ -324,18 +225,4 @@ func Replace[E comparable](slice, sub, newSub []E, num int) []E { // nolint
 // ReplaceAll 全部替换.
 func ReplaceAll[E comparable](slice, sub, newSub []E) []E {
 	return Replace(slice, sub, newSub, -1)
-}
-
-// Sample 获得一个随机元素.
-//
-// Deprecated: Use github.com/samber/lo.Sample instead.
-func Sample[E any](slice []E) E {
-	return lo.Sample(slice)
-}
-
-// Shuffle 打乱切片.
-//
-// Deprecated: Use github.com/samber/lo.Shuffle instead.
-func Shuffle[E any](slice []E) []E { // nolint
-	return lo.Shuffle(slice)
 }

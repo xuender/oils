@@ -3,7 +3,7 @@ package tags_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/tags"
 )
 
@@ -65,7 +65,7 @@ func TestBitMap_Slice(t *testing.T) {
 	ts := tags.NewBitMap(2, 1, 4)
 
 	ts.Add(3)
-	assert.Equals(t, []int{1, 2, 3, 4}, ts.Slice())
+	assert.Equal(t, []int{1, 2, 3, 4}, ts.Slice())
 }
 
 func TestBitMap_String(t *testing.T) {
@@ -107,7 +107,7 @@ func TestBitMap_DelBitMap(t *testing.T) {
 	ts1.DelBitMap(ts2)
 
 	assert.Equal(t, 1, len(ts1.Slice()))
-	assert.Equals(t, []int{4}, ts1.Slice())
+	assert.Equal(t, []int{4}, ts1.Slice())
 	assert.True(t, ts1.Has(4))
 
 	ts1 = tags.NewBitMap(2, 1, 3, 99)
@@ -116,7 +116,7 @@ func TestBitMap_DelBitMap(t *testing.T) {
 	ts1.DelBitMap(ts2)
 
 	assert.Equal(t, 2, len(ts1.Slice()))
-	assert.Equals(t, []int{3, 99}, ts1.Slice())
+	assert.Equal(t, []int{3, 99}, ts1.Slice())
 	assert.True(t, ts1.Has(3))
 }
 
@@ -154,7 +154,7 @@ func TestIntersection(t *testing.T) {
 	assert.True(t, tag.Has(4))
 
 	tag = tags.Intersection(ts1)
-	assert.Equals(t, tag, ts1)
+	assert.Equal(t, tag, ts1)
 
 	tag = tags.Intersection[int]()
 	assert.Equal(t, 0, tag.Count())

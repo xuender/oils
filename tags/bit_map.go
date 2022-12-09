@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/xuender/oils/base"
 	"golang.org/x/exp/constraints"
 )
 
@@ -151,13 +150,13 @@ func (t *BitMap[T]) Load(bs []byte) {
 
 // Slice 转换切片.
 func (t BitMap[T]) Slice() []T {
-	ret := base.NewSlice[T]()
+	ret := []T{}
 
 	for n, b := range t {
-		ret.Add(Byte2Ints(T(n), b)...)
+		ret = append(ret, Byte2Ints(T(n), b)...)
 	}
 
-	sort.Sort(ret)
+	sort.Slice(ret, func(i, j int) bool { return ret[i] < ret[j] })
 
 	return ret
 }

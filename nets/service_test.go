@@ -6,8 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/xuender/oils/assert"
-	"github.com/xuender/oils/base"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/nets"
 	"google.golang.org/protobuf/proto"
 )
@@ -103,8 +102,7 @@ func TestWithRecover(t *testing.T) {
 	assert.Equal(t, 7, len(res.Body.Bytes()))
 
 	req = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader([]byte("test")))
-	// req.Header = map[string][]string{}
-	req.Header = http.Header(base.NewMapSameValue([]string{"json"}, nets.ContentType))
+	req.Header = http.Header(map[string][]string{nets.ContentType: {"json"}})
 	res = &httptest.ResponseRecorder{Body: &bytes.Buffer{}}
 
 	recoverHandler.ServeHTTP(res, req)

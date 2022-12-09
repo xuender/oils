@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/xuender/oils/base"
+	"github.com/samber/lo"
 	"github.com/xuender/oils/dbs"
 )
 
@@ -20,8 +20,8 @@ var caches = newCleaners()
 type Cache[K comparable, V any] struct {
 	id     uint64
 	lock   sync.RWMutex
-	data   base.Map[K, V]
-	access base.Map[K, time.Time]
+	data   map[K]V
+	access map[K]time.Time
 
 	Expire   time.Duration
 	Callback func(key K, value V)
@@ -176,7 +176,7 @@ func (p *Cache[K, V]) Keys() []K {
 	p.lock.RLock()
 	defer p.lock.RUnlock()
 
-	return p.data.Keys()
+	return lo.Keys(p.data)
 }
 
 // Del key.
@@ -239,8 +239,8 @@ func (p *Cache[K, V]) Size() int {
 func NewCache[K comparable, V any](expire time.Duration) *Cache[K, V] {
 	cache := &Cache[K, V]{
 		id:       dbs.ID(),
-		data:     base.NewMap[K, V](),
-		access:   base.NewMap[K, time.Time](),
+		data:     map[K]V{},
+		access:   map[K]time.Time{},
 		Expire:   expire,
 		Callback: func(key K, value V) {},
 	}

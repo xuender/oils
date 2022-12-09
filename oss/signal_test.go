@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/oss"
 )
 
@@ -21,10 +21,8 @@ func (p *closer) Close() error {
 
 func (p *closer) Error(error) {}
 
-// nolint: exhaustruct
+// nolint
 func TestSignalClose(t *testing.T) {
-	t.Parallel()
-
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP)
 

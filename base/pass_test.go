@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 )
 
@@ -40,7 +40,7 @@ func TestPass3(t *testing.T) {
 	ret1, ret2, ret3 := base.Pass3(test3(3, "3", 3.14))
 	assert.Equal(t, 3, ret1)
 	assert.Equal(t, "3", ret2)
-	assert.Equal(t, 3.14, ret3)
+	assert.Equal(t, float32(3.14), ret3)
 }
 
 func TestPass(t *testing.T) {

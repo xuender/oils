@@ -3,7 +3,7 @@ package hashs_test
 import (
 	"testing"
 
-	"github.com/xuender/oils/assert"
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/hashs"
 )
 
@@ -31,11 +31,11 @@ func TestNumHLLPP_Marshal(t *testing.T) {
 	hll := hashs.NewNumHLLPP[int]()
 	hll.Add(3)
 	hll.Add(1)
-	assert.Equal(t, 2, hll.Count())
+	assert.Equal(t, uint64(2), hll.Count())
 
 	newHll, err := hashs.Unmarshal[int](hll.Marshal())
 	assert.Nil(t, err)
-	assert.Equal(t, 2, newHll.Count())
+	assert.Equal(t, uint64(2), newHll.Count())
 }
 
 func TestUnMarshal(t *testing.T) {

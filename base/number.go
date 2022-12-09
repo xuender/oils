@@ -11,44 +11,12 @@ const (
 )
 
 // JSNumber 转换成兼容JS的数值.
-func JSNumber[Num constraints.Integer | constraints.Float](num Num) Num {
+func JSNumber[T constraints.Integer | constraints.Float](num T) T {
 	b8 := make([]byte, Eight)
 	binary.BigEndian.PutUint64(b8, uint64(num))
 
 	h := binary.BigEndian.Uint32(b8[0:Four])
 	l := binary.BigEndian.Uint32(b8[Four:])
 	// nolint
-	return Num(uint64(h&b16)*0x100000000 + uint64(l))
-}
-
-// Deprecated: Use github.com/samber/lo.Max instead.
-func Max[Num constraints.Ordered](nums ...Num) Num {
-	var max Num
-	if len(nums) > 0 {
-		max = nums[0]
-	}
-
-	for _, num := range nums {
-		if num > max {
-			max = num
-		}
-	}
-
-	return max
-}
-
-// Deprecated: Use github.com/samber/lo.Min instead.
-func Min[Num constraints.Ordered](nums ...Num) Num {
-	var min Num
-	if len(nums) > 0 {
-		min = nums[0]
-	}
-
-	for _, num := range nums {
-		if num < min {
-			min = num
-		}
-	}
-
-	return min
+	return T(uint64(h&b16)*0x100000000 + uint64(l))
 }
