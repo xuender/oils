@@ -4,19 +4,19 @@ import (
 	"io"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/xuender/oils/base"
 )
 
 func TestConversion(t *testing.T) {
 	t.Parallel()
 
+	assert := assert.New(t)
 	writer := &io.PipeWriter{}
 
-	base.Conversion[io.Reader](writer, false)
-
-	// assert.Panics(t, func() {
-	// 	base.Conversion[io.Reader](writer, true)
-	// })
-
-	base.Conversion[io.Writer](writer, true)
+	assert.Nil(base.Conversion[io.Reader](writer, false))
+	assert.Panics(func() {
+		base.Conversion[io.Reader](writer, true)
+	})
+	assert.NotNil(base.Conversion[io.Writer](writer, true))
 }

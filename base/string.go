@@ -11,7 +11,7 @@ import (
 const SepInitialisms = rune(-3)
 
 // nolint
-var CommonInitialisms = NewSet(
+var CommonInitialisms = [...]string{
 	"ACL",
 	"API",
 	"ASCII",
@@ -50,7 +50,7 @@ var CommonInitialisms = NewSet(
 	"XMPP",
 	"XSRF",
 	"XSS",
-)
+}
 
 // Split 根据分割符拆分字符串.
 // SepInitialisms 缩写子母拆分.
@@ -80,7 +80,7 @@ func Split(str string, seps ...rune) []string {
 		slice = append(slice, elem)
 		isLower = unicode.IsLower(elem)
 
-		if !isLower && CommonInitialisms.Has(string(slice)) {
+		if !isLower && slices.Contains(CommonInitialisms[:], string(slice)) {
 			ret = append(ret, string(slice))
 			slice = []rune{}
 		}

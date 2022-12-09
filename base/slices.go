@@ -51,43 +51,6 @@ func Append[S ~[]E, E any](max int, slice S, elems ...E) S {
 	return append(slice[size-max:], elems...)
 }
 
-// Sub 切片截取.
-func Sub[Elem any](slice []Elem, startAndEnd ...int) []Elem {
-	length := len(slice)
-
-	if length == 0 {
-		return []Elem{}
-	}
-
-	start, end := 0, length
-
-	if len(startAndEnd) > 0 {
-		start = startAndEnd[0]
-
-		if start < 0 {
-			start += length
-
-			if start < 0 {
-				start = 0
-			}
-		}
-	}
-
-	if len(startAndEnd) > 1 && startAndEnd[1] < length {
-		end = startAndEnd[1]
-	}
-
-	if end < 0 {
-		end += length
-	}
-
-	if start >= length || start >= end {
-		return []Elem{}
-	}
-
-	return slice[start:end]
-}
-
 // Join 集合连接.
 func Join[E any](slice []E, sep string) string {
 	switch len(slice) {
@@ -109,7 +72,7 @@ func Join[E any](slice []E, sep string) string {
 	return builder.String()
 }
 
-func Del[E comparable](slice []E, elems ...E) []E { // nolint
+func Del[E comparable](slice []E, elems ...E) []E {
 	if len(slice) == 0 {
 		return []E{}
 	}
@@ -175,28 +138,6 @@ func Counts[E comparable](slice, sub []E) int {
 	}
 
 	return count
-}
-
-// All 全部包含.
-func All[E comparable](slice, elems []E) bool {
-	for _, elem := range elems {
-		if slices.Index(slice, elem) < 0 {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Any 任意包含.
-func Any[E comparable](slice, elems []E) bool {
-	for _, elem := range elems {
-		if slices.Index(slice, elem) > -1 {
-			return true
-		}
-	}
-
-	return false
 }
 
 // Replace 替换.

@@ -63,19 +63,6 @@ func TestIndex(t *testing.T) {
 	assert.Equal(t, 1, base.Index(slice, []int{2, 1}))
 }
 
-func TestSub(t *testing.T) {
-	t.Parallel()
-
-	assert.Equal(t, []int{}, base.Sub([]int{}))
-	assert.Equal(t, []int{}, base.Sub([]int{1, 2, 3}, 8, 2))
-	assert.Equal(t, []int{1, 2, 3}, base.Sub([]int{1, 2, 3}))
-	assert.Equal(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, 1))
-	assert.Equal(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, -2))
-	assert.Equal(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, 1, 5))
-	assert.Equal(t, []int{2, 3}, base.Sub([]int{1, 2, 3}, 1, 3))
-	assert.Equal(t, []int{1, 2}, base.Sub([]int{1, 2, 3}, -10, -1))
-}
-
 func BenchmarkDel(b *testing.B) {
 	array := []rune(strings.Repeat("ender", 100))
 
