@@ -32,6 +32,7 @@ func TestInstanceNum(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	client := rdb_mock.NewMockCmdable(ctrl)
 	ins := rdb.NewInstanceNum(client)
+	update := make(chan uint64)
 
 	cmd1 := new(redis.IntCmd)
 	cmd2 := new(redis.IntCmd)
@@ -47,8 +48,7 @@ func TestInstanceNum(t *testing.T) {
 
 	time.Sleep(time.Second * 2)
 	assert.Equal(t, 1, ins.Num())
-	ins.Register(&Customer{id: 1})
-	ins.Deregister(&Customer{id: 1})
+	ins.Register(update)
 }
 
 func TestInstanceNumError(t *testing.T) {

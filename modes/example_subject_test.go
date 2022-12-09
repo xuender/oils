@@ -2,37 +2,30 @@ package modes_test
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/xuender/oils/modes"
 )
 
-type Customer struct {
-	id int
-}
-
-func (p *Customer) Update(data string) {
-	fmt.Printf("%d: %s\n", p.id, data)
-}
-
-type Sub struct {
-	*modes.Subject[string, int]
-}
-
 func ExampleSubject() {
-	sub := &Sub{Subject: modes.NewSubject[string, int]()}
+	sub := modes.NewSubject[string]()
+	update := make(chan string)
 
-	sub.Register(1, (&Customer{id: 1}).Update)
+	go func() {
+		for str := range update {
+			fmt.Println(str)
+		}
+	}()
 
-	sub.Notify("test1", 1)
-	sub.Notify("test1", 2)
-	sub.NotifyAll("test2")
+	sub.Register(update)
 
-	sub.Deregister(1)
-	sub.Deregister(3)
-
-	sub.NotifyAll("test3")
+	sub.Notify("test1")
+	sub.Notify("test2")
+	time.Sleep(time.Millisecond)
+	close(update)
+	sub.Notify("test3")
 
 	// Output:
-	// 1: test1
-	// 1: test2
+	// test1
+	// test2
 }

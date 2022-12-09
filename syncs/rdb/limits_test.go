@@ -63,7 +63,8 @@ func TestLimits_Update(t *testing.T) {
 	assert.GreaterOrEqual(t, time.Since(start), time.Second*2)
 	assert.Less(t, time.Since(start), time.Second*3)
 
-	limits.Update(2)
+	limits.Update() <- 2
+	time.Sleep(time.Millisecond)
 
 	assert.Equal(t, 50, limits.GetAll()["test"])
 

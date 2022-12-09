@@ -9,15 +9,25 @@ type Limits struct {
 	limits map[string]*DynamicLimit
 	qps    map[string]uint64
 	num    uint64
+	update chan uint64
 }
 
 // NewLimits 新建批量限流.
 func NewLimits() *Limits {
-	return &Limits{
+	res := &Limits{
 		limits: map[string]*DynamicLimit{},
 		qps:    map[string]uint64{},
 		num:    1,
+		update: make(chan uint64),
 	}
+
+	go res.toUpdate()
+
+	return res
+}
+
+func (p *Limits) Update() chan uint64 {
+	return p.update
 }
 
 // Keys 键值.
@@ -31,11 +41,13 @@ func (p *Limits) Keys() []string {
 	return keys
 }
 
-func (p *Limits) Update(num uint64) {
-	p.num = num
+func (p *Limits) toUpdate() {
+	for num := range p.update {
+		p.num = num
 
-	for key, limit := range p.limits {
-		limit.Update(p.qps[key] / num)
+		for key, limit := range p.limits {
+			limit.Update(p.qps[key] / num)
+		}
 	}
 }
 

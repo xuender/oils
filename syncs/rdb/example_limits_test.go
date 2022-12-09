@@ -19,7 +19,7 @@ func ExampleLimits() {
 	ins := rdb.NewInstanceNum(client)
 	limits := rdb.NewLimits()
 
-	ins.Register(limits)
+	ins.Register(limits.Update())
 
 	go ins.Run()
 
