@@ -7,6 +7,7 @@ import (
 	"github.com/xuender/oils/base"
 )
 
+// DelayEventBus 延迟消息总线.
 type DelayEventBus[DATA any, KEY comparable] struct {
 	EventBus[DATA, KEY]
 	data     map[KEY]*Event[DATA, KEY]
@@ -15,10 +16,12 @@ type DelayEventBus[DATA any, KEY comparable] struct {
 	cache    chan *Event[DATA, KEY]
 }
 
+// NewDelayEventBus 新建延迟消息总线.
 func NewDelayEventBus[DATA any, KEY comparable](interval time.Duration) *DelayEventBus[DATA, KEY] {
 	return NewDelayEventBusBySize[DATA, KEY](interval, base.Hundred)
 }
 
+// NewDelayEventBusBySize 根据缓存尺寸新建延迟消息总线.
 func NewDelayEventBusBySize[DATA any, KEY comparable](interval time.Duration, size int) *DelayEventBus[DATA, KEY] {
 	res := &DelayEventBus[DATA, KEY]{
 		EventBus: EventBus[DATA, KEY]{
@@ -42,6 +45,10 @@ func (p *DelayEventBus[DATA, KEY]) post() {
 	for {
 		select {
 		case <-ticker.C:
+			if len(p.data) == 0 {
+				continue
+			}
+
 			p.lock.Lock()
 
 			for key, event := range p.data {
@@ -51,13 +58,16 @@ func (p *DelayEventBus[DATA, KEY]) post() {
 
 			p.lock.Unlock()
 		case event := <-p.cache:
-			p.lock.Lock()
-			p.data[event.Key] = event
-			p.lock.Unlock()
+			if p.EventBus.Has(event.Key) {
+				p.lock.Lock()
+				p.data[event.Key] = event
+				p.lock.Unlock()
+			}
 		}
 	}
 }
 
+// Post 发送消息.
 func (p *DelayEventBus[DATA, KEY]) Post(event *Event[DATA, KEY]) {
 	p.cache <- event
 }
