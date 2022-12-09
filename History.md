@@ -1,4 +1,34 @@
 
+1.0.49 / 2022-12-09
+==================
+
+* feat: remove map, slice等
+* test: 更换 assert
+
+0.5.48 / 2022-12-04
+==================
+
+* feat: log console
+
+0.5.47 / 2022-11-30
+==================
+
+* fix: RoutineGroup Add order error
+* test: times
+* refactor: yield
+* feat: syncs.RoutineGroup 增加 Inc 方法
+* refactor: 使用 lo
+
+0.5.46 / 2022-11-23
+==================
+
+* fix: 限频无法打满
+
+0.5.45 / 2022-11-22
+==================
+
+* feat: InstanceNum 取消订阅
+
 0.5.46 / 2022-11-23
 ==================
 
