@@ -11,7 +11,7 @@ lint-fix:
 
 test:
 	# go test -race -v ./... -gcflags=all=-l
-	go test -v -gcflags=all=-l ./nets/...
+	go test -v -gcflags=all=-l ./...
 
 watch-test:
 	reflex -t 50ms -s -- sh -c 'gotest -v ./...'

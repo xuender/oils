@@ -60,29 +60,29 @@ func Split(str string, seps ...rune) []string {
 	}
 
 	ret := []string{}
-	slice := NewSlice[rune]()
+	slice := []rune{}
 	hasSepInitialisms := slices.Contains(seps, SepInitialisms)
 	isLower := false
 
 	for index, elem := range str {
 		if hasSepInitialisms && index > 0 && isLower && unicode.IsUpper(elem) {
 			ret = append(ret, string(slice))
-			slice.Clean()
+			slice = []rune{}
 		}
 
 		if slices.Contains(seps, elem) {
 			ret = append(ret, string(slice))
-			slice.Clean()
+			slice = []rune{}
 
 			continue
 		}
 
-		slice.Add(elem)
+		slice = append(slice, elem)
 		isLower = unicode.IsLower(elem)
 
 		if !isLower && CommonInitialisms.Has(string(slice)) {
 			ret = append(ret, string(slice))
-			slice.Clean()
+			slice = []rune{}
 		}
 	}
 

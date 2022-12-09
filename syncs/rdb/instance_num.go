@@ -14,7 +14,7 @@ type InstanceNum struct {
 	client  redis.Cmdable
 	num     uint64
 	old     uint64
-	subject *modes.Subject[uint64, int]
+	subject *modes.Subject[uint64]
 	key     string
 }
 
@@ -26,20 +26,15 @@ func NewInstanceNum(client redis.Cmdable) *InstanceNum {
 func NewInstanceNumByKey(client redis.Cmdable, key string) *InstanceNum {
 	return &InstanceNum{
 		client:  client,
-		subject: &modes.Subject[uint64, int]{},
+		subject: modes.NewSubject[uint64](),
 		key:     key,
 		num:     1,
 	}
 }
 
 // Register 订阅主题.
-func (p *InstanceNum) Register(observer modes.Observer[uint64, int]) {
+func (p *InstanceNum) Register(observer chan<- uint64) {
 	p.subject.Register(observer)
-}
-
-// Deregister 取消订阅.
-func (p *InstanceNum) Deregister(observer modes.Observer[uint64, int]) {
-	p.subject.Deregister(observer)
 }
 
 // Run 运行.
@@ -68,7 +63,7 @@ func (p *InstanceNum) Run() {
 		}
 
 		if old != p.num || p.old == 0 {
-			p.subject.NotifyAll(p.num)
+			p.subject.Notify(p.num)
 		}
 
 		p.old = uint64(num)

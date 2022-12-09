@@ -11,6 +11,8 @@
 
 Golang 常用工具类库.
 
+![codecov](https://codecov.io/gh/xuender/oils/branch/main/graphs/tree.svg?token=8CTpNIHxYT)
+
 ## base
 
 基础的集合操作.

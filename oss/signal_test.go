@@ -21,7 +21,7 @@ func (p *closer) Close() error {
 
 func (p *closer) Error(error) {}
 
-// nolint: exhaustruct
+// nolint
 func TestSignalClose(t *testing.T) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP)
