@@ -3,72 +3,49 @@ package logs
 import (
 	"os"
 	"path/filepath"
+	"time"
 
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"github.com/rifflock/lfshook"
+	"github.com/sirupsen/logrus"
+	"github.com/xuender/oils/ios"
 	"github.com/xuender/oils/oss"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	lumberjack "gopkg.in/natefinch/lumberjack.v2"
 )
 
-// nolint
-var log = NewDebug().WithOptions(zap.AddCallerSkip(1)).Sugar()
+func getHook(filename string, formatter logrus.Formatter) logrus.Hook {
+	writer, err := rotatelogs.New(
+		filename+".%Y%m%d%H",
+		rotatelogs.WithLinkName(filename),
+		rotatelogs.WithRotationTime(time.Hour),
+		rotatelogs.WithMaxAge(time.Hour*24*7),
+		// rotatelogs.WithRotationCount(100),
+	)
+	if err != nil {
+		logrus.Errorf("config local file system for logger error: %v", err)
+	}
+
+	return lfshook.NewHook(lfshook.WriterMap{
+		logrus.DebugLevel: writer,
+		logrus.InfoLevel:  writer,
+		logrus.WarnLevel:  writer,
+		logrus.ErrorLevel: writer,
+		logrus.FatalLevel: writer,
+		logrus.PanicLevel: writer,
+	}, formatter)
+}
 
 func RotateLog(paths ...string) {
-	week := 7
 	filename := LogName(paths...)
 
-	log.Info(filename)
-	// nolint: exhaustruct
-	log = NewConsoleRotate(&lumberjack.Logger{
-		Filename: filename,
-		Compress: true,
-		MaxAge:   week,
-	}).WithOptions(zap.AddCallerSkip(1)).Sugar()
+	logrus.SetOutput(ios.NewPassWriter())
+	logrus.AddHook(getHook(filename, &logrus.TextFormatter{DisableColors: true, TimestampFormat: "2006-01-02 15:04:05"}))
 }
 
 func RotateJSONLog(paths ...string) {
-	week := 7
 	filename := LogName(paths...)
 
-	log.Info(filename)
-	// nolint: exhaustruct
-	log = NewJSONRotate(&lumberjack.Logger{
-		Filename: filename,
-		Compress: true,
-		MaxAge:   week,
-	}).WithOptions(zap.AddCallerSkip(1)).Sugar()
-}
-
-func NewDebug() *zap.Logger {
-	return newLogger(zap.DebugLevel)
-}
-
-func NewInfo() *zap.Logger {
-	return newLogger(zap.InfoLevel)
-}
-
-func newLogger(level zapcore.Level) *zap.Logger {
-	// nolint: exhaustruct
-	config := zap.Config{
-		Level:            zap.NewAtomicLevelAt(level),
-		Development:      level == zap.DebugLevel,
-		Encoding:         "console",
-		OutputPaths:      []string{"stderr"},
-		ErrorOutputPaths: []string{"stderr"},
-	}
-	if config.Development {
-		config.EncoderConfig = zap.NewDevelopmentEncoderConfig()
-		config.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("15:04:05.00000")
-	} else {
-		config.EncoderConfig = zap.NewProductionEncoderConfig()
-		config.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("04:05.00000")
-		config.EncoderConfig.EncodeCaller = nil
-	}
-
-	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	logger, _ := config.Build()
-
-	return logger
+	logrus.SetOutput(ios.NewPassWriter())
+	logrus.AddHook(getHook(filename, &logrus.JSONFormatter{}))
 }
 
 func LogName(paths ...string) string {

@@ -25,29 +25,5 @@ func TestLogName(t *testing.T) {
 func TestRotateLog(t *testing.T) {
 	t.Parallel()
 
-	old := logs.Desugar()
-
 	logs.RotateLog("/tmp", "test")
-
-	newLog := logs.Desugar()
-
-	assert.NotEqual(t, old, newLog)
-}
-
-func TestNewDebug(t *testing.T) {
-	t.Parallel()
-
-	old := logs.Desugar()
-	newLog := logs.NewDebug()
-
-	assert.NotEqual(t, old, newLog)
-}
-
-func TestNewInfo(t *testing.T) {
-	t.Parallel()
-
-	old := logs.Desugar()
-	newLog := logs.NewInfo()
-
-	assert.NotEqual(t, old, newLog)
 }

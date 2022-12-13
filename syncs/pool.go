@@ -64,3 +64,7 @@ func (p *Pool[I, O]) Post(inputs []I) []O {
 
 	return res
 }
+
+func (p *Pool[I, O]) Close() {
+	close(p.input)
+}

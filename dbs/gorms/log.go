@@ -3,13 +3,9 @@ package gorms
 import (
 	"context"
 	"errors"
-	"path/filepath"
-	"runtime"
-	"strings"
 	"time"
 
 	"github.com/xuender/oils/logs"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -45,7 +41,7 @@ func (p *gormLogger) Info(ctx context.Context, str string, args ...interface{}) 
 		return
 	}
 
-	p.logger().Debugf(str, args...)
+	logs.Debugf(str, args...)
 }
 
 func (p *gormLogger) Warn(ctx context.Context, str string, args ...interface{}) {
@@ -53,7 +49,7 @@ func (p *gormLogger) Warn(ctx context.Context, str string, args ...interface{}) 
 		return
 	}
 
-	p.logger().Warnf(str, args...)
+	logs.Warnf(str, args...)
 }
 
 func (p *gormLogger) Error(ctx context.Context, str string, args ...interface{}) {
@@ -61,7 +57,7 @@ func (p *gormLogger) Error(ctx context.Context, str string, args ...interface{})
 		return
 	}
 
-	p.logger().Errorf(str, args...)
+	logs.Errorf(str, args...)
 }
 
 func (p *gormLogger) Trace(
@@ -80,7 +76,7 @@ func (p *gormLogger) Trace(
 	case err != nil && p.level >= logger.Error &&
 		(!p.IgnoreRecordNotFoundError || !errors.Is(err, gorm.ErrRecordNotFound)):
 		sql, rows := yield()
-		p.logger().Errorw(
+		logs.Errorw(
 			"trace",
 			"err", err,
 			"elapsed", elapsed,
@@ -89,36 +85,9 @@ func (p *gormLogger) Trace(
 		)
 	case p.SlowThreshold != 0 && elapsed > p.SlowThreshold && p.level >= logger.Warn:
 		sql, rows := yield()
-		p.logger().Warnw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
+		logs.Warnw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
 	case p.level >= logger.Info:
 		sql, rows := yield()
-		p.logger().Debugw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
+		logs.Debugw("trace", "elapsed", elapsed, "rows", rows, "sql", sql)
 	}
-}
-
-// nolint
-var (
-	gormPackage = filepath.Join("gorm.io")
-	oilsPackage = filepath.Join("oils", "logs")
-)
-
-func (p *gormLogger) logger() *zap.SugaredLogger {
-	start := 2
-	end := 15
-
-	for skip := start; skip < end; skip++ {
-		_, file, _, ok := runtime.Caller(skip)
-
-		switch {
-		case !ok:
-		case strings.HasSuffix(file, "_test.go"):
-		case strings.Contains(file, gormPackage):
-		case strings.Contains(file, oilsPackage):
-		default:
-			// log.Debugw("skip", "skip", skip, "file", file)
-			return logs.Desugar().WithOptions(zap.AddCallerSkip(skip - 1)).Sugar()
-		}
-	}
-
-	return logs.Desugar().Sugar()
 }

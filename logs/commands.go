@@ -1,103 +1,97 @@
 package logs
 
-import "go.uber.org/zap"
+import (
+	"fmt"
+
+	"github.com/sirupsen/logrus"
+)
 
 func Info(args ...interface{}) {
-	log.Info(args...)
+	logrus.Info(args...)
 }
 
 func Debug(args ...interface{}) {
-	log.Debug(args...)
+	logrus.Debug(args...)
 }
 
 func Warn(args ...interface{}) {
-	log.Warn(args...)
+	logrus.Warn(args...)
 }
 
 func Error(args ...interface{}) {
-	log.Error(args...)
-}
-
-func DPanic(args ...interface{}) {
-	log.DPanic(args...)
+	logrus.Error(args...)
 }
 
 func Panic(args ...interface{}) {
-	log.Panic(args...)
+	logrus.Panic(args...)
 }
 
 func Fatal(args ...interface{}) {
-	log.Fatal(args...)
+	logrus.Fatal(args...)
 }
 
 func Debugf(template string, args ...interface{}) {
-	log.Debugf(template, args...)
+	logrus.Debugf(template, args...)
 }
 
 func Infof(template string, args ...interface{}) {
-	log.Infof(template, args...)
+	logrus.Infof(template, args...)
 }
 
 func Warnf(template string, args ...interface{}) {
-	log.Warnf(template, args...)
+	logrus.Warnf(template, args...)
 }
 
 func Errorf(template string, args ...interface{}) {
-	log.Errorf(template, args...)
-}
-
-func DPanicf(template string, args ...interface{}) {
-	log.DPanicf(template, args...)
+	logrus.Errorf(template, args...)
 }
 
 func Panicf(template string, args ...interface{}) {
-	log.Panicf(template, args...)
+	logrus.Panicf(template, args...)
 }
 
 func Fatalf(template string, args ...interface{}) {
-	log.Fatalf(template, args...)
+	logrus.Fatalf(template, args...)
+}
+
+func fields(keysAndValues []any) logrus.Fields {
+	if len(keysAndValues)%2 != 0 {
+		keysAndValues = append(keysAndValues, "")
+	}
+
+	fields := logrus.Fields{}
+
+	for i := 0; i < len(keysAndValues); i += 2 {
+		fields[fmt.Sprintf("%v", keysAndValues[i])] = keysAndValues[i+1]
+	}
+
+	return fields
 }
 
 func Debugw(msg string, keysAndValues ...interface{}) {
-	log.Debugw(msg, keysAndValues...)
+	logrus.WithFields(fields(keysAndValues)).Debug(msg)
 }
 
 func Infow(msg string, keysAndValues ...interface{}) {
-	log.Infow(msg, keysAndValues...)
+	logrus.WithFields(fields(keysAndValues)).Info(msg)
 }
 
 func Warnw(msg string, keysAndValues ...interface{}) {
-	log.Warnw(msg, keysAndValues...)
+	logrus.WithFields(fields(keysAndValues)).Warn(msg)
 }
 
 func Errorw(msg string, keysAndValues ...interface{}) {
-	log.Errorw(msg, keysAndValues...)
-}
-
-func DPanicw(msg string, keysAndValues ...interface{}) {
-	log.DPanicw(msg, keysAndValues...)
+	logrus.WithFields(fields(keysAndValues)).Error(msg)
 }
 
 func Panicw(msg string, keysAndValues ...interface{}) {
-	log.Panicw(msg, keysAndValues...)
+	logrus.WithFields(fields(keysAndValues)).Panic(msg)
 }
 
 func Fatalw(msg string, keysAndValues ...interface{}) {
-	log.Fatalw(msg, keysAndValues...)
-}
-
-func Desugar() *zap.Logger {
-	return log.Desugar()
-}
-
-func GetLog() *zap.SugaredLogger {
-	return log
-}
-
-func Sync() {
-	_ = log.Sync()
+	logrus.WithFields(fields(keysAndValues)).Fatal(msg)
 }
 
 func SetInfoLevel() {
-	log = NewInfo().WithOptions(zap.AddCallerSkip(1)).Sugar()
+	logrus.SetLevel(logrus.InfoLevel)
 }
