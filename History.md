@@ -1,4 +1,17 @@
 
+1.0.51 / 2022-12-13
+==================
+
+* feat: logs 改用 logrus
+* feat: syncs pool
+* feat: add poster
+* feat: 协程池
+* refactor: remove maps, slices
+* feat: base add const
+* doc: event bus
+* chore: update require
+* test: 延迟消息总线
+
 1.0.50 / 2022-12-09
 ==================
 
