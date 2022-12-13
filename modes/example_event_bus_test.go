@@ -27,9 +27,9 @@ func ExampleEventBus() {
 	}()
 
 	fmt.Println(bus.Has("key"))
-	bus.Register(ob1, []string{"click", "key"})
+	bus.Regist(ob1, []string{"click", "key"})
 	fmt.Println(bus.Has("key"))
-	bus.Register(ob2, []string{"touch", "click"})
+	bus.Regist(ob2, []string{"touch", "click"})
 	bus.Post(modes.NewEvent("startup", 0))
 	bus.Post(modes.NewEvent("touch", 1))
 	bus.Post(modes.NewEvent("click", 2))

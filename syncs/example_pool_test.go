@@ -1,31 +1,63 @@
 package syncs_test
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"time"
 
-	"github.com/xuender/oils/base"
+	"github.com/samber/lo"
 	"github.com/xuender/oils/syncs"
 )
 
 func ExamplePool() {
-	input := make(chan int, 10)
-	output := make(chan string, 10)
-	set := base.NewSet[string]()
+	pool := syncs.NewPool(10, func(value, num int) string {
+		time.Sleep(time.Millisecond)
 
-	syncs.Pool(3, input, output, func(value, num int) string {
 		return fmt.Sprintf("%d: %d*2=%d", num, value, value*2)
 	})
 
-	for i := 0; i < 100; i++ {
-		input <- i
+	outputs := pool.Post(lo.Range(100))
 
-		set.Add(<-output)
-	}
+	fmt.Println(len(outputs))
 
-	close(input)
-	close(output)
+	// Output:
+	// 100
+}
 
-	fmt.Println(len(set))
+func ExamplePool_context() {
+	pool := syncs.NewPool(10, func(input lo.Tuple2[context.Context, int], num int) int {
+		time.Sleep(time.Millisecond)
+
+		return input.B * input.B
+	})
+
+	inputs := lo.Map(lo.Range(100), func(num, _ int) lo.Tuple2[context.Context, int] {
+		return lo.T2(context.Background(), num)
+	})
+	outputs := pool.Post(inputs)
+
+	fmt.Println(len(outputs))
+
+	// Output:
+	// 100
+}
+
+func ExamplePool_error() {
+	pool := syncs.NewPool(10, func(value, num int) lo.Tuple2[int, error] {
+		time.Sleep(time.Millisecond)
+
+		if value == 0 {
+			// nolint
+			return lo.T2(0, errors.New("divide by zero"))
+		}
+
+		return lo.T2[int, error](100/value, nil)
+	})
+
+	outputs := pool.Post(lo.Range(100))
+
+	fmt.Println(len(outputs))
 
 	// Output:
 	// 100

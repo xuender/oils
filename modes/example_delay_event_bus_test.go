@@ -26,8 +26,8 @@ func ExampleDelayEventBus() {
 		}
 	}()
 
-	bus.Register(ob1, []string{"click", "key"})
-	bus.Register(ob2, []string{"touch", "click"})
+	bus.Regist(ob1, []string{"click", "key"})
+	bus.Regist(ob2, []string{"touch", "click"})
 	bus.Post(modes.NewEvent("startup", 0))
 	bus.Post(modes.NewEvent("touch", 0))
 	bus.Post(modes.NewEvent("touch", 3))

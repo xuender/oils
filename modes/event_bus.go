@@ -22,8 +22,8 @@ func NewEventBus[DATA any, KEY comparable]() *EventBus[DATA, KEY] {
 	}
 }
 
-// Register 注册观察者.
-func (p *EventBus[DATA, KEY]) Register(objerver chan<- DATA, keys []KEY) {
+// Regist 注册观察者.
+func (p *EventBus[DATA, KEY]) Regist(objerver chan<- DATA, keys []KEY) {
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
 
