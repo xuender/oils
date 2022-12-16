@@ -9,7 +9,7 @@ import (
 func ExampleThere() {
 	fmt.Println(base.One)
 	fmt.Println(base.Two)
-	fmt.Println(base.There)
+	fmt.Println(base.Three)
 	fmt.Println(base.Four)
 	fmt.Println(base.Five)
 	fmt.Println(base.SixtyFour)

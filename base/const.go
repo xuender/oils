@@ -1,7 +1,7 @@
 package base
 
 const (
-	There          = 3
+	Three          = 3
 	Five           = 5
 	Six            = 6
 	Seven          = 7
