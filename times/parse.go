@@ -32,7 +32,7 @@ func Parse(str string) (time.Time, error) {
 	length := len(str)
 	for _, layout := range layouts {
 		if length == len(layout) {
-			return time.Parse(layout, str)
+			return time.ParseInLocation(layout, str, time.Local)
 		}
 	}
 

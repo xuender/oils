@@ -24,7 +24,7 @@ func NewLocker(client redis.Cmdable, times ...time.Duration) *Locker {
 	locker := &Locker{
 		client:     client,
 		keys:       sync.Map{},
-		lockTime:   time.Second * base.There,
+		lockTime:   time.Second * base.Three,
 		expireTime: time.Second,
 	}
 
